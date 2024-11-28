@@ -28,14 +28,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="corsi.html">Corsi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="aboutUs.html">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="amministratoreDashboard.html">Amministratore</a></li>
-                    <li class="nav-item"><a class="nav-link" href="istruttoreDashboard.html">Istruttori</a></li>
-                    <li class="nav-item"><a class="nav-link" href="studentDashboard.html">Studenti</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutUs.php">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="amministratoreDashboard.php">Amministratore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="istruttoreDashboard.php">Istruttori</a></li>
+                    <li class="nav-item"><a class="nav-link" href="studentDashboard.php">Studenti</a></li>
                 </ul>
             </div>
         </div>
