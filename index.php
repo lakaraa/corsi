@@ -1,4 +1,9 @@
 <?php
+
+require_once 'config.php';
+require_once 'api/routes/apiRoutes.php';
+
+
 // Configurazioni dinamiche
 $pageTitle = "Homepage";
 include('template_header.php'); 
