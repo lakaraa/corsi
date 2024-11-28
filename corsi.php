@@ -9,6 +9,19 @@ if ($conn->connect_error) {
     die("Connessione al database fallita: " . $conn->connect_error);
 }
 ?>
+<!-- Header Section -->
+<header class="header-bg">
+    <div class="overlay"></div>
+    <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
+        <h1 class="hero-title">Trasforma le tue competenze con i nostri corsi online</h1>
+        <p class="hero-subtext">Accedi a conoscenze di qualità ovunque ti trovi.</p>
+        <div class="mt-4">
+            <a href="#courses" class="btn btn-primary btn-lg mr-2">Scopri i Corsi</a>
+            <a href="#about" class="btn btn-outline-light btn-lg">Leggi di più</a>
+        </div>
+    </div>
+</header>
+
 <!-- Courses Section -->
 <section class="section py-5 bg-light" id="courses">
     <div class="container">
