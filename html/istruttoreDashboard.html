@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Courses</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome for the lens icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="image/logo.png">
+    
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle"> 
+                <span>Online Learning Hub</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="corsi.html">Corsi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutUs.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="header-bg">
+        <div class="overlay"></div>
+        <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
+            <h1 class="hero-title">Scopri i nostri corsi</h1>
+            <p class="hero-subtext">Accedi a conoscenze di qualità ovunque ti trovi.</p>
+        </div>
+    </header>
+
+    <!-- Instructor Dashboard Section -->
+    <section class="section py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Dashboard Istruttore - Benvenuto caro</h2>
+            <p class="text-center mb-5">Gestisci i tuoi corsi, vedi gli studenti e assegna i voti.</p>
+
+            <!-- My Courses -->
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <h3>I miei Corsi</h3>
+                    <div class="list-group">
+                        <!-- Corsi dell'istruttore (esempio statico) -->
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Web Development
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails('webDevStudents')">Gestisci Studenti</button>
+                        </div>
+                        <div id="webDevStudents" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th>Livello</th>
+                                                <th>Assegna Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Giovanni Rossi</td>
+                                                <td><input type="text" class="form-control" placeholder="Livello"></td>
+                                                <td><button class="btn btn-success btn-sm">Assegna</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Laura Bianchi</td>
+                                                <td><input type="text" class="form-control" placeholder="Livello"></td>
+                                                <td><button class="btn btn-success btn-sm">Assegna</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Data Science
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails('dataScienceStudents')">Gestisci Studenti</button>
+                        </div>
+                        <div id="dataScienceStudents" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th>Livello</th>
+                                                <th>Assegna Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Marco Neri</td>
+                                                <td><input type="text" class="form-control" placeholder="Livello"></td>
+                                                <td><button class="btn btn-success btn-sm">Assegna</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Giulia Verdi</td>
+                                                <td><input type="text" class="form-control" placeholder="Livello"></td>
+                                                <td><button class="btn btn-success btn-sm">Assegna</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Corsi Completati -->
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <h3>Corsi Completati</h3>
+                    <div class="list-group">
+                        <!-- Corsi completati (esempio statico) -->
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Graphic Design
+                            <span class="badge badge-success">Completato</span>
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails('graphicDesignDetails')">Gestisci Studenti</button>
+                        </div>
+                        <div id="graphicDesignDetails" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti e Voti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th>Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Esempio di studenti con voti -->
+                                            <tr>
+                                                <td>Giovanni Rossi</td>
+                                                <td><input type="text" class="form-control" value="Base" disabled></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Laura Bianchi</td>
+                                                <td><input type="text" class="form-control" value="Avanzato" disabled></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Marco Neri</td>
+                                                <td><input type="text" class="form-control" value="Intermedio" disabled></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            Marketing Digitale
+                            <span class="badge badge-success">Completato</span>
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails('marketingDetails')">Gestisci Studenti</button>
+                        </div>
+                        <div id="marketingDetails" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti e Voti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th>Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Esempio di studenti con voti -->
+                                            <tr>
+                                                <td>Andrea Galli</td>
+                                                <td><input type="text" class="form-control" value="Avanzato" disabled></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Maria Verdi</td>
+                                                <td><input type="text" class="form-control" value="Base" disabled></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lucia Bianchini</td>
+                                                <td><input type="text" class="form-control" value="Base" disabled></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="section footer-creative">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="tel:+17189993939">+1 718-999-3939</a></li>
+                        <li><a href="mailto:info@onlinelearning.com">info@onlinelearning.com</a></li>
+                        <li>1234 Learning St. New York, NY 10001</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <h5>Follow Us</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="icon mdi mdi-facebook"></a></li>
+                        <li><a href="#" class="icon mdi mdi-twitter"></a></li>
+                        <li><a href="#" class="icon mdi mdi-instagram"></a></li>
+                        <li><a href="#" class="icon mdi mdi-linkedin"></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>About</h5>
+                    <p>Online Learning Hub offers a wide range of courses to help you learn and grow in your career. Join us and start your journey today!</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        
+        // Navbar scroll effect
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 50) {
+                $('.custom-navbar').addClass('scrolled');
+            } else {
+                $('.custom-navbar').removeClass('scrolled');
+            }
+        });
+
+        function toggleDetails(courseId) {
+            const courseDetails = document.getElementById(courseId);
+            if (courseDetails.style.display === "none") {
+                courseDetails.style.display = "block";
+            } else {
+                courseDetails.style.display = "none";
+            }
+        }
+        function toggleCourseDetails(courseId) {
+            const courseDetails = document.getElementById(courseId);
+            if (courseDetails.style.display === "none") {
+                courseDetails.style.display = "block";
+            } else {
+                courseDetails.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
