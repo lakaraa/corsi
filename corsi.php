@@ -1,8 +1,9 @@
+
 <?php include('template_header.php');
-$host = 'localhost'; // Cambia con i dettagli del tuo server
+$host = 'localhost'; 
 $user = 'corsi';
 $password = 'password.123';
-$dbname = 'corsi'; // Cambia con il nome del tuo database
+$dbname = 'corsi'; 
 
 $conn = new mysqli($host, $user, $password, $dbname);
 if ($conn->connect_error) {
@@ -60,5 +61,13 @@ if ($conn->connect_error) {
         </div>
     </div>
 </section>
+<script>
+    fetch('http://localhost/corsi/getCorsi.php')
+    .then(response => response.json())
+    .then(data => {
+    console.log(data); // visualizza i corsi
+})
+.catch(error => console.error('Error:', error));
 
+</script>
 <?php include('template_footer.php'); ?>
