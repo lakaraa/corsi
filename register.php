@@ -52,6 +52,10 @@ $socialLinks = [
                                     <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
                                 <div class="form-group">
+                                    <label for="tel">Telefono</label>
+                                    <input type="tel" class="form-control" id="tel" name="tel" required>
+                                </div>
+                                <div class="form-group">
                                     <label for="password">Password</label>
                                     <input type="password" class="form-control" id="password" name="password" required>
                                 </div>
