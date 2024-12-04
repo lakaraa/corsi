@@ -38,7 +38,7 @@ $socialLinks = [
                 <div class="col-md-6">
                     <div class="card shadow">
                         <div class="card-body">
-                            <form action="register_handler.php" method="post">
+                            <form action="register_handler.php" method="POST">
                                 <div class="form-group">
                                     <label for="name">Nome</label>
                                     <input type="text" class="form-control" id="name" name="name" required>
