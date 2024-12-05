@@ -146,6 +146,61 @@ $navbarLinks = [
 <script>
     const apiUrl = "http://localhost/api"; // Sostituisci con il tuo URL base API
 
+    // Funzione per caricare le categorie
+    async function loadCategories() {
+        try {
+            const response = await fetch(`${apiUrl}/categorie`);
+            const categories = await response.json();
+            const categorySelect = document.getElementById('courseCategory');
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Errore nel caricamento delle categorie:", error);
+        }
+    }
+
+    // Funzione per caricare gli istruttori
+    async function loadInstructors() {
+        try {
+            const response = await fetch(`${apiUrl}/istruttori`);
+            const instructors = await response.json();
+            const instructorSelect = document.getElementById('courseInstructor');
+            instructors.forEach(instructor => {
+                const option = document.createElement('option');
+                option.value = instructor.id;
+                option.textContent = `${instructor.nome} ${instructor.cognome}`;
+                instructorSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Errore nel caricamento degli istruttori:", error);
+        }
+    }
+
+    // Funzione per caricare gli utenti
+    async function loadUsers() {
+        try {
+            const response = await fetch(`${apiUrl}/utenti`);
+            const users = await response.json();
+            const userTableBody = document.getElementById('userTableBody');
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.nome} ${user.cognome}</td>
+                    <td>${user.email}</td>
+                    <td>${user.ruolo}</td>
+                    <td><button class="btn btn-danger" onclick="deleteUser(${user.id_utente})">Elimina</button></td>
+                `;
+                userTableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Errore nel caricamento degli utenti:", error);
+        }
+    }
+
     // Funzione per creare un nuovo corso
     document.getElementById('createCourseForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -197,6 +252,80 @@ $navbarLinks = [
         }
     }
 
+    // Funzione per creare un nuovo amministratore
+    async function createAdmin() {
+        const adminName = document.getElementById('adminName').value;
+        const adminSurname = document.getElementById('adminSurname').value;
+        const adminTelefono = document.getElementById('adminTelefono').value;
+        const adminEmail = document.getElementById('adminEmail').value;
+        const adminPassword = document.getElementById('adminPassword').value;
+
+        const data = {
+            nome: adminName,
+            cognome: adminSurname,
+            telefono: adminTelefono,
+            email: adminEmail,
+            password: adminPassword,
+            ruolo: 'admin'
+        };
+
+        try {
+            const response = await fetch(`${apiUrl}/utenti`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert("Amministratore creato con successo!");
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                alert(`Errore nella creazione dell'amministratore: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Errore:", error);
+            alert("Errore nella connessione all'API.");
+        }
+    }
+
+    // Funzione per creare un nuovo istruttore
+    async function createInstructor() {
+        const instructorName = document.getElementById('instructorName').value;
+        const instructorSurname = document.getElementById('instructorSurname').value;
+        const instructorTelefono = document.getElementById('instructorTelefono').value;
+        const instructorEmail = document.getElementById('instructorEmail').value;
+        const instructorPassword = document.getElementById('instructorPassword').value;
+
+        const data = {
+            nome: instructorName,
+            cognome: instructorSurname,
+            telefono: instructorTelefono,
+            email: instructorEmail,
+            password: instructorPassword,
+            ruolo: 'istruttore'
+        };
+
+        try {
+            const response = await fetch(`${apiUrl}/utenti`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert("Istruttore creato con successo!");
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                alert(`Errore nella creazione dell'istruttore: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Errore:", error);
+            alert("Errore nella connessione all'API.");
+        }
+    }
+
     // Funzione per eliminare un utente
     async function deleteUser(userId) {
         if (!confirm("Sei sicuro di voler eliminare questo utente?")) return;
@@ -216,4 +345,10 @@ $navbarLinks = [
             alert("Errore nella connessione all'API.");
         }
     }
+
+    // Caricamento iniziale dei dati
+    loadCategories();
+    loadInstructors();
+    loadUsers();
 </script>
+
