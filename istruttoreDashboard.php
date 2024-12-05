@@ -1,6 +1,8 @@
 <?php
+include('template_header.php');
+
 // Dati dinamici del sito
-$title = "Dashboard Amministratore | Online Courses";
+$title = "Dashboard Istruttore | Online Courses";
 $navbarLinks = [
     "Home" => "index.php",
     "Corsi" => "corsi.php",
@@ -8,132 +10,116 @@ $navbarLinks = [
     "Contact" => "contact.php",
     "Login" => "login.php"
 ];
-$contactInfo = [
-    "phone" => "+1 718-999-3939",
-    "email" => "info@onlinelearning.com",
-    "address" => "1234 Learning St. New York, NY 10001"
-];
+
 $socialLinks = [
     "Facebook" => "#",
     "Twitter" => "#",
     "Instagram" => "#",
     "LinkedIn" => "#"
 ];
-$courses = [
-    ["name" => "Web Development", "category" => "Web Development", "instructor" => "Maria Rossi"],
-    ["name" => "Data Science", "category" => "Data Science", "instructor" => "Luca Bianchi"]
-];
-$users = [
-    ["name" => "Giovanni Rossi", "email" => "giovanni@example.com", "role" => "Studente"],
-    ["name" => "Maria Verdi", "email" => "maria@example.com", "role" => "Istruttore"]
-];
-?>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title; ?></title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Font Awesome for the lens icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="image/logo.png">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle">
-                <span>Online Learning Hub</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <?php foreach ($navbarLinks as $name => $link): ?>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
+// Esempio di corsi a cui l'istruttore sta insegnando
+$ongoingCourses = [
+    ["name" => "Web Development", "category" => "Web Development", "students" => [
+        ["name" => "Giovanni Rossi", "email" => "giovanni@example.com", "level" => "Base"],
+        ["name" => "Maria Verdi", "email" => "maria@example.com", "level" => "Intermedio"]
+    ]],
+    ["name" => "Data Science", "category" => "Data Science", "students" => [
+        ["name" => "Luca Bianchi", "email" => "luca@example.com", "level" => "Avanzato"]
+    ]]
+];
+
+$completedCourses = [
+    ["name" => "Graphic Design", "category" => "Graphic Design", "students" => [
+        ["name" => "Carla Neri", "email" => "carla@example.com"],
+        ["name" => "Marco Lupi", "email" => "marco@example.com"]
+    ]],
+    ["name" => "Marketing Digitale", "category" => "Marketing Digitale", "students" => [
+        ["name" => "Elena Di Mauro", "email" => "elena@example.com"],
+        ["name" => "Fabio Masi", "email" => "fabio@example.com"]
+    ]]
+];
+
+// Handle form submission to update student levels (for demo purposes, will print results)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_levels'])) {
+    $updatedLevels = $_POST['studentLevels'];
+    echo "<div class='alert alert-success'>Livelli aggiornati con successo!</div>";
+}
+?>
     <!-- Header Section -->
     <header class="header-bg">
         <div class="overlay"></div>
         <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
-            <h1 class="hero-title">Dashboard Amministratore</h1>
-            <p class="hero-subtext">Gestisci corsi, utenti, e iscrizioni agli studenti.</p>
+            <h1 class="hero-title">Dashboard Istruttore</h1>
+            <p class="hero-subtext">Gestisci i tuoi corsi e visualizza gli studenti iscritti.</p>
         </div>
     </header>
 
-    <!-- Admin Dashboard Section -->
+    <!-- Instructor Dashboard Section -->
     <section class="section py-5 bg-light">
         <div class="container">
-            <h2 class="text-center mb-4">Dashboard Amministratore</h2>
-            <p class="text-center mb-5">Gestisci corsi, utenti, e iscrizioni agli studenti.</p>
+            <h2 class="text-center mb-4">Dashboard Istruttore</h2>
+            <p class="text-center mb-5">Visualizza i corsi che stai insegnando e quelli finiti.</p>
 
-            <!-- Creazione Corsi -->
+            <!-- Corsi in Corso -->
             <div class="row mb-5">
                 <div class="col-md-12">
-                    <h3>Crea un Nuovo Corso</h3>
-                    <form action="create_course_handler.php" method="post">
-                        <div class="form-group">
-                            <label for="courseName">Nome Corso</label>
-                            <input type="text" class="form-control" id="courseName" name="courseName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="courseCategory">Categoria Corso</label>
-                            <select class="form-control" id="courseCategory" name="courseCategory" required>
-                                <option value="Web Development">Web Development</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="Graphic Design">Graphic Design</option>
-                                <option value="Marketing Digitale">Marketing Digitale</option>
-                                <option value="Cybersecurity">Cybersecurity</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="courseDescription">Descrizione Corso</label>
-                            <textarea class="form-control" id="courseDescription" name="courseDescription" rows="3" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="courseInstructor">Istruttore</label>
-                            <input type="text" class="form-control" id="courseInstructor" name="courseInstructor" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Crea Corso</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Visualizzazione Corsi -->
-            <div class="row mb-5">
-                <div class="col-md-12">
-                    <h3>I Corsi Creati</h3>
+                    <h3>Corsi in Corso</h3>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Nome Corso</th>
                                 <th>Categoria</th>
-                                <th>Istruttore</th>
+                                <th>Numero di Studenti</th>
                                 <th>Azioni</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($courses as $course): ?>
+                            <?php foreach ($ongoingCourses as $course): ?>
                                 <tr>
                                     <td><?php echo $course['name']; ?></td>
                                     <td><?php echo $course['category']; ?></td>
-                                    <td><?php echo $course['instructor']; ?></td>
+                                    <td><?php echo count($course['students']); ?></td> <!-- Display student count -->
                                     <td>
-                                        <button class="btn btn-warning btn-sm">Modifica</button>
-                                        <button class="btn btn-danger btn-sm">Elimina</button>
+                                        <!-- Button to toggle student details -->
+                                        <button class="btn btn-primary btn-sm" onclick="toggleDetails('course-<?php echo urlencode($course['name']); ?>')">Dettagli</button>
+                                    </td>
+                                </tr>
+                                <!-- Course Details Card -->
+                                <tr id="course-<?php echo urlencode($course['name']); ?>" style="display:none;">
+                                    <td colspan="4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Studenti Iscritti a <?php echo $course['name']; ?></h5>
+                                                <form method="post" action="">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Nome Studente</th>
+                                                                <th>Email</th>
+                                                                <th>Livello</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach ($course['students'] as $index => $student): ?>
+                                                                <tr>
+                                                                    <td><?php echo $student['name']; ?></td>
+                                                                    <td><?php echo $student['email']; ?></td>
+                                                                    <td>
+                                                                        <select class="form-control" name="studentLevels[<?php echo $index; ?>]">
+                                                                            <option value="Base" <?php if ($student['level'] == "Base") echo "selected"; ?>>Base</option>
+                                                                            <option value="Intermedio" <?php if ($student['level'] == "Intermedio") echo "selected"; ?>>Intermedio</option>
+                                                                            <option value="Avanzato" <?php if ($student['level'] == "Avanzato") echo "selected"; ?>>Avanzato</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+                                                        </tbody>
+                                                    </table>
+                                                    <button type="submit" name="update_levels" class="btn btn-success">Aggiorna Livelli</button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -142,26 +128,45 @@ $users = [
                 </div>
             </div>
 
-            <!-- Gestione Utenti -->
+            <!-- Corsi Completati -->
             <div class="row mb-5">
                 <div class="col-md-12">
-                    <h3>Gestisci Utenti</h3>
+                    <h3>Corsi Completati</h3>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Ruolo</th>
+                                <th>Nome Corso</th>
+                                <th>Categoria</th>
+                                <th>Numero di Studenti</th>
                                 <th>Azioni</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($users as $user): ?>
+                            <?php foreach ($completedCourses as $course): ?>
                                 <tr>
-                                    <td><?php echo $user['name']; ?></td>
-                                    <td><?php echo $user['email']; ?></td>
-                                    <td><?php echo $user['role']; ?></td>
-                                    <td><button class="btn btn-danger btn-sm">Elimina</button></td>
+                                    <td><?php echo $course['name']; ?></td>
+                                    <td><?php echo $course['category']; ?></td>
+                                    <td><?php echo count($course['students']); ?></td> <!-- Display student count -->
+                                    <td>
+                                        <!-- Button to show course details -->
+                                        <button class="btn btn-primary btn-sm" onclick="toggleDetails('course-<?php echo urlencode($course['name']); ?>')">Dettagli</button>
+                                    </td>
+                                </tr>
+                                <!-- Course Details Card (hidden for completed courses) -->
+                                <tr id="course-<?php echo urlencode($course['name']); ?>" style="display:none;">
+                                    <td colspan="4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Dettagli Corso <?php echo $course['name']; ?></h5>
+                                                <p>Numero di studenti iscritti:</p>
+                                                <ul>
+                                                    <?php foreach ($course['students'] as $student): ?>
+                                                        <li><?php echo $student['name']; ?> - <?php echo $student['email']; ?></li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -171,4 +176,17 @@ $users = [
 
         </div>
     </section>
-<?php include('template_footer.php');?>
+
+    <script>
+        // Function to toggle the visibility of the course details card
+        function toggleDetails(courseId) {
+            var courseRow = document.getElementById(courseId);
+            if (courseRow.style.display === "none" || courseRow.style.display === "") {
+                courseRow.style.display = "table-row"; // Show the course details
+            } else {
+                courseRow.style.display = "none"; // Hide the course details
+            }
+        }
+    </script>
+
+<?php include('template_footer.php'); ?>
