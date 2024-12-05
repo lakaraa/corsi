@@ -1,4 +1,5 @@
 <?php
+include('template_header.php');
 // Dati dinamici del sito
 $title = "Dashboard Amministratore | Online Courses";
 $navbarLinks = [
@@ -8,11 +9,7 @@ $navbarLinks = [
     "Contact" => "contact.php",
     "Login" => "login.php"
 ];
-$contactInfo = [
-    "phone" => "+1 718-999-3939",
-    "email" => "info@onlinelearning.com",
-    "address" => "1234 Learning St. New York, NY 10001"
-];
+
 $socialLinks = [
     "Facebook" => "#",
     "Twitter" => "#",
@@ -28,43 +25,6 @@ $users = [
     ["name" => "Maria Verdi", "email" => "maria@example.com", "role" => "Istruttore"]
 ];
 ?>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title; ?></title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Font Awesome for the lens icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="image/logo.png">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle">
-                <span>Online Learning Hub</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <?php foreach ($navbarLinks as $name => $link): ?>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Header Section -->
     <header class="header-bg">
         <div class="overlay"></div>
@@ -98,10 +58,6 @@ $users = [
                                 <option value="Marketing Digitale">Marketing Digitale</option>
                                 <option value="Cybersecurity">Cybersecurity</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="courseDescription">Descrizione Corso</label>
-                            <textarea class="form-control" id="courseDescription" name="courseDescription" rows="3" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="courseInstructor">Istruttore</label>
@@ -166,6 +122,66 @@ $users = [
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
+        <div class="row mb-5">
+                <div class="col-md-6">
+                    <h3>Aggiungi un Amministratore</h3>
+                    <form action="create_user_handler.php" method="post">
+                        <div class="form-group">
+                            <label for="adminName">Nome</label>
+                            <input type="text" class="form-control" id="adminName" name="adminName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminSurname">Cognome</label>
+                            <input type="text" class="form-control" id="adminSurname" name="adminSurname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                            <input type="tel" class="form-control" id="adminTelefono" name="adminTelefono" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminEmail">Email</label>
+                            <input type="email" class="form-control" id="adminEmail" name="adminEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Aggiungi Amministratore</button>
+                    </form>
+                </div>
+
+                <div class="col-md-6">
+                    <h3>Aggiungi un Istruttore</h3>
+                    <form action="create_user_handler.php" method="post">
+                        <div class="form-group">
+                            <label for="instructorName">Nome</label>
+                            <input type="text" class="form-control" id="instructorName" name="instructorName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminSurname">Cognome</label>
+                            <input type="text" class="form-control" id="instructorSurname" name="instructorSurname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Telefono</label>
+                            <input type="tel" class="form-control" id="instructorTelefono" name="instructorTelefono" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="instructorEmail">Email</label>
+                            <input type="email" class="form-control" id="instructorEmail" name="instructorEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="instructorSpecializzazione">Specializzazione</label>
+                            <input type="text" class="form-control" id="instructorSpecializzazione" name="instructorSpecializzazione" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="instructorPassword" name="instructorPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-info">Aggiungi Istruttore</button>
+                    </form>
                 </div>
             </div>
 
