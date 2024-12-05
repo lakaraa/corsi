@@ -9,11 +9,6 @@ $navbarLinks = [
     "Contact" => "contact.php",
     "Login" => "login.php"
 ];
-$contactInfo = [
-    "phone" => "+1 718-999-3939",
-    "email" => "info@onlinelearning.com",
-    "address" => "1234 Learning St. New York, NY 10001"
-];
 $socialLinks = [
     "Facebook" => "#",
     "Twitter" => "#",
