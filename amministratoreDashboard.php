@@ -1,5 +1,6 @@
 <?php
 include('template_header.php');
+include('template_header.php');
 // Dati dinamici del sito
 $title = "Dashboard Amministratore | Online Courses";
 $navbarLinks = [
@@ -34,11 +35,11 @@ $users = [
         </div>
     </header>
 
-    <!-- Admin Dashboard Section -->
-    <section class="section py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-4">Dashboard Amministratore</h2>
-            <p class="text-center mb-5">Gestisci corsi, utenti, e iscrizioni agli studenti.</p>
+<!-- Admin Dashboard Section -->
+<section class="section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">Dashboard Amministratore</h2>
+        <p class="text-center mb-5">Gestisci corsi, utenti, e iscrizioni agli studenti.</p>
 
             <!-- Creazione Corsi -->
             <div class="row mb-5">
@@ -68,35 +69,23 @@ $users = [
                 </div>
             </div>
 
-            <!-- Visualizzazione Corsi -->
-            <div class="row mb-5">
-                <div class="col-md-12">
-                    <h3>I Corsi Creati</h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nome Corso</th>
-                                <th>Categoria</th>
-                                <th>Istruttore</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($courses as $course): ?>
-                                <tr>
-                                    <td><?php echo $course['name']; ?></td>
-                                    <td><?php echo $course['category']; ?></td>
-                                    <td><?php echo $course['instructor']; ?></td>
-                                    <td>
-                                        <button class="btn btn-warning btn-sm">Modifica</button>
-                                        <button class="btn btn-danger btn-sm">Elimina</button>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Visualizzazione Corsi -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h3>I Corsi Creati</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome Corso</th>
+                            <th>Categoria</th>
+                            <th>Istruttore</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody"></tbody>
+                </table>
             </div>
+        </div>
 
             <!-- Gestione Utenti -->
             <div class="row mb-5">
