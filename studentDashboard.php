@@ -1,60 +1,73 @@
 <?php
-// Dati dinamici del sito
-$title = "Dashboard Studente | Online Courses";
-$navbarLinks = [
-    "Home" => "index.php",
-    "Corsi" => "corsi.php",
-    "About Us" => "aboutUs.php",
-    "Contact" => "contact.php",
-    "Login" => "login.php"
-];
-$contactInfo = [
-    "phone" => "+1 718-999-3939",
-    "email" => "info@onlinelearning.com",
-    "address" => "1234 Learning St. New York, NY 10001"
-];
-$socialLinks = [
-    "Facebook" => "#",
-    "Twitter" => "#",
-    "Instagram" => "#",
-    "LinkedIn" => "#"
-];
-$coursesEnrolled = [
-    ["name" => "Web Development", "status" => "In corso", "details" => [
-        "start_date" => "01/02/2022",
-        "end_date" => "30/06/2022",
-        "instructor" => "Maria Rossi"
-    ]]
-];
-$coursesCompleted = [
-    ["name" => "Graphic Design", "status" => "Completato", "details" => [
-        "start_date" => "01/01/2022",
-        "end_date" => "30/03/2022",
-        "level" => "Avanzato",
-        "instructor" => "Mario Verdi"
-    ]]
-];
-$coursesAvailable = [
-    ["name" => "Data Science", "details" => [
-        "start_date" => "15/03/2022",
-        "end_date" => "15/06/2022",
-        "instructor" => "Luca Neri"
-    ]]
-];
+require_once 'config.php'; // Include il file di configurazione
+
+// Inizia la sessione
+session_start();
+
+// Verifica se l'utente è loggato
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'studente') {
+    header("Location: login.php");
+    exit;
+}
+
+// Supponiamo che l'ID dello studente sia memorizzato in una sessione
+$userId = $_SESSION['user_id']; // Assicurati di avere un sistema di autenticazione
+
+// Recupera i corsi in cui lo studente è iscritto
+$coursesEnrolled = [];
+$sql = "
+    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+    FROM corso c
+    JOIN iscrizione isc ON c.IdCorso = isc.IdCorso
+    JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+    WHERE isc.IdStudente = :userId
+";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':userId', $userId);
+$stmt->execute();
+$coursesEnrolled = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Recupera i corsi completati
+$coursesCompleted = [];
+$sqlCompleted = "
+    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+    FROM corso c
+    JOIN iscrizione isc ON c.IdCorso = isc.IdCorso
+    JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+    WHERE isc.IdStudente = :userId AND isc.Livello = 'Completato'
+";
+$stmtCompleted = $pdo->prepare($sqlCompleted);
+$stmtCompleted->bindParam(':userId', $userId);
+$stmtCompleted->execute();
+$coursesCompleted = $stmtCompleted->fetchAll(PDO::FETCH_ASSOC);
+
+// Recupera i corsi disponibili
+$coursesAvailable = [];
+$sqlAvailable = "
+    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+    FROM corso c
+    JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+    WHERE c.DataInizio > CURDATE() -- Solo corsi futuri
+";
+$stmtAvailable = $pdo->prepare($sqlAvailable);
+$stmtAvailable->execute();
+$coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title; ?></title>
+    <title>Dashboard Studente | Online Courses</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Font Awesome for the lens icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="image/logo.png">
 </head>
@@ -67,13 +80,17 @@ $coursesAvailable = [
                 <span>Online Learning Hub</span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <?php foreach ($navbarLinks as $name => $link): ?>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo $link; ?>"><?php echo $name; ?></a></li>
-                    <?php endforeach; ?>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="aboutUs.php">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
+                    <?php if (!isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -94,24 +111,25 @@ $coursesAvailable = [
             <h2 class="text-center mb-4">Benvenuto caro</h2>
             <p class="text-center mb-5">Qui puoi visualizzare i corsi a cui sei iscritto, i corsi che hai completato e quelli disponibili per te.</p>
 
-            <!-- Iscrizioni -->
+            <!-- Corsi Iscritti -->
             <div class="row mb-5">
                 <div class="col-md-12">
                     <h3>I tuoi Corsi Iscritti</h3>
                     <div class="list-group">
                         <?php foreach ($coursesEnrolled as $course): ?>
                             <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <?php echo $course['name']; ?>
-                                <span class="badge badge-primary"><?php echo $course['status']; ?></span>
-                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['name']); ?>Details')">Dettagli</button>
+                                <?php echo htmlspecialchars($course['corso_nome']); ?>
+                                <span class="badge badge-primary">Iscritto</span>
+                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
                             </div>
-                            <div id="<?php echo str_replace(' ', '', $course['name']); ?>Details" class="course-details" style="display:none;">
+                            <div id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <h5>Dettagli Corso</h5>
-                                        <p><strong>Data Inizio:</strong> <?php echo $course['details']['start_date']; ?></p>
-                                        <p><strong>Data Fine:</strong> <?php echo $course['details']['end_date']; ?></p>
-                                        <p><strong>Istruttore:</strong> <?php echo $course['details']['instructor']; ?></p>
+                                        <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
+                                        <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
+                                        <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
+                                        <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -127,17 +145,18 @@ $coursesAvailable = [
                     <div class="list-group">
                         <?php foreach ($coursesAvailable as $course): ?>
                             <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <?php echo $course['name']; ?>
+                                <?php echo htmlspecialchars($course['corso_nome']); ?>
                                 <a href="#" class="btn btn-primary btn-sm">Iscriviti</a>
-                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['name']); ?>Details')">Dettagli</button>
+                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
                             </div>
-                            <div id="<?php echo str_replace(' ', '', $course['name']); ?>Details" class="course-details" style="display:none;">
+                            <div id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
                                 <div class="card mt-3">
                                     <div class="card-body">
-                                        <h5>Dettagli Corso</h5>
-                                        <p><strong>Data Inizio:</strong> <?php echo $course['details']['start_date']; ?></p>
-                                        <p><strong>Data Fine:</strong> <?php echo $course['details']['end_date']; ?></p>
-                                        <p><strong>Istruttore:</strong> <?php echo $course['details']['instructor']; ?></p>
+                                        <h5>Dettagli Corso</h5>                                        
+                                        <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
+                                        <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
+                                        <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
+                                        <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -162,4 +181,3 @@ $coursesAvailable = [
     <?php include('template_footer.php'); ?>
 </body>
 </html>
-
