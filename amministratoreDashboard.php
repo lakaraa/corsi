@@ -50,7 +50,6 @@ if (!$pdo) {
 <!-- Admin Dashboard Section -->
 <section class="section py-5 bg-light">
     <div class="container">
-
         <!-- Creazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">
@@ -160,7 +159,7 @@ if (!$pdo) {
                                 <td>
                                     <form action="delete_instructor.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="instructorId" value="<?php echo $instructor['IdIstruttore']; ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm">Elimina</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo studente?');">Elimina</button>
                                     </form>
                                 </td>
                             </tr>
@@ -169,9 +168,9 @@ if (!$pdo) {
                 </table>
             </div>
         </div>
-        <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
-        <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
+<!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
 <div class="row mb-5">
+    <!-- Form Aggiungi un Amministratore -->
     <div class="col-md-6">
         <h3>Aggiungi un Amministratore</h3>
         <form action="add_ammin_handler.php" method="post">
@@ -198,43 +197,40 @@ if (!$pdo) {
             <button type="submit" class="btn btn-success">Aggiungi Amministratore</button>
         </form>
     </div>
+    
+    <!-- Form Aggiungi un Istruttore -->
+    <div class="col-md-6">
+        <h3>Aggiungi un Istruttore</h3>
+        <form action="add_istru_handler.php" method="post">
+            <div class="form-group">
+                <label for="instructorName">Nome</label>
+                <input type="text" class="form-control" id="instructorName" name="instructorName" required>
+            </div>
+            <div class="form-group">
+                <label for="instructorSurname">Cognome</label>
+                <input type="text" class="form-control" id="instructorSurname" name="instructorSurname" required>
+            </div>
+            <div class="form-group">
+                <label for="instructorEmail">Email</label>
+                <input type="email" class="form-control" id="instructorEmail" name="instructorEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="instructorPhone">Telefono</label>
+                <input type="tel" class="form-control" id="instructorPhone" name="instructorPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="instructorSpecializzazione">Specializzazione</label>
+                <input type="text" class="form-control" id="instructorSpecializzazione" name="instructorSpecializzazione" required>
+            </div>
+            <div class="form-group">
+                <label for="instructorPassword">Password</label>
+                <input type="password" class="form-control" id="instructorPassword" name="instructorPassword" required>
+            </div>
+            <button type="submit" class="btn btn-info">Aggiungi Istruttore</button>
+        </form>
+    </div>
 </div>
 
-
-
-
-            <div class="col-md-6">
-                <h3>Aggiungi un Istruttore</h3>
-                <form action="create_user_handler.php" method="post">
-                    <div class="form-group">
-                        <label for="instructorName">Nome</label>
-                        <input type="text" class="form-control" id="instructorName" name="instructorName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorSurname">Cognome</label>
-                        <input type="text" class="form-control" id="instructorSurname" name="instructorSurname" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorEmail">Email</label>
-                        <input type="email" class="form-control" id="instructorEmail" name="instructorEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorPhone">Telefono</label>
-                        <input type="tel" class="form-control" id="instructorPhone" name="instructorPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorSpecializzazione">Specializzazione</label>
-                        <input type="text" class="form-control" id="instructorSpecializzazione" name="instructorSpecializzazione" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorPassword">Password</label>
-                        <input type="password" class="form-control" id="instructorPassword" name="instructorPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-info">Aggiungi Istruttore</button>
-                </form>
-            </div>
-        </div>
-    </div>
 </section>
 
 <?php include('template_footer.php'); ?>
