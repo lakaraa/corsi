@@ -125,7 +125,12 @@ if (!$pdo) {
                                 <td><?php echo htmlspecialchars($student['Nome']); ?></td>
                                 <td><?php echo htmlspecialchars($student['Email']); ?></td>
                                 <td><?php echo htmlspecialchars('Studente'); ?></td>
-                                <td><button class="btn btn-danger btn-sm">Elimina</button></td>
+                                <td>
+                                    <form action="delete_student.php" method="post" style="display:inline;">
+                                        <input type="hidden" name="studentId" value="<?php echo $student['IdStudente']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo studente?');">Elimina</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
