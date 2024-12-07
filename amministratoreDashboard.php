@@ -170,33 +170,36 @@ if (!$pdo) {
             </div>
         </div>
         <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
-        <div class="row mb-5">
-            <div class="col-md-6">
-                <h3>Aggiungi un Amministratore</h3>
-                <form action="create_user_handler.php" method="post">
-                    <div class="form-group">
-                        <label for="adminName">Nome</label>
-                        <input type="text" class="form-control" id="adminName" name="adminName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="adminSurname">Cognome</label>
-                        <input type="text" class="form-control" id="adminSurname" name="adminSurname" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="adminEmail">Email</label>
-                        <input type="email" class="form-control" id="adminEmail" name="adminEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="adminPhone">Telefono</label>
-                        <input type="tel" class="form-control" id="adminPhone" name="adminPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="adminPassword">Password</label>
-                        <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Aggiungi Amministratore</button>
-                </form>
+        <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
+<div class="row mb-5">
+    <div class="col-md-6">
+        <h3>Aggiungi un Amministratore</h3>
+        <form action="add_ammin_handler.php" method="post">
+            <div class="form-group">
+                <label for="adminName">Nome</label>
+                <input type="text" class="form-control" id="adminName" name="adminName" required>
             </div>
+            <div class="form-group">
+                <label for="adminSurname">Cognome</label>
+                <input type="text" class="form-control" id="adminSurname" name="adminSurname" required>
+            </div>
+            <div class="form-group">
+                <label for="adminEmail">Email</label>
+                <input type="email" class="form-control" id="adminEmail" name="adminEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="adminPhone">Telefono</label>
+                <input type="tel" class="form-control" id="adminPhone" name="adminPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="adminPassword">Password</label>
+                <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
+            </div>
+            <button type="submit" class="btn btn-success">Aggiungi Amministratore</button>
+        </form>
+    </div>
+</div>
+
 
 
 
