@@ -157,7 +157,12 @@ if (!$pdo) {
                                 <td><?php echo htmlspecialchars($instructor['NomeIstruttore']); ?></td>
                                 <td><?php echo htmlspecialchars($instructor['Email']); ?></td>
                                 <td><?php echo htmlspecialchars($instructor['Specializzazione']); ?></td>
-                                <td><button class="btn btn-danger btn-sm">Elimina</button></td>
+                                <td>
+                                    <form action="delete_instructor.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="instructorId" value="<?php echo $instructor['IdIstruttore']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Elimina</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
