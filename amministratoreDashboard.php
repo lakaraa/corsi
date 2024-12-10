@@ -53,54 +53,73 @@ if (!$pdo) {
         <!-- Creazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">
-                <h3>Crea un Nuovo Corso</h3>
-                <form action="add_corso_handler.php" method="POST">
-                    <label for="nome_corso">Nome del Corso:</label>
-                    <input type="text" id="nome_corso" name="nome_corso" required>
+                <h3 class="mb-4">Crea un Nuovo Corso</h3>
+                <form action="add_corso_handler.php" method="POST" class="p-4 border rounded shadow-sm bg-light">
+                    <div class="mb-3">
+                        <label for="nome_corso" class="form-label">Nome del Corso:</label>
+                        <input type="text" id="nome_corso" name="nome_corso" class="form-control" placeholder="Inserisci il nome del corso" required>
+                    </div>
 
-                    <label for="durata">Durata:</label>
-                    <input type="number" id="durata" name="durata" required>
+                    <div class="mb-3">
+                        <label for="durata" class="form-label">Durata (in ore):</label>
+                        <input type="number" id="durata" name="durata" class="form-control" placeholder="Inserisci la durata" required>
+                    </div>
 
-                    <label for="data_inizio">Data di Inizio:</label>
-                    <input type="date" id="data_inizio" name="data_inizio" required>
+                    <div class="mb-3">
+                        <label for="data_inizio" class="form-label">Data di Inizio:</label>
+                        <input type="date" id="data_inizio" name="data_inizio" class="form-control" required>
+                    </div>
 
-                    <label for="data_fine">Data di Fine:</label>
-                    <input type="date" id="data_fine" name="data_fine" required>
+                    <div class="mb-3">
+                        <label for="data_fine" class="form-label">Data di Fine:</label>
+                        <input type="date" id="data_fine" name="data_fine" class="form-control" required>
+                    </div>
 
-                    <label for="id_categoria">Categoria:</label>
-                    <select id="id_categoria" name="id_categoria" required>
-                        <?php
-                        $query = $pdo->query("SELECT IdCategoria, NomeCategoria FROM categoria");
-                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value='{$row['IdCategoria']}'>{$row['NomeCategoria']}</option>";
-                        }
-                        ?>
-                    </select>
+                    <div class="mb-3">
+                        <label for="id_categoria" class="form-label">Categoria:</label>
+                        <select id="id_categoria" name="id_categoria" class="form-select custom-select" required>
+                            <?php
+                            $query = $pdo->query("SELECT IdCategoria, NomeCategoria FROM categoria");
+                            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$row['IdCategoria']}'>{$row['NomeCategoria']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
 
-                    <label for="id_istruttore">Istruttore:</label>
-                    <select id="id_istruttore" name="id_istruttore" required>
-                        <?php
-                        $query = $pdo->query("SELECT IdIstruttore, Nome FROM istruttore");
-                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value='{$row['IdIstruttore']}'>{$row['Nome']}</option>";
-                        }
-                        ?>
-                    </select>
+                    <div class="mb-3">
+                        <label for="id_istruttore" class="form-label">Istruttore:</label>
+                        <select id="id_istruttore" name="id_istruttore" class="form-select custom-select" required>
+                            <?php
+                            $query = $pdo->query("SELECT IdIstruttore, Nome FROM istruttore");
+                            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$row['IdIstruttore']}'>{$row['Nome']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
 
-                    <label for="id_amministratore">Amministratore:</label>
-                    <select id="id_amministratore" name="id_amministratore" required>
-                        <?php
-                        $query = $pdo->query("SELECT IdAmministratore, Nome FROM amministratore");
-                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<option value='{$row['IdAmministratore']}'>{$row['Nome']}</option>";
-                        }
-                        ?>
-                    </select>
-                    <button type="submit">Aggiungi Corso</button>
+                    <div class="mb-3">
+                        <label for="id_amministratore" class="form-label">Amministratore:</label>
+                        <select id="id_amministratore" name="id_amministratore" class="form-select custom-select" required>
+                            <?php
+                            $query = $pdo->query("SELECT IdAmministratore, Nome FROM amministratore");
+                            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$row['IdAmministratore']}'>{$row['Nome']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Aggiungi Corso</button>
+                    </div>
                 </form>
-
             </div>
         </div>
+
+
+        
 
         <!-- Visualizzazione Corsi -->
         <div class="row mb-5">
