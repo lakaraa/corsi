@@ -1,6 +1,6 @@
 <?php
 // Connessione al database
-require_once 'db_connect.php'; // Assicurati di avere questo file per la connessione al database
+include('config.php'); // Assicurati di avere questo file per la connessione al database
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recupero dei dati dal form
