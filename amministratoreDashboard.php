@@ -54,27 +54,51 @@ if (!$pdo) {
         <div class="row mb-5">
             <div class="col-md-12">
                 <h3>Crea un Nuovo Corso</h3>
-                <form action="create_course_handler.php" method="post">
-                    <div class="form-group">
-                        <label for="courseName">Nome Corso</label>
-                        <input type="text" class="form-control" id="courseName" name="courseName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseCategory">Categoria Corso</label>
-                        <select class="form-control" id="courseCategory" name="courseCategory" required>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Data Science">Data Science</option>
-                            <option value="Graphic Design">Graphic Design</option>
-                            <option value="Marketing Digitale">Marketing Digitale</option>
-                            <option value="Cybersecurity">Cybersecurity</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="courseInstructor">Istruttore</label>
-                        <input type="text" class="form-control" id="courseInstructor" name="courseInstructor" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Crea Corso</button>
+                <form action="add_corso_handler.php" method="POST">
+                    <label for="nome_corso">Nome del Corso:</label>
+                    <input type="text" id="nome_corso" name="nome_corso" required>
+
+                    <label for="durata">Durata:</label>
+                    <input type="number" id="durata" name="durata" required>
+
+                    <label for="data_inizio">Data di Inizio:</label>
+                    <input type="date" id="data_inizio" name="data_inizio" required>
+
+                    <label for="data_fine">Data di Fine:</label>
+                    <input type="date" id="data_fine" name="data_fine" required>
+
+                    <label for="id_categoria">Categoria:</label>
+                    <select id="id_categoria" name="id_categoria" required>
+                        <?php
+                        $query = $pdo->query("SELECT IdCategoria, NomeCategoria FROM categoria");
+                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                            echo "<option value='{$row['IdCategoria']}'>{$row['NomeCategoria']}</option>";
+                        }
+                        ?>
+                    </select>
+
+                    <label for="id_istruttore">Istruttore:</label>
+                    <select id="id_istruttore" name="id_istruttore" required>
+                        <?php
+                        $query = $pdo->query("SELECT IdIstruttore, Nome FROM istruttore");
+                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                            echo "<option value='{$row['IdIstruttore']}'>{$row['Nome']}</option>";
+                        }
+                        ?>
+                    </select>
+
+                    <label for="id_amministratore">Amministratore:</label>
+                    <select id="id_amministratore" name="id_amministratore" required>
+                        <?php
+                        $query = $pdo->query("SELECT IdAmministratore, Nome FROM amministratore");
+                        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                            echo "<option value='{$row['IdAmministratore']}'>{$row['Nome']}</option>";
+                        }
+                        ?>
+                    </select>
+                    <button type="submit">Aggiungi Corso</button>
                 </form>
+
             </div>
         </div>
 
