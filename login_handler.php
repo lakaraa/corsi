@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Verifica se l'utente è stato trovato in una delle tabelle
         if ($admin) {
             // Se l'utente è un amministratore
-            if ($password === $admin['Password']) {
+            if (password_verify($password, $admin['Password'])) {  // Verifica la password hashata
                 $_SESSION['user_id'] = $admin['IdAmministratore'];
                 $_SESSION['user_email'] = $admin['Email'];
                 $_SESSION['user_name'] = $admin['Nome'];
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } elseif ($instr) {
             // Se l'utente è un istruttore
-            if ($password === $instr['Password']) {
+            if (password_verify($password, $instr['Password'])) {  // Verifica la password hashata
                 $_SESSION['user_id'] = $instr['IdIstruttore'];
                 $_SESSION['user_email'] = $instr['Email'];
                 $_SESSION['user_name'] = $instr['Nome'];
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } elseif ($student) {
             // Se l'utente è uno studente
-            if ($password === $student['Password']) {
+            if (password_verify($password, $student['Password'])) {  // Verifica la password hashata
                 $_SESSION['user_id'] = $student['IdStudente'];
                 $_SESSION['user_email'] = $student['Email'];
                 $_SESSION['user_name'] = $student['Nome'];

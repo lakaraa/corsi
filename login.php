@@ -50,7 +50,6 @@ $socialLinks = [
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">Accedi</button>
                             </form>
                             <div class="text-center mt-3">
-                                <a href="#" class="text-muted">Hai dimenticato la password?</a>
                                 <p>Non hai un account? <a href="register.php">Registrati qui</a></p>
                             </div>
                         </div>
