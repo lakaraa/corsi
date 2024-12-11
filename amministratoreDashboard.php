@@ -221,5 +221,16 @@ if (!$pdo) {
 
     </div>
 </section>
-
+<script>
+// Popola la modale con l'ID del corso e il nome quando l'utente clicca su "Elimina"
+var deleteButtons = document.querySelectorAll('.btn-danger');
+deleteButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+        var courseId = button.getAttribute('data-id');
+        var courseName = button.getAttribute('data-nome');
+        document.getElementById('courseId').value = courseId;
+        document.getElementById('courseName').textContent = courseName;
+    });
+});
+</script>
 <?php include('template_footer.php'); ?>
