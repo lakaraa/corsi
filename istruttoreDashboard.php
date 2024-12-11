@@ -91,7 +91,7 @@ $futureCourses = $stmtFutureCourses->fetchAll();
         </div>
     </header>
 
-    <!-- Istruttore Dashboard Section -->
+    <!-- Instructor Dashboard Section -->
     <section class="section py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4">Dashboard Istruttore</h2>
