@@ -4,6 +4,7 @@ include('template_header.php');
 
 // Recupera i corsi
 $coursesQuery = "SELECT
+    corso.IdCorso,
     corso.Nome As nomeCorso,
     categoria.NomeCategoria,
     CONCAT(istruttore.Nome, ' ', istruttore.Cognome) AS NomeIstruttore
@@ -12,8 +13,8 @@ FROM
 JOIN
     categoria ON corso.IdCategoria = categoria.IdCategoria
 JOIN
-    istruttore ON corso.IdIstruttore = istruttore.IdIstruttore;
-"; 
+    istruttore ON corso.IdIstruttore = istruttore.IdIstruttore";
+
 $coursesStmt = $pdo->query($coursesQuery);
 $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -27,16 +28,11 @@ $instructorsQuery = "SELECT *, CONCAT(istruttore.Nome, ' ', istruttore.Cognome) 
 $instructorsStmt = $pdo->query($instructorsQuery);
 $instructors = $instructorsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Aggiungi ulteriori query per altre tabelle, se necessario
-// Ad esempio: Recupera altre tabelle come 'iscrizioni' o 'pagamenti'
-
 // Assicurati di controllare la connessione al database per evitare errori
 if (!$pdo) {
     die("Connessione al database fallita.");
 }
 ?>
-
-
 
 <!-- Header Section -->
 <header class="header-bg">
@@ -118,35 +114,46 @@ if (!$pdo) {
             </div>
         </div>
 
-
-        
-
-        <!-- Visualizzazione Corsi -->
+       <!-- Visualizzazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">
-                <h3>I Corsi Creati</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nome Corso</th>
-                            <th>Categoria</th>
-                            <th>Istruttore</th>
-                            <th>Azioni</th>
-                            </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($courses as $course): ?>
+                <h3 class="mb-4">Corsi disponibili</h3>
+                <?php if (count($courses) > 0): ?>
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($course['nomeCorso']); ?></td>
-                                <td><?php echo htmlspecialchars($course['NomeCategoria']); ?></td>
-                                <td><?php echo htmlspecialchars($course['NomeIstruttore']); ?></td>
-                                <td><button class="btn btn-danger btn-sm">Elimina</button></td>
+                                <th>Nome Corso</th>
+                                <th>Categoria</th>
+                                <th>Nome Istruttore</th>
+                                <th>Azioni</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($courses as $course): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($course['nomeCorso']); ?></td>
+                                    <td><?php echo htmlspecialchars($course['NomeCategoria']); ?></td>
+                                    <td><?php echo htmlspecialchars($course['NomeIstruttore']); ?></td>
+                                    <td>
+                                        <!-- Modifica Corso -->
+                                        <a href="edit_corso.php?id=<?php echo $course['IdCorso']; ?>" class="btn btn-warning btn-sm">Modifica</a>
+
+                                        <!-- Elimina Corso -->
+                                        <form action="delete_corso.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="courseId" value="<?php echo $course['IdCorso']; ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo corso?');">Elimina</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                </div>
+                <?php else: ?>
+                    <p>Non ci sono corsi disponibili.</p>
+                <?php endif; ?>
             </div>
+        </div>
+                       
 
         <!-- Visualizzazione Utenti -->
         <div class="row mb-5">
@@ -202,7 +209,7 @@ if (!$pdo) {
                                 <td>
                                     <form action="delete_instructor.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="instructorId" value="<?php echo $instructor['IdIstruttore']; ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo studente?');">Elimina</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo istruttore?');">Elimina</button>
                                     </form>
                                 </td>
                             </tr>
@@ -211,69 +218,8 @@ if (!$pdo) {
                 </table>
             </div>
         </div>
-<!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
-<div class="row mb-5">
-    <!-- Form Aggiungi un Amministratore -->
-    <div class="col-md-6">
-        <h3>Aggiungi un Amministratore</h3>
-        <form action="add_ammin_handler.php" method="post">
-            <div class="form-group">
-                <label for="adminName">Nome</label>
-                <input type="text" class="form-control" id="adminName" name="adminName" required>
-            </div>
-            <div class="form-group">
-                <label for="adminSurname">Cognome</label>
-                <input type="text" class="form-control" id="adminSurname" name="adminSurname" required>
-            </div>
-            <div class="form-group">
-                <label for="adminEmail">Email</label>
-                <input type="email" class="form-control" id="adminEmail" name="adminEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="adminPhone">Telefono</label>
-                <input type="tel" class="form-control" id="adminPhone" name="adminPhone" required>
-            </div>
-            <div class="form-group">
-                <label for="adminPassword">Password</label>
-                <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
-            </div>
-            <button type="submit" class="btn btn-success">Aggiungi Amministratore</button>
-        </form>
-    </div>
-    
-    <!-- Form Aggiungi un Istruttore -->
-    <div class="col-md-6">
-        <h3>Aggiungi un Istruttore</h3>
-        <form action="add_istru_handler.php" method="post">
-            <div class="form-group">
-                <label for="instructorName">Nome</label>
-                <input type="text" class="form-control" id="instructorName" name="instructorName" required>
-            </div>
-            <div class="form-group">
-                <label for="instructorSurname">Cognome</label>
-                <input type="text" class="form-control" id="instructorSurname" name="instructorSurname" required>
-            </div>
-            <div class="form-group">
-                <label for="instructorEmail">Email</label>
-                <input type="email" class="form-control" id="instructorEmail" name="instructorEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="instructorPhone">Telefono</label>
-                <input type="tel" class="form-control" id="instructorPhone" name="instructorPhone" required>
-            </div>
-            <div class="form-group">
-                <label for="instructorSpecializzazione">Specializzazione</label>
-                <input type="text" class="form-control" id="instructorSpecializzazione" name="instructorSpecializzazione" required>
-            </div>
-            <div class="form-group">
-                <label for="instructorPassword">Password</label>
-                <input type="password" class="form-control" id="instructorPassword" name="instructorPassword" required>
-            </div>
-            <button type="submit" class="btn btn-info">Aggiungi Istruttore</button>
-        </form>
-    </div>
-</div>
 
+    </div>
 </section>
 
 <?php include('template_footer.php'); ?>
