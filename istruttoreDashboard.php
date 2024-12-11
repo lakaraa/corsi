@@ -15,45 +15,62 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'istruttore') {
 // Supponiamo che l'ID dell'istruttore sia memorizzato in una sessione
 $userId = $_SESSION['user_id'];
 
-// Recupera gli studenti nei corsi attivi
-$ongoingStudents = [];
-$sqlOngoing = "
+// Recupera i corsi in corso (DataInizio <= CURDATE() AND (DataFine > CURDATE() OR DataFine IS NULL))
+$ongoingCourses = [];
+$sqlOngoingCourses = "
     SELECT 
         c.Nome AS NomeCorso, 
-        s.Nome AS NomeStudente, 
-        s.Cognome, 
-        s.Email
+        c.DataInizio, 
+        c.DataFine,
+        cat.NomeCategoria
     FROM corso c
-    JOIN iscrizione i ON c.IdCorso = i.IdCorso
-    JOIN studente s ON i.IdStudente = s.IdStudente
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
     WHERE c.IdIstruttore = :userId
       AND c.DataInizio <= CURDATE()
       AND (c.DataFine IS NULL OR c.DataFine > CURDATE())
 ";
-$stmtOngoing = $pdo->prepare($sqlOngoing);
-$stmtOngoing->bindParam(':userId', $userId, PDO::PARAM_INT);
-$stmtOngoing->execute();
-$ongoingStudents = $stmtOngoing->fetchAll();
+$stmtOngoingCourses = $pdo->prepare($sqlOngoingCourses);
+$stmtOngoingCourses->bindParam(':userId', $userId, PDO::PARAM_INT);
+$stmtOngoingCourses->execute();
+$ongoingCourses = $stmtOngoingCourses->fetchAll();
 
-// Recupera gli studenti nei corsi completati
-$completedStudents = [];
-$sqlCompleted = "
+// Recupera i corsi completati (DataFine <= CURDATE())
+$completedCourses = [];
+$sqlCompletedCourses = "
     SELECT 
         c.Nome AS NomeCorso, 
-        s.Nome AS NomeStudente, 
-        s.Cognome, 
-        s.Email
+        c.DataInizio, 
+        c.DataFine,
+        cat.NomeCategoria
     FROM corso c
-    JOIN iscrizione i ON c.IdCorso = i.IdCorso
-    JOIN studente s ON i.IdStudente = s.IdStudente
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
     WHERE c.IdIstruttore = :userId
       AND c.DataFine <= CURDATE()
 ";
-$stmtCompleted = $pdo->prepare($sqlCompleted);
-$stmtCompleted->bindParam(':userId', $userId, PDO::PARAM_INT);
-$stmtCompleted->execute();
-$completedStudents = $stmtCompleted->fetchAll();
+$stmtCompletedCourses = $pdo->prepare($sqlCompletedCourses);
+$stmtCompletedCourses->bindParam(':userId', $userId, PDO::PARAM_INT);
+$stmtCompletedCourses->execute();
+$completedCourses = $stmtCompletedCourses->fetchAll();
+
+// Recupera i corsi che inizieranno nel futuro (DataInizio > CURDATE())
+$futureCourses = [];
+$sqlFutureCourses = "
+    SELECT 
+        c.Nome AS NomeCorso, 
+        c.DataInizio, 
+        c.DataFine,
+        cat.NomeCategoria
+    FROM corso c
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+    WHERE c.IdIstruttore = :userId
+      AND c.DataInizio > CURDATE()
+";
+$stmtFutureCourses = $pdo->prepare($sqlFutureCourses);
+$stmtFutureCourses->bindParam(':userId', $userId, PDO::PARAM_INT);
+$stmtFutureCourses->execute();
+$futureCourses = $stmtFutureCourses->fetchAll();
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -70,7 +87,7 @@ $completedStudents = $stmtCompleted->fetchAll();
         <div class="overlay"></div>
         <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
             <h1 class="hero-title">Dashboard Istruttore</h1>
-            <p class="hero-subtext">Visualizza gli studenti nei corsi in corso e completati.</p>
+            <p class="hero-subtext">Visualizza i tuoi corsi in corso, completati e futuri.</p>
         </div>
     </header>
 
@@ -78,32 +95,34 @@ $completedStudents = $stmtCompleted->fetchAll();
     <section class="section py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4">Dashboard Istruttore</h2>
-            <p class="text-center mb-5">Visualizza gli studenti nei corsi in corso e completati.</p>
+            <p class="text-center mb-5">Visualizza i corsi che stai gestendo, divisi in corsi in corso, corsi completati e corsi futuri.</p>
 
-            <!-- Studenti nei corsi in corso -->
+            <!-- Corsi in corso -->
             <div class="row mb-5">
                 <div class="col-md-12">
-                    <h3>Studenti nei Corsi in Corso</h3>
+                    <h3>Corsi in Corso</h3>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Corso</th>
-                                <th>Studente</th>
-                                <th>Email</th>
+                                <th>Categoria</th>
+                                <th>Data Inizio</th>
+                                <th>Data Fine</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($ongoingStudents)): ?>
-                                <?php foreach ($ongoingStudents as $student): ?>
+                            <?php if (!empty($ongoingCourses)): ?>
+                                <?php foreach ($ongoingCourses as $course): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($student['NomeCorso']) ?></td>
-                                        <td><?= htmlspecialchars($student['NomeStudente']) . ' ' . htmlspecialchars($student['Cognome']) ?></td>
-                                        <td><?= htmlspecialchars($student['Email']) ?></td>
+                                        <td><?= htmlspecialchars($course['NomeCorso']) ?></td>
+                                        <td><?= htmlspecialchars($course['NomeCategoria']) ?></td>
+                                        <td><?= htmlspecialchars($course['DataInizio']) ?></td>
+                                        <td><?= $course['DataFine'] ? htmlspecialchars($course['DataFine']) : 'In corso' ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="3">Nessuno studente trovato.</td>
+                                    <td colspan="4">Non ci sono corsi in corso.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -111,40 +130,75 @@ $completedStudents = $stmtCompleted->fetchAll();
                 </div>
             </div>
 
-            <!-- Studenti nei corsi completati -->
+            <!-- Corsi completati -->
             <div class="row mb-5">
                 <div class="col-md-12">
-                    <h3>Studenti nei Corsi Completati</h3>
+                    <h3>Corsi Completati</h3>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Corso</th>
-                                <th>Studente</th>
-                                <th>Email</th>
+                                <th>Categoria</th>
+                                <th>Data Inizio</th>
+                                <th>Data Fine</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($completedStudents)): ?>
-                                <?php foreach ($completedStudents as $student): ?>
+                            <?php if (!empty($completedCourses)): ?>
+                                <?php foreach ($completedCourses as $course): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($student['NomeCorso']) ?></td>
-                                        <td><?= htmlspecialchars($student['NomeStudente']) . ' ' . htmlspecialchars($student['Cognome']) ?></td>
-                                        <td><?= htmlspecialchars($student['Email']) ?></td>
+                                        <td><?= htmlspecialchars($course['NomeCorso']) ?></td>
+                                        <td><?= htmlspecialchars($course['NomeCategoria']) ?></td>
+                                        <td><?= htmlspecialchars($course['DataInizio']) ?></td>
+                                        <td><?= htmlspecialchars($course['DataFine']) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="3">Nessuno studente trovato.</td>
+                                    <td colspan="4">Non ci sono corsi completati.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <!-- Corsi Futuri -->
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <h3>Corsi Futuri</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Corso</th>
+                                <th>Categoria</th>
+                                <th>Data Inizio</th>
+                                <th>Data Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($futureCourses)): ?>
+                                <?php foreach ($futureCourses as $course): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($course['NomeCorso']) ?></td>
+                                        <td><?= htmlspecialchars($course['NomeCategoria']) ?></td>
+                                        <td><?= htmlspecialchars($course['DataInizio']) ?></td>
+                                        <td><?= $course['DataFine'] ? htmlspecialchars($course['DataFine']) : 'In corso' ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4">Non ci sono corsi futuri.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </section>
 </body>
 </html>
-
 
 <?php include('template_footer.php'); ?>
