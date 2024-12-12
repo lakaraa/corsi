@@ -47,6 +47,7 @@ if (!$pdo) {
 <section class="section py-5 bg-light">
     <div class="container">
         <!-- Creazione Corsi -->
+        <!-- Creazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">
                 <h3 class="mb-4">Crea un Nuovo Corso</h3>
@@ -109,6 +110,24 @@ if (!$pdo) {
 
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">Aggiungi Corso</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+        <!-- Creazione Categoria -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h3 class="mb-4">Crea una Nuova Categoria</h3>
+                <form action="add_categoria_handler.php" method="POST" class="p-4 border rounded shadow-sm bg-light">
+                    <div class="mb-3">
+                        <label for="nome_categoria" class="form-label">Nome Categoria:</label>
+                        <input type="text" id="nome_categoria" name="nome_categoria" class="form-control" placeholder="Inserisci il nome della categoria" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Aggiungi Categoria</button>
                     </div>
                 </form>
             </div>

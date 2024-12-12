@@ -28,21 +28,6 @@ $stmt->bindParam(':userId', $userId);
 $stmt->execute();
 $coursesEnrolled = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Recupera i corsi completati
-$coursesCompleted = [];
-$sqlCompleted = "
-    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
-    FROM corso c
-    JOIN iscrizione isc ON c.IdCorso = isc.IdCorso
-    JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
-    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
-    WHERE isc.IdStudente = :userId AND isc.Livello = 'Completato'
-";
-$stmtCompleted = $pdo->prepare($sqlCompleted);
-$stmtCompleted->bindParam(':userId', $userId);
-$stmtCompleted->execute();
-$coursesCompleted = $stmtCompleted->fetchAll(PDO::FETCH_ASSOC);
-
 // Recupera i corsi disponibili
 $coursesAvailable = [];
 $sqlAvailable = "
@@ -66,17 +51,38 @@ $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
     <title>Dashboard Studente | Online Courses</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="image/logo.png">
+    <style>
+        .course-details {
+            display: none;
+        }
+        .btn-subscribe {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-subscribe:hover {
+            background-color: #218838;
+        }
+        .btn-info {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-info:hover {
+            background-color: #0056b3;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <img src="image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle"> 
+                <img src="image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle">
                 <span>Online Learning Hub</span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,26 +148,48 @@ $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
             <div class="row">
                 <div class="col-md-12">
                     <h3>Corsi Disponibili</h3>
-                    <div class="list-group">
-                        <?php foreach ($coursesAvailable as $course): ?>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <?php echo htmlspecialchars($course['corso_nome']); ?>
-                                <a href="#" class="btn btn-primary btn-sm">Iscriviti</a>
-                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
-                            </div>
-                            <div id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
-                                <div class="card mt-3">
-                                    <div class="card-body">
-                                        <h5>Dettagli Corso</h5>                                        
-                                        <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
-                                        <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
-                                        <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
-                                        <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome Corso</th>
+                                <th>Durata</th>
+                                <th>Data Inizio</th>
+                                <th>Data Fine</th>
+                                <th>Istruttore</th>
+                                <th>Categoria</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($coursesAvailable as $course): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($course['corso_nome']); ?></td>
+                                    <td><?php echo htmlspecialchars($course['Durata']); ?> ore</td>
+                                    <td><?php echo htmlspecialchars($course['DataInizio']); ?></td>
+                                    <td><?php echo htmlspecialchars($course['DataFine']); ?></td>
+                                    <td><?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></td>
+                                    <td><?php echo htmlspecialchars($course['NomeCategoria']); ?></td>
+                                    <td>
+                                        <a href="iscrizione_corso.php" class="btn btn-subscribe btn-sm">Iscriviti</a>
+                                        <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
+                                    </td>
+                                </tr>
+                                <tr id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
+                                    <td colspan="7">
+                                        <div class="card mt-3">
+                                            <div class="card-body">
+                                                <h5>Dettagli Corso</h5>
+                                                <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
+                                                <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
+                                                <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
+                                                <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -171,9 +199,9 @@ $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
         function toggleDetails(courseId) {
             const courseDetails = document.getElementById(courseId);
             if (courseDetails.style.display === "none" || courseDetails.style.display === "") {
-                courseDetails.style.display = "block";
+                courseDetails.style.display = "table-row"; // Mostra la riga della tabella
             } else {
-                courseDetails.style.display = "none";
+                courseDetails.style.display = "none"; // Nasconde la riga della tabella
             }
         }
     </script>
