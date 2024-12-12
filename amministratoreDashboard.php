@@ -155,10 +155,10 @@ if (!$pdo) {
         </div>
                        
 
-        <!-- Visualizzazione Utenti -->
+        <!-- Visualizzazione Studenti -->
         <div class="row mb-5">
             <div class="col-md-12">
-                <h3>Gestisci Utenti</h3>
+                <h3>Gestisci Studenti</h3>
                 <table class="table">
                     <thead>
                         <tr>
@@ -175,6 +175,10 @@ if (!$pdo) {
                                 <td><?php echo htmlspecialchars($student['Email']); ?></td>
                                 <td><?php echo htmlspecialchars('Studente'); ?></td>
                                 <td>
+                                    <!-- Modifica Studente -->
+                                    <a href="edit_studente.php?id=<?php echo $student['IdStudente']; ?>" class="btn btn-warning btn-sm">Modifica</a>
+
+                                    <!-- Elimina Studente -->
                                     <form action="delete_student.php" method="post" style="display:inline;">
                                         <input type="hidden" name="studentId" value="<?php echo $student['IdStudente']; ?>">
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo studente?');">Elimina</button>
@@ -186,6 +190,7 @@ if (!$pdo) {
                 </table>
             </div>
         </div>
+
 
         <!-- Visualizzazione Istruttori -->
         <div class="row mb-5">
@@ -217,9 +222,72 @@ if (!$pdo) {
                     </tbody>
                 </table>
             </div>
+        </div>                     
+    </div>
+    
+    <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
+    <div class="row mb-5">
+        <!-- Form Aggiungi un Amministratore -->
+        <div class="col-md-6">
+            <h3>Aggiungi un Amministratore</h3>
+            <form action="add_ammin_handler.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+                <div class="form-group mb-3">
+                    <label for="adminName">Nome</label>
+                    <input type="text" class="form-control" id="adminName" name="adminName" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="adminSurname">Cognome</label>
+                    <input type="text" class="form-control" id="adminSurname" name="adminSurname" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="adminEmail">Email</label>
+                    <input type="email" class="form-control" id="adminEmail" name="adminEmail" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="adminPhone">Telefono</label>
+                    <input type="tel" class="form-control" id="adminPhone" name="adminPhone" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Aggiungi Amministratore</button>
+            </form>
         </div>
 
+        <!-- Form Aggiungi un Istruttore -->
+        <div class="col-md-6">
+            <h3>Aggiungi un Istruttore</h3>
+            <form action="add_istru_handler.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+                <div class="form-group mb-3">
+                    <label for="instructorName">Nome</label>
+                    <input type="text" class="form-control" id="instructorName" name="instructorName" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="instructorSurname">Cognome</label>
+                    <input type="text" class="form-control" id="instructorSurname" name="instructorSurname" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="instructorEmail">Email</label>
+                    <input type="email" class="form-control" id="instructorEmail" name="instructorEmail" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="instructorPhone">Telefono</label>
+                    <input type="tel" class="form-control" id="instructorPhone" name="instructorPhone" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="instructorSpecializzazione">Specializzazione</label>
+                    <input type="text" class="form-control" id="instructorSpecializzazione" name="instructorSpecializzazione" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="instructorPassword">Password</label>
+                    <input type="password" class="form-control" id="instructorPassword" name="instructorPassword" required>
+                </div>
+                <button type="submit" class="btn btn-info btn-block">Aggiungi Istruttore</button>
+            </form>
+        </div>
     </div>
+
 </section>
 <script>
 // Popola la modale con l'ID del corso e il nome quando l'utente clicca su "Elimina"
