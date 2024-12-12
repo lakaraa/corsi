@@ -53,10 +53,10 @@ $menu_items = [
                 <div class="card text-center border-0 shadow">
                     <div class="services-terri-figure position-relative">
                         <img src="<?= htmlspecialchars($courseImage) ?>" alt="<?= $courseName ?>" class="img-fluid rounded">
-                        <!-- Se l'utente è loggato, permette la prenotazione, altrimenti reindirizza alla registrazione -->
+                        <!-- Verifica se l'utente è loggato e reindirizza di conseguenza -->
                         <a href="javascript:void(0);" class="lens-icon position-absolute top-50 start-50 translate-middle"
-                            onclick="confirmBooking('<?= $courseId ?>', '<?= $_SESSION['user_id'] ?>')">
-                        <i class="fas fa-search"></i>
+                           onclick="redirectToCourse(<?= $courseId ?>)">
+                            <i class="fas fa-search"></i>
                         </a>
                     </div>
                     <div class="card-body">
@@ -65,8 +65,6 @@ $menu_items = [
                     </div>
                 </div>
             </div>
-
-
             <?php
                     }
                 } else {
@@ -84,17 +82,18 @@ $menu_items = [
         </div>
     </div>
 </section>
+
 <script>
-    function confirmBooking(courseId, studentId) {
-        // Mostra una finestra di conferma
-        var confirmMessage = confirm("Sei sicuro di voler prenotare questo corso?");
-        
-        if (confirmMessage) {
-            // Se l'utente conferma, reindirizza alla pagina di prenotazione
-            window.location.href = "prenota.php?corso_id=" + courseId + "&student_id=" + studentId;
+    function redirectToCourse(courseId) {
+        // Controlla se l'utente è loggato
+        var studentId = '<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '' ?>';
+
+        if (!studentId) {
+            // Se l'utente non è loggato, invia l'utente alla pagina di login
+            window.location.href = "login.php";
         } else {
-            // Se l'utente non conferma, non fa nulla e resta nella stessa pagina
-            return false;
+            // Se l'utente è loggato, reindirizza alla pagina di iscrizione corso
+            window.location.href = "iscrizione_corso.php?corso_id=" + courseId;
         }
     }
 </script>
