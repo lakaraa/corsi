@@ -212,6 +212,10 @@ if (!$pdo) {
                                 <td><?php echo htmlspecialchars($instructor['Email']); ?></td>
                                 <td><?php echo htmlspecialchars($instructor['Specializzazione']); ?></td>
                                 <td>
+                                    <!-- Modifica Istruttore -->
+                                    <a href="edit_istruttore.php?id=<?php echo $instructor['IdIstruttore']; ?>" class="btn btn-warning btn-sm">Modifica</a>
+
+                                    <!-- Elimina Istruttore -->
                                     <form action="delete_instructor.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="instructorId" value="<?php echo $instructor['IdIstruttore']; ?>">
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo istruttore?');">Elimina</button>
@@ -222,8 +226,8 @@ if (!$pdo) {
                     </tbody>
                 </table>
             </div>
-        </div>                     
-    </div>
+        </div>
+
     
     <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
     <div class="row mb-5">
