@@ -13,10 +13,25 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'studente') {
 // Supponiamo che l'ID dello studente sia memorizzato in una sessione
 $userId = $_SESSION['user_id']; // Assicurati di avere un sistema di autenticazione
 
-// Recupera i corsi in cui lo studente è iscritto
+// Recupera i corsi a cui lo studente è iscritto
 $coursesEnrolled = [];
+$coursesEnrolledIds = []; // Array per memorizzare gli ID dei corsi a cui lo studente è iscritto
+
+$sqlEnrolledIds = "
+    SELECT c.IdCorso
+    FROM corso c
+    JOIN iscrizione isc ON c.IdCorso = isc.IdCorso
+    WHERE isc.IdStudente = :userId
+";
+$stmtEnrolledIds = $pdo->prepare($sqlEnrolledIds);
+$stmtEnrolledIds->bindParam(':userId', $userId);
+$stmtEnrolledIds->execute();
+$coursesEnrolledIds = $stmtEnrolledIds->fetchAll(PDO::FETCH_COLUMN); // Ottieni solo gli ID dei corsi iscritti
+
+// Recupera i corsi in cui lo studente è iscritto (con i dettagli)
 $sql = "
-    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
+           ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
     FROM corso c
     JOIN iscrizione isc ON c.IdCorso = isc.IdCorso
     JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
@@ -28,18 +43,35 @@ $stmt->bindParam(':userId', $userId);
 $stmt->execute();
 $coursesEnrolled = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Recupera i corsi disponibili
+// Recupera i corsi disponibili (escludendo quelli a cui lo studente è già iscritto)
 $coursesAvailable = [];
-$sqlAvailable = "
-    SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
-    FROM corso c
-    JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
-    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
-    WHERE c.DataInizio > CURDATE() -- Solo corsi futuri
-";
-$stmtAvailable = $pdo->prepare($sqlAvailable);
-$stmtAvailable->execute();
-$coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
+if (count($coursesEnrolledIds) > 0) {
+    $sqlAvailable = "
+        SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
+               ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+        FROM corso c
+        JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
+        JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+        WHERE c.DataInizio > CURDATE() -- Solo corsi futuri
+        AND c.IdCorso NOT IN (" . implode(',', array_fill(0, count($coursesEnrolledIds), '?')) . ") -- Esclude i corsi già iscritti
+    ";
+    $stmtAvailable = $pdo->prepare($sqlAvailable);
+    $stmtAvailable->execute($coursesEnrolledIds); // Passa gli ID dei corsi già iscritti come parametri
+    $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // Se l'utente non è iscritto a nessun corso, mostra tutti i corsi futuri
+    $sqlAvailable = "
+        SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
+               ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+        FROM corso c
+        JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
+        JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+        WHERE c.DataInizio > CURDATE() -- Solo corsi futuri
+    ";
+    $stmtAvailable = $pdo->prepare($sqlAvailable);
+    $stmtAvailable->execute();
+    $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -54,26 +86,52 @@ $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="image/logo.png">
     <style>
+        /* Stile per la lista dei corsi iscritti */
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .list-group-item .badge {
+            margin-right: 10px; /* Spazio tra la badge "Iscritto" e il bottone */
+        }
+
+        /* Aggiungi un po' di spazio al bottone Dettagli */
+        .list-group-item .btn-info {
+            margin-left: 10px; /* Spazio tra il bottone e il badge */
+        }
+
         .course-details {
             display: none;
         }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: left; /* Allinea i testi a sinistra */
+        }
+
         .btn-subscribe {
             background-color: #28a745;
             color: white;
             font-weight: bold;
         }
+
         .btn-subscribe:hover {
             background-color: #218838;
         }
+
         .btn-info {
             background-color: #007bff;
             color: white;
         }
+
         .btn-info:hover {
             background-color: #0056b3;
-        }
-        .table th, .table td {
-            vertical-align: middle;
         }
     </style>
 </head>
@@ -125,8 +183,10 @@ $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
                     <div class="list-group">
                         <?php foreach ($coursesEnrolled as $course): ?>
                             <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <?php echo htmlspecialchars($course['corso_nome']); ?>
-                                <span class="badge badge-primary">Iscritto</span>
+                                <div class="d-flex justify-content-between w-100">
+                                    <span><?php echo htmlspecialchars($course['corso_nome']); ?></span>
+                                    <span class="badge badge-primary ml-auto">Iscritto</span>
+                                </div>
                                 <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
                             </div>
                             <div id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
