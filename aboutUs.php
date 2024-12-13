@@ -1,5 +1,18 @@
-<?php include('template_header.php'); ?>
+<?php
+// Avvio della sessione e inclusione della configurazione
+session_start();
+require_once 'config.php';
 
+// Controllo della sessione per decidere quale navbar includere
+if (isset($_SESSION['user_id'])) {
+    include('navbar.php');
+} else {
+    include('navbar_guest.php');
+}
+
+// Inclusione dell'header
+include('template_header.php');
+?>
 <!-- Header Section -->
 <header class="header-bg">
     <div class="overlay"></div>
