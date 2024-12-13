@@ -41,7 +41,6 @@ if (!$pdo) {
     <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
         <h1 class="hero-title">Dashboard Amministratore</h1>
         <p class="hero-subtext">Gestisci corsi, utenti, e iscrizioni agli studenti.</p>
-        <a href="logout.php" class="btn btn-danger mt-4">Logout</a>
     </div>
 </header>
 
