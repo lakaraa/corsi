@@ -18,75 +18,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     try {
-        // Verifica l'email nell'amministratore
-        $query = "SELECT * FROM amministratore WHERE Email = :email LIMIT 1";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Array di tabelle da verificare con priorità
+        $user_types = [
+            'amministratore' => ['id_col' => 'IdAmministratore', 'dashboard' => 'amministratoreDashboard.php'],
+            'istruttore' => ['id_col' => 'IdIstruttore', 'dashboard' => 'istruttoreDashboard.php'],
+            'studente' => ['id_col' => 'IdStudente', 'dashboard' => 'studentDashboard.php']
+        ];
 
-        // Verifica l'email nell'istruttore
-        $query = "SELECT * FROM istruttore WHERE Email = :email LIMIT 1";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $instr = $stmt->fetch(PDO::FETCH_ASSOC);
+        foreach ($user_types as $type => $info) {
+            $query = "SELECT * FROM $type WHERE Email = :email LIMIT 1";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verifica l'email nello studente
-        $query = "SELECT * FROM studente WHERE Email = :email LIMIT 1";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Verifica se l'utente è stato trovato in una delle tabelle
-        if ($admin) {
-            // Se l'utente è un amministratore
-            if (password_verify($password, $admin['Password'])) {  // Verifica la password hashata
-                $_SESSION['user_id'] = $admin['IdAmministratore'];
-                $_SESSION['user_email'] = $admin['Email'];
-                $_SESSION['user_name'] = $admin['Nome'];
-                $_SESSION['user_role'] = 'admin';
-                // Redirige l'amministratore al suo dashboard
-                header("Location: amministratoreDashboard.php");
-                exit;
-            } else {
-                echo "<script>alert('Password errata per l\'amministratore!'); window.location.href='login.php';</script>";
-                exit;
+            if ($user) {
+                // Controlla se la password è hashata o in chiaro
+                if (password_verify($password, $user['Password']) || $password === $user['Password']) {
+                    // Imposta la sessione
+                    $_SESSION['user_id'] = $user[$info['id_col']];
+                    $_SESSION['user_email'] = $user['Email'];
+                    $_SESSION['user_name'] = $user['Nome'];
+                    $_SESSION['user_role'] = $type;
+                    
+                    // Redirigi al dashboard appropriato
+                    header("Location: {$info['dashboard']}");
+                    exit;
+                } else {
+                    echo "<script>alert('Password errata per $type!'); window.location.href='login.php';</script>";
+                    exit;
+                }
             }
-        } elseif ($instr) {
-            // Se l'utente è un istruttore
-            if (password_verify($password, $instr['Password'])) {  // Verifica la password hashata
-                $_SESSION['user_id'] = $instr['IdIstruttore'];
-                $_SESSION['user_email'] = $instr['Email'];
-                $_SESSION['user_name'] = $instr['Nome'];
-                $_SESSION['user_role'] = 'istruttore';
-                // Redirige l'istruttore al suo dashboard
-                header("Location: istruttoreDashboard.php");
-                exit;
-            } else {
-                echo "<script>alert('Password errata per l\'istruttore!'); window.location.href='login.php';</script>";
-                exit;
-            }
-        } elseif ($student) {
-            // Se l'utente è uno studente
-            if (password_verify($password, $student['Password'])) {  // Verifica la password hashata
-                $_SESSION['user_id'] = $student['IdStudente'];
-                $_SESSION['user_email'] = $student['Email'];
-                $_SESSION['user_name'] = $student['Nome'];
-                $_SESSION['user_role'] = 'studente';
-                // Redirige lo studente al suo dashboard
-                header("Location: studentDashboard.php");
-                exit;
-            } else {
-                echo "<script>alert('Password errata per lo studente!'); window.location.href='login.php';</script>";
-                exit;
-            }
-        } else {
-            // Nessun utente trovato con quell'email
-            echo "<script>alert('Nessun utente trovato con questa email!'); window.location.href='login.php';</script>";
-            exit;
         }
+
+        // Nessun utente trovato con quell'email
+        echo "<script>alert('Nessun utente trovato con questa email!'); window.location.href='login.php';</script>";
+        exit;
 
     } catch (PDOException $e) {
         // Gestisci eventuali errori
