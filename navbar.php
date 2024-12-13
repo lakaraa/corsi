@@ -4,40 +4,29 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 include('config.php'); // Connessione al DB con PDO
 
+$user_type = 'guest'; // Valore predefinito
+
 if (isset($_SESSION['user_id'])) {
-    // Ottieni l'ID dell'utente loggato
     $user_id = $_SESSION['user_id'];
 
-    // Verifica se l'utente è uno studente, un istruttore o un amministratore
     try {
-        // Verifica se è uno studente
-        $query = "SELECT * FROM studente WHERE IdStudente = :user_id";
+        // Query unificata per verificare il ruolo
+        $query = "
+            SELECT 'studente' AS user_type FROM studente WHERE IdStudente = :user_id
+            UNION
+            SELECT 'istruttore' AS user_type FROM istruttore WHERE IdIstruttore = :user_id
+            UNION
+            SELECT 'amministratore' AS user_type FROM amministratore WHERE IdAmministratore = :user_id
+        ";
         $stmt = $pdo->prepare($query);
         $stmt->execute(['user_id' => $user_id]);
-        if ($stmt->rowCount() > 0) {
-            $user_type = 'studente';
-        } else {
-            // Verifica se è un istruttore
-            $query = "SELECT * FROM istruttore WHERE IdIstruttore = :user_id";
-            $stmt = $pdo->prepare($query);
-            $stmt->execute(['user_id' => $user_id]);
-            if ($stmt->rowCount() > 0) {
-                $user_type = 'istruttore';
-            } else {
-                // Verifica se è un amministratore
-                $query = "SELECT * FROM amministratore WHERE IdAmministratore = :user_id";
-                $stmt = $pdo->prepare($query);
-                $stmt->execute(['user_id' => $user_id]);
-                if ($stmt->rowCount() > 0) {
-                    $user_type = 'amministratore';
-                } else {
-                    $user_type = 'guest';
-                }
-            }
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $user_type = $result['user_type'];
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
-        $user_type = 'guest';
     }
 }
 ?>
@@ -57,7 +46,8 @@ if (isset($_SESSION['user_id'])) {
                 <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
                 <li class="nav-item"><a class="nav-link" href="aboutUs.php">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-                <li class="nav-item">
+                <?php if ($user_type !== 'guest'): ?>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?php 
                             if ($user_type === 'studente') {
                                 echo 'studentDashboard.php';
@@ -69,7 +59,9 @@ if (isset($_SESSION['user_id'])) {
                         ?>">
                             Profilo
                         </a>
-                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
