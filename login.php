@@ -1,14 +1,14 @@
 <?php
-include('template_header.php');
-// Dati dinamici del sito
-$title = "Online Courses";
-$navbarLinks = [
-    "Home" => "index.php",
-    "Corsi" => "corsi.php",
-    "About Us" => "aboutUs.php",
-    "Contact" => "contact.php",
-    "Login" => "login.php"
-];
+session_start(); 
+require_once 'config.php';  // Includi il file di configurazione con la connessione PDO
+include('template_header.php'); 
+
+// Includi la navbar dinamica
+if (!isset($_SESSION['user_id'])) {
+    include('navbar_guest.php'); // Navbar per gli utenti non loggati
+} else {
+    include('navbar.php'); // Navbar per gli utenti loggati
+}
 $contactInfo = [
     "phone" => "+1 718-999-3939",
     "email" => "info@onlinelearning.com",
