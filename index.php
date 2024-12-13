@@ -6,18 +6,13 @@ require_once 'config.php';  // Includi il file di configurazione con la connessi
 $pageTitle = "Homepage";
 include('template_header.php'); 
 
-$menu_items = [
-    ["name" => "Home", "link" => "index.php"],
-    ["name" => "Corsi", "link" => "corsi.php"],
-    ["name" => "About Us", "link" => "aboutUs.php"],
-    ["name" => "Contact", "link" => "contact.php"],
-    ["name" => "Login", "link" => "login.php"],
-    ["name" => "Amministratore", "link" => "amministratoreDashboard.php"],
-    ["name" => "Istruttori", "link" => "istruttoreDashboard.php"],
-    ["name" => "Studenti", "link" => "studentDashboard.php"],
-];
+// Includi la navbar dinamica
+if (!isset($_SESSION['user_id'])) {
+    include('navbar_guest.php'); // Navbar per gli utenti non loggati
+} else {
+    include('navbar.php'); // Navbar per gli utenti loggati
+}
 ?>
-
 <!-- Header Section -->
 <header class="header-bg">
     <div class="overlay"></div>
