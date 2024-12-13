@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Avvia la sessione se non è già avviata
+    session_start();
 }
 ?>
 <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
@@ -19,9 +19,6 @@ if (session_status() === PHP_SESSION_NONE) {
                     <li class="nav-item"><a class="nav-link" href="aboutUs.php">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="amministratoreDashboard.php">Amministratore</a></li>
-                    <li class="nav-item"><a class="nav-link" href="istruttoreDashboard.php">Istruttori</a></li>
-                    <li class="nav-item"><a class="nav-link" href="studentDashboard.php">Studenti</a></li>
                 </ul>
             </div>
         </div>
