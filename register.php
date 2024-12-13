@@ -19,7 +19,11 @@ $socialLinks = [
 ];
 
 include('template_header.php');
-?>
+if (!isset($_SESSION['user_id'])) {
+    include('navbar_guest.php'); // Navbar per gli utenti non loggati
+} else {
+    include('navbar.php'); // Navbar per gli utenti loggati
+}?>
 
 <!-- Header Section -->
 <header class="header-bg">

@@ -1,11 +1,12 @@
 <?php
 include('template_header.php');
+include('navbar.php');
 
 require_once 'config.php'; // Include il file di configurazione
 
-// Inizia la sessione
-session_start();
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 // Verifica se l'utente è loggato e ha il ruolo "istruttore"
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'istruttore') {
     header("Location: login.php");

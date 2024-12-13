@@ -1,6 +1,7 @@
 <?php
 include('config.php');
 include('template_header.php');
+include('navbar.php');
 
 // Controlla se è passato un ID valido
 if (!isset($_GET['id']) || empty($_GET['id'])) {

@@ -1,32 +1,20 @@
-<?php
+<?php 
 if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+    session_start();  // Avvia la sessione solo se non è già attiva
 }
 include('config.php'); // Connessione al DB con PDO
 
 $user_type = 'guest'; // Valore predefinito
 
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+// Verifica se l'utente è loggato
+if (isset($_SESSION['user_email']) && isset($_SESSION['user_role'])) {
+    $user_email = $_SESSION['user_email'];
+    $user_role = $_SESSION['user_role']; // Recupera il ruolo dall sessione
 
     try {
-        // Query unificata per verificare il ruolo
-        $query = "
-            SELECT 'studente' AS user_type FROM studente WHERE IdStudente = :user_id
-            UNION
-            SELECT 'istruttore' AS user_type FROM istruttore WHERE IdIstruttore = :user_id
-            UNION
-            SELECT 'amministratore' AS user_type FROM amministratore WHERE IdAmministratore = :user_id
-        ";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute(['user_id' => $user_id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($result) {
-            $user_type = $result['user_type'];
-        }
+        // Puoi fare altre verifiche se necessario, ma il ruolo è già impostato
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        echo "Errore: " . $e->getMessage();
     }
 }
 ?>
@@ -46,22 +34,27 @@ if (isset($_SESSION['user_id'])) {
                 <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
                 <li class="nav-item"><a class="nav-link" href="aboutUs.php">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-                <?php if ($user_type !== 'guest'): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php 
-                            if ($user_type === 'studente') {
-                                echo 'studentDashboard.php';
-                            } elseif ($user_type === 'istruttore') {
-                                echo 'istruttoreDashboard.php';
-                            } elseif ($user_type === 'amministratore') {
-                                echo 'amministratoreDashboard.php';
-                            }
-                        ?>">
-                            Profilo
-                        </a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
-                <?php endif; ?>
+                
+                <!-- Link per il profilo, con redirezione dinamica -->
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php 
+                        // Determina la destinazione in base al tipo di utente
+                        if ($user_role === 'studente') {
+                            echo 'studentDashboard.php';  // Dashboard per lo studente
+                        } elseif ($user_role === 'istruttore') {
+                            echo 'istruttoreDashboard.php'; // Dashboard per l'istruttore
+                        } elseif ($user_role === 'amministratore') {
+                            echo 'amministratoreDashboard.php'; // Dashboard per l'amministratore
+                        } else {
+                            echo 'login.php'; // Se l'utente non è loggato, reindirizza alla pagina di login
+                        }
+                    ?>">
+                        Profilo
+                    </a>
+                </li>
+                
+                <!-- Logout -->
+                <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
             </ul>
         </div>
     </div>

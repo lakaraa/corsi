@@ -58,4 +58,4 @@ $socialLinks = [
             </div>
         </div>
     </section>
-<? include('template_footer.php');?>
+<?php include('template_footer.php'); ?>

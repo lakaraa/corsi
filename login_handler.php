@@ -1,8 +1,6 @@
 <?php
 // Include la connessione al database
-require_once 'config.php'; // Assicurati che il percorso sia corretto
-
-// Avvia la sessione
+require_once 'config.php'; 
 session_start();
 
 // Verifica se il form è stato inviato
@@ -39,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['user_id'] = $user[$info['id_col']];
                     $_SESSION['user_email'] = $user['Email'];
                     $_SESSION['user_name'] = $user['Nome'];
-                    $_SESSION['user_role'] = $type;
+                    $_SESSION['user_role'] = $type; // Memorizza il nome della tabella come ruolo
                     
                     // Redirigi al dashboard appropriato
                     header("Location: {$info['dashboard']}");

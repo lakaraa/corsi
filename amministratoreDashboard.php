@@ -1,6 +1,7 @@
 <?php
 include('config.php'); // Includi la connessione al database
 include('template_header.php');
+include('navbar.php');
 
 // Recupera i corsi
 $coursesQuery = "SELECT
@@ -47,7 +48,6 @@ if (!$pdo) {
 <!-- Admin Dashboard Section -->
 <section class="section py-5 bg-light">
     <div class="container">
-        <!-- Creazione Corsi -->
         <!-- Creazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">

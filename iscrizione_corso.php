@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php'; // Include il file di configurazione
+include('navbar.php');
 
 // Inizia la sessione
 session_start();

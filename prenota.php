@@ -2,7 +2,7 @@
 session_start();
 // Connessione al database con PDO
 require_once 'config.php'; // Connessione PDO con le credenziali giuste
-
+include('navbar.php');
 // Verifica se l'utente è loggato
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
