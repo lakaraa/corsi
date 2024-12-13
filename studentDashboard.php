@@ -155,6 +155,7 @@ if (count($coursesEnrolledIds) > 0) {
                     <?php if (!isset($_SESSION['user_id'])): ?>
                         <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
                     <?php endif; ?>
+                    <li class="nav-item"><a class="nav-link"  href="logout.php">Logout</a>
                 </ul>
             </div>
         </div>
@@ -166,7 +167,7 @@ if (count($coursesEnrolledIds) > 0) {
         <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
             <h1 class="hero-title">Dashboard Studente</h1>
             <p class="hero-subtext">Gestisci i tuoi corsi e il tuo apprendimento.</p>
-            <a href="logout.php" class="btn btn-danger mt-4">Logout</a>
+            
         </div>
     </header>
 
