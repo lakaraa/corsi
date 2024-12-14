@@ -2,8 +2,10 @@
 require_once 'config.php'; // Include il file di configurazione
 include('navbar.php');
 
-// Inizia la sessione
-session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Verifica se l'utente è loggato
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'studente') {
@@ -65,30 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['course_id'])) {
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="image/logo.png">
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle"> 
-                <span>Online Learning Hub</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="aboutUs.php">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-                    <?php if (!isset($_SESSION['user_id'])): ?>
-                        <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <!-- Header Section -->
     <header class="header-bg">
