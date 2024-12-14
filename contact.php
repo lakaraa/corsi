@@ -39,6 +39,10 @@ include('template_header.php');
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="form-group">
+                            <label for="oggetto">Oggetto</label>
+                            <input type="text" class="form-control" id="oggetto" name="oggetto" required>
+                        </div>
+                        <div class="form-group">
                             <label for="message">Messaggio</label>
                             <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                         </div>
@@ -63,4 +67,4 @@ include('template_header.php');
         </div>
     </section>
 
-<?php include('template_footer.php');
+<?php include('template_footer.php'); ?>
