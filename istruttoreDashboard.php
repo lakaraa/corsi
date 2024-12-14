@@ -89,7 +89,6 @@ $futureCourses = $stmtFutureCourses->fetchAll();
         <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
             <h1 class="hero-title">Dashboard Istruttore</h1>
             <p class="hero-subtext">Visualizza i tuoi corsi in corso, completati e futuri.</p>
-            <a href="logout.php" class="btn btn-danger mt-4">Logout</a>
         </div>
     </header>
 
