@@ -44,10 +44,24 @@ if (!$pdo) {
     </div>
 </header>
 
-
 <!-- Admin Dashboard Section -->
 <section class="section py-5 bg-light">
     <div class="container">
+        <!-- Barra di Ricerca -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <form action="search.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <input type="text" name="search_query" class="form-control search-input" 
+                               placeholder="Cerca corsi, categorie, istruttori o studenti..." 
+                               value="<?php echo isset($_GET['search_query']) ? htmlspecialchars($_GET['search_query']) : ''; ?>" 
+                               style="flex: 1; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ced4da;">
+                        <button type="submit" class="btn btn-primary search-button">Cerca</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
         <!-- Creazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">
