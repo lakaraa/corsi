@@ -2,7 +2,6 @@
 require_once 'config.php'; // Include il file di configurazione
 include('navbar.php');
 
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -48,7 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['course_id'])) {
         $stmtInsert->bindParam(':courseId', $courseId);
         $stmtInsert->execute();
 
-        $message = "Iscrizione al corso avvenuta con successo!";
+        // Messaggio di successo
+        $message = "Iscrizione al corso avvenuta con successo! Sarai reindirizzato alla home page.";
+
+        // Impostare il reindirizzamento dopo 3 secondi
+        echo "<script>
+                setTimeout(function(){
+                    window.location.href = 'index.php';
+                }, 3000); // 3 secondi di attesa
+              </script>";
     } else {
         $message = "Sei già iscritto a questo corso!";
     }
@@ -67,13 +74,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['course_id'])) {
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="image/logo.png">
 </head>
-
+<body>
     <!-- Header Section -->
     <header class="header-bg">
         <div class="overlay"></div>
         <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
             <h1 class="hero-title">Iscriviti al Corso</h1>
-            <p class="hero-subtext">Scegli un corso e inizia il tuo apprendimento oggi!</p>
+            <p class="hero-subtext">Scegli un corso e inizia il tuo apprendimento !</p>
         </div>
     </header>
 
