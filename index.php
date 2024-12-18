@@ -46,7 +46,7 @@ if (!isset($_SESSION['user_id'])) {
                 if ($stmt->rowCount() > 0) {
                     while ($course = $stmt->fetch()) {
                         $courseName = htmlspecialchars($course['Nome']);
-                        $courseImage = file_exists("image/" . str_replace(' ', '', $courseName) . ".png") ? "image/" . str_replace(' ', '', $courseName) . ".png" : "image/default.png";
+                        $courseImage = file_exists("image/" . str_replace(' ', '', $courseName) . ".png") ? "image/" . str_replace(' ', '', $courseName) . ".png" : "image/Default.png";
                         $courseDescription = "Durata: {$course['Durata']} ore | Inizio: {$course['DataInizio']} | Fine: {$course['DataFine']}";
                         $courseId = $course['idCorso'];
             ?>
