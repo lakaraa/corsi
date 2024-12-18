@@ -25,23 +25,29 @@ if (!$pdo) {
         <p class="lead mb-5 text-muted">Gestisci corsi, studenti, istruttori e altri utenti in modo semplice e veloce.</p>
        
         <!-- Barra di Ricerca --> 
-        
+       
             <div class="container text-center">
-                <div class="search-container">
-                    <input 
-                        type="text" 
-                        name="search_query" 
-                        class="search-input"
-                        placeholder="Cerca corsi, categorie, istruttori o studenti...">
-                    <button type="submit" class="search-button">🔍</button>
-                </div>
+                <!-- Form di ricerca principale -->
+                <form action="search_results_ammin.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
+                    <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
+                        <input 
+                            type="text" 
+                            name="search_query" 
+                            class="form-control search-input" 
+                            placeholder="Cerca corsi, categorie, istruttori o studenti..."
+                            value="<?php echo isset($_GET['search_query']) ? htmlspecialchars($_GET['search_query']) : ''; ?>" 
+                            style="flex: 1; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ced4da;">
+                        <button type="submit" class="btn btn-primary search-button">Cerca</button>
+                    </div>
+                </form>
+
+                <!-- Pulsanti aggiuntivi sotto la barra di ricerca -->
                 <div class="d-flex justify-content-center gap-2 mt-3">
                     <a href="corsi_20_iscritti.php" class="btn btn-info btn-lg">Corsi con più di 20 iscritti</a>
                     <a href="studenti_nessun_corso.php" class="btn btn-primary btn-lg">Studenti senza corso</a>
                 </div>
-            </div> <br>
-   
-
+            </div>
+        <br>
 
         <div class="row">
             <!-- Gestione Corsi e Categorie -->
@@ -122,63 +128,39 @@ if (!$pdo) {
 <?php include('template_footer.php'); ?>
 
 <style>
-/* Ridurre l'effetto zoom */
-.btn:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease-in-out;
-}
-
-
-.btn-primary {
-    background-color: #007bff !important;
-    border-color: #007bff !important;
-}
-
-
-.btn-info {
-    background-color: #5bc0de !important;
-    border-color: #5bc0de !important;
-}
-
-
-.search-container {
-    position: relative;
-    max-width: 1000px;
-    margin: 20px auto 10px auto; 
+/* Barra di Ricerca */
+.search-bar {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .search-input {
-    width: 100%;
-    padding: 10px 40px 10px 15px;
+    flex: 1;
+    border-radius: 8px;
     border: 1px solid #ced4da;
-    border-radius: 25px;
     font-size: 16px;
+    padding: 8px 12px;
 }
 
 .search-button {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 50%;
-    height: 35px;
-    width: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
     background-color: #0056b3;
-    transform: translateY(-50%) scale(1.1);
 }
-
-.d-flex .btn {
-    margin: 0 10px; /* Spaziatura orizzontale tra i pulsanti */
+.d-flex.justify-content-center.gap-2 {
+    gap: 20px; /* Distanza tra i pulsanti */
 }
 
 
