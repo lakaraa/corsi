@@ -163,7 +163,6 @@ if (count($coursesEnrolledIds) > 0) {
                             <div class="list-group-item d-flex justify-content-between align-items-center">
                                 <div class="d-flex justify-content-between w-100">
                                     <span><?php echo htmlspecialchars($course['corso_nome']); ?></span>
-                                    <span class="badge badge-primary ml-auto">Iscritto</span>
                                 </div>
                                 <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
                             </div>

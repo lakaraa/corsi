@@ -5,6 +5,8 @@ $nome = isset($_GET['nome']) ? trim($_GET['nome']) : '';
 $durata = isset($_GET['durata']) ? intval($_GET['durata']) : 0;
 $categoria = isset($_GET['categoria']) ? intval($_GET['categoria']) : 0;
 
+$defaultImagePath = 'image/default.png';  // Percorso dell'immagine di default
+
 try {
     $query = "SELECT * FROM Corso WHERE 1=1";
     $params = [];
@@ -31,7 +33,7 @@ try {
     if ($corsi) {
         foreach ($corsi as $corso) {
             $courseName = htmlspecialchars($corso['Nome']);
-            $courseImagePath = "image/" . str_replace(' ', '', $courseName) . ".png";
+            $courseImagePath = "image/" . str_replace(' ', '', subject: $courseName) . ".png";
 
             // Debug: stampa il percorso immagine per verificare
             echo "<!-- Debug: Immagine Path: $courseImagePath -->";
@@ -57,7 +59,7 @@ try {
                 <div class='col-sm-6 col-md-4 mb-4'>
                     <div class='card text-center border-0 shadow'>
                         <div class='services-terri-figure position-relative'>
-                            <p class='text-danger'>Immagine non trovata</p>
+                            <img src='$courseImagePath' alt='{$courseName}' class='img-fluid rounded'>
                             <a href='javascript:void(0);' class='lens-icon position-absolute top-50 start-50 translate-middle' onclick=\"redirectToCourse({$corso['IdCorso']})\">
                                 <i class='fas fa-search'></i>
                             </a>
