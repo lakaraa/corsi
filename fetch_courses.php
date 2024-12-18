@@ -42,7 +42,7 @@ try {
                     <div class='card text-center border-0 shadow'>
                         <div class='services-terri-figure position-relative'>
                             <img src='$courseImagePath' alt='{$courseName}' class='img-fluid rounded'>
-                            <a href='javascript:void(0);' class='lens-icon position-absolute top-50 start-50 translate-middle' onclick=\"redirectToCourse({$corso['idCorso']})\">
+                            <a href='javascript:void(0);' class='lens-icon position-absolute top-50 start-50 translate-middle' onclick=\"redirectToCourse({$corso['IdCorso']})\">
                                 <i class='fas fa-search'></i>
                             </a>
                         </div>
@@ -58,7 +58,7 @@ try {
                     <div class='card text-center border-0 shadow'>
                         <div class='services-terri-figure position-relative'>
                             <p class='text-danger'>Immagine non trovata</p>
-                            <a href='javascript:void(0);' class='lens-icon position-absolute top-50 start-50 translate-middle' onclick=\"redirectToCourse({$corso['idCorso']})\">
+                            <a href='javascript:void(0);' class='lens-icon position-absolute top-50 start-50 translate-middle' onclick=\"redirectToCourse({$corso['IdCorso']})\">
                                 <i class='fas fa-search'></i>
                             </a>
                         </div>
