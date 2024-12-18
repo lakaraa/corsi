@@ -40,11 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['course_id'])) {
     $stmtCheck->execute();
     
     if ($stmtCheck->rowCount() == 0) {
-        // Iscrivi lo studente al corso
-        $sqlInsert = "INSERT INTO iscrizione (IdStudente, IdCorso, Livello) VALUES (:userId, :courseId, 'In corso')";
+        // Imposta la data di iscrizione (data corrente)
+        $dateIscrizione = date('Y-m-d H:i:s'); // Ottieni la data e ora correnti
+
+        // Iscrivi lo studente al corso con la data di iscrizione
+        $sqlInsert = "INSERT INTO iscrizione (IdStudente, IdCorso, Livello, DataIscrizione) 
+                      VALUES (:userId, :courseId, 'In corso', :dateIscrizione)";
         $stmtInsert = $pdo->prepare($sqlInsert);
         $stmtInsert->bindParam(':userId', $userId);
         $stmtInsert->bindParam(':courseId', $courseId);
+        $stmtInsert->bindParam(':dateIscrizione', $dateIscrizione);
         $stmtInsert->execute();
 
         // Messaggio di successo
