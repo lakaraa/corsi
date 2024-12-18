@@ -52,9 +52,8 @@ if (!isset($_SESSION['user_id'])) {
             <div class="col-md-3 mb-2">
                 <input type="number" id="searchDuration" name="durata" class="form-control" placeholder="Durata (max ore)">
             </div>
-            <!-- Pulsante cerca con dimensioni ridotte -->
             <div class="col-md-3 mb-2 text-md-right">
-                <button type="button" class="btn btn-primary small-btn" onclick="fetchCourses()">Cerca</button>
+                <button type="button" class="btn btn-primary btn-ricerca" onclick="fetchCourses()">Cerca</button>
             </div>
         </div>
     </form>
@@ -83,6 +82,14 @@ if (!isset($_SESSION['user_id'])) {
             .then(response => response.text())
             .then(html => {
                 document.getElementById('coursesContainer').innerHTML = html;
+
+                // Aggiunge evento click per ogni corso
+                document.querySelectorAll('.course-link').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        window.location.href = this.getAttribute('href');
+                    });
+                });
             })
             .catch(error => console.error('Errore nella richiesta dei corsi:', error));
     }
@@ -91,8 +98,36 @@ if (!isset($_SESSION['user_id'])) {
     document.addEventListener("DOMContentLoaded", function () {
         fetchCourses();
     });
+    
+    function redirectToCourse(courseId) {
+        var studentId = '<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '' ?>';
+
+        if (!studentId) {
+            window.location.href = "login.php";
+        } else {
+            window.location.href = "iscrizione_corso.php?corso_id=" + courseId;
+        }
+    }
+
+
 </script>
 
 <?php
 include('template_footer.php');
 ?>
+<style>
+.btn-ricerca {
+    width: 100%;  
+    height: 40px;
+    font-size: 16px;
+    padding: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: background-color 0.3s ease; 
+}
+
+.btn-ricerca:hover {
+    background-color: #0056b3;
+}
+</style>
