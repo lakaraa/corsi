@@ -1,5 +1,5 @@
 <?php
-include('config.php'); // Includi la connessione al database
+include('config.php'); // Connessione al database
 include('template_header.php');
 include('navbar.php');
 
@@ -19,7 +19,7 @@ JOIN
 $coursesStmt = $pdo->query($coursesQuery);
 $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Recupera gli utenti
+// Recupera gli studenti
 $studentsQuery = "SELECT *, CONCAT(s.Nome, ' ', s.Cognome) AS Nome FROM studente s";  
 $studentsStmt = $pdo->query($studentsQuery);
 $students = $studentsStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -263,7 +263,6 @@ if (!$pdo) {
         </div>
 
 
-
         <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
         <div class="row mb-5">
             <!-- Form Aggiungi un Amministratore -->
@@ -338,7 +337,7 @@ if (!$pdo) {
 </section>
 
 <script>
-// Popola la modale con l'ID del corso e il nome quando l'utente clicca su "Elimina"
+// Script per la gestione della modale di conferma eliminazione
 var deleteButtons = document.querySelectorAll('.btn-danger');
 deleteButtons.forEach(function(button) {
     button.addEventListener('click', function() {
@@ -349,4 +348,5 @@ deleteButtons.forEach(function(button) {
     });
 });
 </script>
+
 <?php include('template_footer.php'); ?>
