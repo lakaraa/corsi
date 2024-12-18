@@ -1,24 +1,25 @@
 <?php
-include('template_header.php');
-include('navbar.php');
+// Inclusione dei file di configurazione e template
+include('config.php');
+include('template_header.php'); // Header HTML con inclusione stili
+include('navbar.php');          // Navbar
 
-require_once 'config.php'; // Include il file di configurazione
+// Assicurati che la connessione al database funzioni
+if (!$pdo) {
+    die("Connessione al database fallita.");
+}
 
-if (session_status() == PHP_SESSION_NONE) {
+// Avvia la sessione, se non già avviata
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Verifica se l'utente è loggato e ha il ruolo "istruttore"
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'istruttore') {
-    header("Location: login.php");
-    exit;
+$userId = $_SESSION['user_id'] ?? null;
+if (!$userId) {
+    die("Utente non autenticato.");
 }
 
-// Supponiamo che l'ID dell'istruttore sia memorizzato in una sessione
-$userId = $_SESSION['user_id'];
-
 // Recupera i corsi in corso
-$ongoingCourses = [];
 $sqlOngoingCourses = "
     SELECT 
         c.Nome AS NomeCorso, 
@@ -32,10 +33,10 @@ $sqlOngoingCourses = "
       AND c.DataInizio <= CURDATE()
       AND (c.DataFine IS NULL OR c.DataFine > CURDATE())
 ";
-$stmtOngoingCourses = $pdo->prepare($sqlOngoingCourses);
-$stmtOngoingCourses->bindParam(':userId', $userId, PDO::PARAM_INT);
-$stmtOngoingCourses->execute();
-$ongoingCourses = $stmtOngoingCourses->fetchAll();
+$stmt = $pdo->prepare($sqlOngoingCourses);
+$stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+$stmt->execute();
+$ongoingCourses = $stmt->fetchAll();
 
 // Recupera i corsi completati
 $completedCourses = [];
@@ -75,23 +76,102 @@ $stmtFutureCourses->bindParam(':userId', $userId, PDO::PARAM_INT);
 $stmtFutureCourses->execute();
 $futureCourses = $stmtFutureCourses->fetchAll();
 
-// Funzione per ottenere gli studenti iscritti a un corso
-function getStudentsForCourse($pdo, $courseId) {
-    $sqlStudents = "
+// Funzione per recuperare gli studenti di un corso
+function getStudentsByCourse($pdo, $courseId) {
+    $sql = "
         SELECT 
-            s.Nome AS NomeStudente, 
-            s.Livello
-        FROM iscrizione i
-        JOIN studente s ON i.IdStudente = s.IdStudente
-        WHERE i.IdCorso = :courseId
+            s.Nome,
+            s.Cognome,
+            iscr.Livello
+        FROM studente s
+        JOIN iscrizione iscr ON s.IdStudente = iscr.IdStudente
+        WHERE iscr.IdCorso = :courseId
     ";
-    $stmtStudents = $pdo->prepare($sqlStudents);
-    $stmtStudents->bindParam(':courseId', $courseId, PDO::PARAM_INT);
-    $stmtStudents->execute();
-    return $stmtStudents->fetchAll();
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+// Recupera i dettagli dello studente e il livello
+if (isset($_GET['student_id'])) {
+    $studentId = $_GET['student_id'];  // O recupera in base al tuo metodo
+    $sqlStudent = "
+        SELECT s.*, iscr.Livello
+        FROM studente s
+        LEFT JOIN iscrizione iscr ON s.IdStudente = iscr.IdStudente
+        WHERE s.IdStudente = :studentId
+    ";
+    $stmtStudent = $pdo->prepare($sqlStudent);
+    $stmtStudent->bindParam(':studentId', $studentId, PDO::PARAM_INT);
+    $stmtStudent->execute();
+    $studente = $stmtStudent->fetch(PDO::FETCH_ASSOC);
+
+    // Verifica se i dati dello studente sono stati trovati
+    if (!$studente) {
+        die("Studente non trovato.");
+    }
+}
+
+// Gestione dei livelli
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id'], $_POST['course_id'], $_POST['new_level'])) {
+    $studentId = $_POST['student_id'];
+    $courseId = $_POST['course_id'];
+    $newLevel = $_POST['new_level'];
+    
+    try {
+        // Prepara la query per aggiornare il livello dello studente
+        $sql = "
+            UPDATE iscrizione
+            SET Livello = :newLevel
+            WHERE IdStudente = :studentId AND IdCorso = :courseId
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':newLevel', $newLevel, PDO::PARAM_STR);
+        $stmt->bindParam(':studentId', $studentId, PDO::PARAM_INT);
+        $stmt->bindParam(':courseId', $courseId, PDO::PARAM_INT);
+        
+        // Esegui la query
+        if ($stmt->execute()) {
+            // Se l'aggiornamento è riuscito, reindirizza con successo
+            header('Location: istruttoreDashboard.php?status=success&message=Livello aggiornato con successo.');
+            exit;
+        } else {
+            // Se l'esecuzione fallisce, logga l'errore e visualizza il messaggio
+            $errorInfo = $stmt->errorInfo();
+            echo "Errore SQL: " . implode(', ', $errorInfo);  // Stampa il messaggio d'errore per il debug
+            header('Location: istruttoreDashboard.php?status=error&message=Errore nell\'aggiornamento del livello.');
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Log dell'errore nel file di log e visualizzazione dell'errore
+        error_log("Errore di database: " . $e->getMessage());
+        echo "Errore di database: " . $e->getMessage();  // Stampa l'errore per il debug
+        header('Location: istruttoreDashboard.php?status=error&message=Errore di database: ' . $e->getMessage());
+        exit;
+    }
 }
 ?>
 
+
+<!-- Display messages based on the status in the URL -->
+<?php
+if (isset($_GET['status']) && isset($_GET['message'])) {
+    $status = $_GET['status'];
+    $message = $_GET['message'];
+    echo "<div class='alert alert-$status'>$message</div>";  // Visualizza il messaggio in una alert
+}
+?>
+
+<?php
+// Visualizza eventuali messaggi di successo o errore
+if (isset($_GET['status'])) {
+    $status = $_GET['status'];
+    $message = $_GET['message'];
+    echo "<div class='alert alert-$status'>$message</div>";
+}
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -103,6 +183,7 @@ function getStudentsForCourse($pdo, $courseId) {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
     <!-- Header Section -->
     <header class="header-bg">
         <div class="overlay"></div>
@@ -112,224 +193,203 @@ function getStudentsForCourse($pdo, $courseId) {
         </div>
     </header>
 
-    <!-- Instructor Dashboard Section -->
+    <!-- Dashboard Content -->
     <section class="section py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-4">Dashboard Istruttore</h2>
-            <p class="text-center mb-5">Visualizza i corsi che stai gestendo, divisi in corsi in corso, corsi completati e corsi futuri, vedi gli studenti e assegna i voti.</p>
+            <p class="text-center mb-5">Visualizza i corsi che stai gestendo, divisi in corsi in corso, corsi completati e corsi futuri.</p>
 
-            <!-- Corsi in corso -->
-            <div class="row mb-5">
-                <div class="col-md-12">
-                    <h3>Corsi in Corso</h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Corso</th>
-                                <th>Categoria</th>
-                                <th>Data Inizio</th>
-                                <th>Data Fine</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($ongoingCourses)): ?>
-                                <?php foreach ($ongoingCourses as $course): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($course['NomeCorso']) ?></td>
-                                        <td><?= htmlspecialchars($course['NomeCategoria']) ?></td>
-                                        <td><?= htmlspecialchars($course['DataInizio']) ?></td>
-                                        <td><?= $course['DataFine'] ? htmlspecialchars($course['DataFine']) : 'In corso' ?></td>
-                                        <td><button class="btn btn-info btn-sm" onclick="toggleCourseDetails('courseDetails_<?= $course['IdCorso'] ?>')">Gestisci Studenti</button></td>
-                                    </tr>
-                                    <tr id="courseDetails_<?= $course['IdCorso'] ?>" style="display:none;">
-                                        <td colspan="5">
-                                            <div class="card mt-3">
-                                                <div class="card-body">
-                                                    <h5>Elenco Studenti e Voti</h5>
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nome Studente</th>
-                                                                <th>Livello</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                                $students = getStudentsForCourse($pdo, $course['IdCorso']);
-                                                                if (!empty($students)) {
-                                                                    foreach ($students as $student) {
-                                                                        echo "<tr>";
-                                                                        echo "<td>" . htmlspecialchars($student['NomeStudente']) . "</td>";
-                                                                        echo "<td><input type='text' class='form-control' value='" . htmlspecialchars($student['Livello']) . "' disabled></td>";
-                                                                        echo "</tr>";
-                                                                    }
-                                                                } else {
-                                                                    echo "<tr><td colspan='2'>Nessuno studente iscritto a questo corso.</td></tr>";
-                                                                }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5">Non ci sono corsi in corso.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Corsi in Corso -->
+            <h3>Corsi in Corso</h3>
+            <div class="list-group">
+                <?php if (empty($ongoingCourses)): ?>
+                    <div class="alert alert-info">Nessun corso in corso al momento.</div>
+                <?php else: ?>
+                    <?php foreach ($ongoingCourses as $course): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <?php echo htmlspecialchars($course['NomeCorso']); ?>
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails(<?php echo $course['IdCorso']; ?>)">Gestisci Studenti</button>
+                        </div>
+                        <div id="course<?php echo $course['IdCorso']; ?>" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php 
+                                        $students = getStudentsByCourse($pdo, $course['IdCorso']);
+                                        if (empty($students)): ?>
+                                            <tr>
+                                                <td colspan="4">Nessuno studente iscritto a questo corso.</td>
+                                            </tr>
+                                        <?php else: ?>
+                                            <?php foreach ($students as $studente): ?>
+                                                <tr>
+                                                    <td><?php echo htmlspecialchars($studente['Nome']) . ' ' . htmlspecialchars($studente['Cognome']); ?></td> <!-- Nome e Cognome -->
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+<!-- Form per l'aggiornamento del livello -->
+<form method="POST" action="istruttoreDashboard.php" class="d-flex align-items-center">
+    <!-- ID dello studente -->
+    <input type="hidden" name="student_id" value="<?php echo isset($studente['IdStudente']) ? $studente['IdStudente'] : ''; ?>">
+    
+    <!-- ID del corso -->
+    <input type="hidden" name="course_id" value="<?php echo isset($course['IdCorso']) ? $course['IdCorso'] : ''; ?>">
+
+    <!-- Dropdown per il livello -->
+    <select name="new_level" class="form-control mr-2" style="width: auto; min-width: 120px;">
+        <option value="Base" <?php echo isset($studente['Livello']) && $studente['Livello'] === 'Base' ? 'selected' : ''; ?>>Base</option>
+        <option value="Intermedio" <?php echo isset($studente['Livello']) && $studente['Livello'] === 'Intermedio' ? 'selected' : ''; ?>>Intermedio</option>
+        <option value="Avanzato" <?php echo isset($studente['Livello']) && $studente['Livello'] === 'Avanzato' ? 'selected' : ''; ?>>Avanzato</option>
+    </select>
+
+    <!-- Pulsante Assegna -->
+    <button type="submit" class="btn btn-primary btn-sm" style="height: 38px;">Assegna</button>
+</form>
+
+
+
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+
+                                        <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
 
-            <!-- Corsi completati -->
-            <div class="row mb-5">
-                <div class="col-md-12">
-                    <h3>Corsi Completati</h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Corso</th>
-                                <th>Categoria</th>
-                                <th>Data Inizio</th>
-                                <th>Data Fine</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($completedCourses)): ?>
-                                <?php foreach ($completedCourses as $course): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($course['NomeCorso']) ?></td>
-                                        <td><?= htmlspecialchars($course['NomeCategoria']) ?></td>
-                                        <td><?= htmlspecialchars($course['DataInizio']) ?></td>
-                                        <td><?= htmlspecialchars($course['DataFine']) ?></td>
-                                        <td><button class="btn btn-info btn-sm" onclick="toggleCourseDetails('courseDetails_<?= $course['IdCorso'] ?>')">Visualizza Studenti</button></td>
-                                    </tr>
-                                    <tr id="courseDetails_<?= $course['IdCorso'] ?>" style="display:none;">
-                                        <td colspan="5">
-                                            <div class="card mt-3">
-                                                <div class="card-body">
-                                                    <h5>Elenco Studenti e Voti</h5>
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nome Studente</th>
-                                                                <th>Livello</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                                $students = getStudentsForCourse($pdo, $course['IdCorso']);
-                                                                if (!empty($students)) {
-                                                                    foreach ($students as $student) {
-                                                                        echo "<tr>";
-                                                                        echo "<td>" . htmlspecialchars($student['NomeStudente']) . "</td>";
-                                                                        echo "<td><input type='text' class='form-control' value='" . htmlspecialchars($student['Livello']) . "' disabled></td>";
-                                                                        echo "</tr>";
-                                                                    }
-                                                                } else {
-                                                                    echo "<tr><td colspan='2'>Nessuno studente iscritto a questo corso.</td></tr>";
-                                                                }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5">Non ci sono corsi completati.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
             <!-- Corsi Futuri -->
-            <div class="row mb-5">
-                <div class="col-md-12">
-                    <h3>Corsi Futuri</h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Corso</th>
-                                <th>Categoria</th>
-                                <th>Data Inizio</th>
-                                <th>Data Fine</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($futureCourses)): ?>
-                                <?php foreach ($futureCourses as $course): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($course['NomeCorso']) ?></td>
-                                        <td><?= htmlspecialchars($course['NomeCategoria']) ?></td>
-                                        <td><?= htmlspecialchars($course['DataInizio']) ?></td>
-                                        <td><?= $course['DataFine'] ? htmlspecialchars($course['DataFine']) : 'In corso' ?></td>
-                                        <td><button class="btn btn-info btn-sm" onclick="toggleCourseDetails('courseDetails_<?= $course['IdCorso'] ?>')">Gestisci Studenti</button></td>
-                                    </tr>
-                                    <tr id="courseDetails_<?= $course['IdCorso'] ?>" style="display:none;">
-                                        <td colspan="5">
-                                            <div class="card mt-3">
-                                                <div class="card-body">
-                                                    <h5>Elenco Studenti e Voti</h5>
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nome Studente</th>
-                                                                <th>Livello</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                                $students = getStudentsForCourse($pdo, $course['IdCorso']);
-                                                                if (!empty($students)) {
-                                                                    foreach ($students as $student) {
-                                                                        echo "<tr>";
-                                                                        echo "<td>" . htmlspecialchars($student['NomeStudente']) . "</td>";
-                                                                        echo "<td><input type='text' class='form-control' value='" . htmlspecialchars($student['Livello']) . "' disabled></td>";
-                                                                        echo "</tr>";
-                                                                    }
-                                                                } else {
-                                                                    echo "<tr><td colspan='2'>Nessuno studente iscritto a questo corso.</td></tr>";
-                                                                }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5">Non ci sono corsi futuri.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+            <h3>Corsi Futuri</h3>
+            <div class="list-group">
+                <?php if (empty($futureCourses)): ?>
+                    <div class="alert alert-info">Nessun corso futuro al momento.</div>
+                <?php else: ?>
+                    <?php foreach ($futureCourses as $course): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <?php echo htmlspecialchars($course['NomeCorso']); ?>
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails(<?php echo $course['IdCorso']; ?>)">Gestisci Studenti</button>
+                        </div>
+                        <div id="course<?php echo $course['IdCorso']; ?>" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                            $students = getStudentsByCourse($pdo, $course['IdCorso']);
+                                            if (empty($students)): ?>
+                                                <tr>
+                                                    <td colspan="4">Nessuno studente iscritto a questo corso.</td>
+                                                </tr>
+                                            <?php else: ?>
+                                                <?php foreach ($students as $studente): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($studente['Nome']) . ' ' . htmlspecialchars($studente['Cognome']); ?></td> <!-- Nome e Cognome -->
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>
+                                                            <form method="POST" action="update_level.php" class="d-flex align-items-center"> <!-- layout inline -->
+                                                                <input type="hidden" name="student_id" value="<?php echo isset($studente['IdStudente']) ? $studente['IdStudente'] : ''; ?>">
+                                                                <input type="hidden" name="course_id" value="<?php echo isset($course['IdCorso']) ? $course['IdCorso'] : ''; ?>">
+
+                                                                <!-- Dropdown per il livello -->
+                                                                <select name="new_level" class="form-control mr-2" style="width: auto; min-width: 120px;">
+                                                                    <option value="Base" <?php echo $studente['Livello'] === 'Base' ? 'selected' : ''; ?>>Base</option>
+                                                                    <option value="Intermedio" <?php echo $studente['Livello'] === 'Intermedio' ? 'selected' : ''; ?>>Intermedio</option>
+                                                                    <option value="Avanzato" <?php echo $studente['Livello'] === 'Avanzato' ? 'selected' : ''; ?>>Avanzato</option>
+                                                                </select>
+
+                                                                <!-- Pulsante Assegna -->
+                                                                <button type="submit" class="btn btn-primary btn-sm" style="height: 38px;">Assegna</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
+                                                
+            <!-- Corsi Completati -->
+            <h3>Corsi Completati</h3>
+            <div class="list-group">
+                <?php if (empty($completedCourses)): ?>
+                    <div class="alert alert-info">Nessun corso completato al momento.</div>
+                <?php else: ?>
+                    <?php foreach ($completedCourses as $course): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <?php echo htmlspecialchars($course['NomeCorso']); ?>
+                            <button class="btn btn-info btn-sm" onclick="toggleCourseDetails(<?php echo $course['IdCorso']; ?>)">Gestisci Studenti</button>
+                        </div>
+                        <div id="course<?php echo $course['IdCorso']; ?>" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Elenco Studenti</h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nome Studente</th>
+                                                <th>Livello</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php 
+                                            $students = getStudentsByCourse($pdo, $course['IdCorso']);
+                                            if (empty($students)): ?>
+                                                <tr>
+                                                    <td colspan="4">Nessuno studente iscritto a questo corso.</td>
+                                                </tr>
+                                            <?php else: ?>
+                                                <?php foreach ($students as $studente): ?>
+                                                    <tr>
+                                                        <td><?php echo htmlspecialchars($student['Nome']) . ' ' . htmlspecialchars($student['Cognome']); ?></td>
+                                                        <td><?php echo htmlspecialchars($student['Livello']); ?></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
         </div>
     </section>
-
     <script>
-        // Funzione per mostrare/nascondere i dettagli dei corsi
         function toggleCourseDetails(courseId) {
-            const courseDetails = document.getElementById(courseId);
-            if (courseDetails.style.display === "none") {
-                courseDetails.style.display = "block";
-            } else {
-                courseDetails.style.display = "none";
-            }
+            const courseDetails = document.getElementById('course' + courseId);
+            courseDetails.style.display = (courseDetails.style.display === 'none') ? 'block' : 'none';
         }
     </script>
 </body>
