@@ -261,8 +261,7 @@ if (!$pdo) {
                 </table>
             </div>
         </div>
-
-
+        
         <!-- Creazione Nuovi Utenti (Amministratore e Istruttore) -->
         <div class="row mb-5">
             <!-- Form Aggiungi un Amministratore -->
