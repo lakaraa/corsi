@@ -59,7 +59,7 @@ try {
                 <div class='col-sm-6 col-md-4 mb-4'>
                     <div class='card text-center border-0 shadow'>
                         <div class='services-terri-figure position-relative'>
-                            <img src='$courseImagePath' alt='{$courseName}' class='img-fluid rounded'>
+                            <img src='$defaultImagePath' alt='{$courseName}' class='img-fluid rounded'>
                             <a href='javascript:void(0);' class='lens-icon position-absolute top-50 start-50 translate-middle' onclick=\"redirectToCourse({$corso['IdCorso']})\">
                                 <i class='fas fa-search'></i>
                             </a>
