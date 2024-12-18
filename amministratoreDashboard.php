@@ -14,7 +14,7 @@ if (!$pdo) {
     <div class="overlay"></div>
     <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
         <h1 class="hero-title">Dashboard Amministratore</h1>
-        <p class="hero-subtext">Gestisci con facilità i tuoi corsi e i tuoi dipendeti.</p>
+        <p class="hero-subtext">Gestisci con facilità i tuoi corsi e i tuoi dipendenti.</p>
     </div>
 </header>
 
@@ -23,7 +23,20 @@ if (!$pdo) {
     <div class="container">
         <h3 class="mb-4 text-dark">Benvenuto nella Dashboard Amministratore</h3>
         <p class="lead mb-5 text-muted">Gestisci corsi, studenti, istruttori e altri utenti in modo semplice e veloce.</p>
-
+        <!-- Barra di Ricerca -->
+<section class="section py-4 bg-light">
+    <div class="container">
+        <form action="search_results_ammin.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
+            <div class="d-flex align-items-center" style="gap: 10px;">
+                <input type="text" name="search_query" class="form-control search-input" 
+                       placeholder="Cerca corsi, categorie, istruttori o studenti..."
+                       value="<?php echo isset($_GET['search_query']) ? htmlspecialchars($_GET['search_query']) : ''; ?>" 
+                       style="flex: 1; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ced4da;">
+                <button type="submit" class="btn btn-primary search-button">Cerca</button>
+            </div>
+        </form>
+    </div>
+</section>
         <div class="row">
             <!-- Gestione Corsi e Categorie -->
             <div class="col-md-4 mb-4">
@@ -101,3 +114,20 @@ if (!$pdo) {
 </section>
 
 <?php include('template_footer.php'); ?>
+
+<style>
+    .search-bar {
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #ced4da;
+}
+
+.search-input {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+}
+
+.search-button {
+    border-radius: 8px;
+}
+</style>
