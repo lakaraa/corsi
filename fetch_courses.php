@@ -29,11 +29,21 @@ try {
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     $corsi = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     if ($corsi) {
         foreach ($corsi as $corso) {
             $courseName = htmlspecialchars($corso['Nome']);
-            $courseImagePath = "image/" . str_replace(' ', '', subject: $courseName) . ".png";
+            // Modifica per eliminare gli spazi nel nome del corso e creare il percorso dell'immagine
+            $courseImagePath = "image/" . str_replace(' ', '', $courseName) . ".png";
+
+            // Debug: stampa il percorso immagine per verificare
+            echo "<!-- Debug: Immagine Path: $courseImagePath -->";
+
+            // Verifica se l'immagine del corso esiste, altrimenti usa l'immagine di default
+            if (file_exists($courseImagePath)) {
+                $imageToDisplay = $courseImagePath;
+            } else {
+                $imageToDisplay = $defaultImagePath;
+            }
 
             // Debug: stampa il percorso immagine per verificare
             echo "<!-- Debug: Immagine Path: $courseImagePath -->";
