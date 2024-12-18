@@ -47,10 +47,10 @@ if (!$pdo) {
 <!-- Admin Dashboard Section -->
 <section class="section py-5 bg-light">
     <div class="container">
-        <!-- Barra di Ricerca -->
+        <!-- Barra di ricerca -->
         <div class="row mb-5">
             <div class="col-md-12">
-                <form action="search.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
+                <form action="search_results_ammin.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
                     <div class="d-flex align-items-center" style="gap: 10px;">
                         <input type="text" name="search_query" class="form-control search-input" 
                                placeholder="Cerca corsi, categorie, istruttori o studenti..." 
@@ -61,7 +61,7 @@ if (!$pdo) {
                 </form>
             </div>
         </div>
-        
+
         <!-- Creazione Corsi -->
         <div class="row mb-5">
             <div class="col-md-12">
