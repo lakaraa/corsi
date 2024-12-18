@@ -5,7 +5,7 @@ $nome = isset($_GET['nome']) ? trim($_GET['nome']) : '';
 $durata = isset($_GET['durata']) ? intval($_GET['durata']) : 0;
 $categoria = isset($_GET['categoria']) ? intval($_GET['categoria']) : 0;
 
-$defaultImagePath = 'image/default.png';  // Percorso dell'immagine di default
+$defaultImagePath = 'image/Default.png';  // Percorso dell'immagine di default
 
 try {
     $query = "SELECT * FROM Corso WHERE 1=1";
@@ -29,11 +29,21 @@ try {
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     $corsi = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     if ($corsi) {
         foreach ($corsi as $corso) {
             $courseName = htmlspecialchars($corso['Nome']);
-            $courseImagePath = "image/" . str_replace(' ', '', subject: $courseName) . ".png";
+            // Modifica per eliminare gli spazi nel nome del corso e creare il percorso dell'immagine
+            $courseImagePath = "image/" . str_replace(' ', '', $courseName) . ".png";
+
+            // Debug: stampa il percorso immagine per verificare
+            echo "<!-- Debug: Immagine Path: $courseImagePath -->";
+
+            // Verifica se l'immagine del corso esiste, altrimenti usa l'immagine di default
+            if (file_exists($courseImagePath)) {
+                $imageToDisplay = $courseImagePath;
+            } else {
+                $imageToDisplay = $defaultImagePath;
+            }
 
             // Debug: stampa il percorso immagine per verificare
             echo "<!-- Debug: Immagine Path: $courseImagePath -->";
