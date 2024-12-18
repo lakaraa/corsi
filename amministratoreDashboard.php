@@ -13,8 +13,8 @@ if (!$pdo) {
 <header class="header-bg">
     <div class="overlay"></div>
     <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
-        <h1 class="hero-title">Gestione Istruttori</h1>
-        <p class="hero-subtext">Visualizza, modifica o elimina gli istruttori.</p>
+        <h1 class="hero-title">Dashboard Amministratore</h1>
+        <p class="hero-subtext">Gestisci con facilità i tuoi corsi e i tuoi dipendeti.</p>
     </div>
 </header>
 
@@ -30,7 +30,7 @@ if (!$pdo) {
                 <div class="card shadow-lg border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-3 text-dark">Aggiungi Corsi e Categorie</h5>
-                        <a href="gestione_corsi_categoria.php" class="btn btn-primary btn-lg w-100">
+                        <a href="aggiungi_corsi_categoria.php" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-bookmark"></i> Gestisci Corsi
                         </a>
                     </div>
@@ -80,6 +80,18 @@ if (!$pdo) {
                         <h5 class="card-title mb-3 text-dark">Aggiungi Utente</h5>
                         <a href="registrazione_utenti.php" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-user-plus"></i> Aggiungi Utente
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualizza Messaggi -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-3 text-dark">Visualizza Messaggi</h5>
+                        <a href="visualizza_messaggi.php" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-envelope"></i> Messaggi
                         </a>
                     </div>
                 </div>

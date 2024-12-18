@@ -54,6 +54,8 @@ if (!$pdo) {
                                             <input type="hidden" name="studentId" value="<?php echo $student['IdStudente']; ?>">
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo studente?');">Elimina</button>
                                         </form>
+                                        <!-- Dettagli Studente -->
+                                        <a href="informazioni_studente.php?id=<?php echo $student['IdStudente']; ?>" class="btn btn-info btn-sm">Dettagli</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
