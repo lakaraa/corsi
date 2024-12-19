@@ -1,0 +1,241 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+/* Navbar Styling */
+.custom-navbar {
+background: transparent; /* Trasparente in cima */
+box-shadow: none; /* Nessuna ombra inizialmente */
+padding: 20px 0; /* Più grande in alto */
+transition: all 0.4s ease-in-out; /* Transizione fluida */
+}
+
+.custom-navbar.scrolled {
+background: #003366; /* Cambia colore durante lo scroll */
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Aggiunge ombra */
+padding: 10px 0; /* Navbar più piccola */
+}
+
+.custom-navbar .navbar-brand {
+display: flex;
+align-items: center;
+font-size: 1.25rem;
+font-weight: 700;
+color: white;
+}
+
+.custom-navbar .navbar-brand span {
+margin-left: 10px;
+font-family: 'Roboto', sans-serif;
+}
+
+.custom-navbar .navbar-brand:hover {
+color: #f0f0f0;
+}
+
+.custom-navbar .nav-link {
+color: white;
+font-size: 1rem;
+font-weight: 500;
+margin: 0 10px;
+text-transform: uppercase;
+letter-spacing: 1px;
+transition: color 0.3s ease-in-out;
+}
+
+.custom-navbar .nav-link:hover {
+color: rgb(70, 123, 249);
+}
+
+.custom-navbar .navbar-toggler {
+background-color: rgba(255, 255, 255, 0.1);
+border: none;
+padding: 5px 10px;
+font-size: 1.2rem;
+color: white;
+}
+
+.custom-navbar .navbar-toggler:focus {
+outline: none;
+box-shadow: none;
+}
+
+
+/* Hero section */
+.header-bg {
+    background-image: url('../resources/images/header-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+}
+.hero-text {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+.hero-subtext {
+    font-size: 1.2rem;
+    margin-top: 15px;
+}
+
+/* Lens Icon */
+.services-terri-figure {
+    position: relative;
+    overflow: hidden;
+}
+.services-terri-figure img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+.services-terri-figure .lens-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.services-terri-figure:hover img {
+    transform: scale(1.1); /* Zoom effect */
+}
+.services-terri-figure:hover .lens-icon {
+    opacity: 1; /* Show lens icon on hover */
+}
+
+/* Footer */
+.footer-creative {
+    background-color: #003366;
+    color: white;
+    padding: 40px 0;
+}
+.footer-creative h5 {
+    color: #f0f0f0;
+}
+.footer-creative a {
+    color: #ddd;
+    text-decoration: none;
+}
+.footer-creative a:hover {
+    color: #fff;
+}
+
+.header-bg {
+position: relative;
+background-image: url('../resources/image/sfondoHeader.png');
+background-size: cover;
+background-position: center;
+height: 70vh;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+color: white;
+}
+
+.header-bg .overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(135deg, rgba(0, 51, 102, 0.8), rgba(0, 0, 0, 0.6));
+z-index: 1;
+}
+
+.container {
+z-index: 2;
+}
+
+.hero-title {
+font-size: 3rem;
+font-weight: 700;
+text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+margin-bottom: 15px;
+}
+
+.hero-subtext {
+font-size: 1.4rem;
+margin-bottom: 20px;
+color: #f0f0f0;
+}
+
+.btn-primary {
+background-color:rgb(46, 96, 245);
+border-color: rgb(46, 96, 245);
+transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+background-color: #003366;
+border-color: #003366;
+}
+
+.btn-outline-light:hover {
+background-color: white;
+color: #003366;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.student-avatar {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    font-size: 3rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.student-details {
+    flex-grow: 1;
+}
+
+.student-details h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.student-details p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.btn-modifica {
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
