@@ -103,7 +103,7 @@ if (!isset($_SESSION['user_id'])) {
         var studentId = '<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '' ?>';
 
         if (!studentId) {
-            window.location.href = "../auth/login.php";
+            window.location.href = "../pages/login.php";
         } else {
             window.location.href = "../corsi/iscrizione_corso.php?corso_id=" + courseId;
         }
