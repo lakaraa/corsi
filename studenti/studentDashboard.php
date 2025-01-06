@@ -48,14 +48,15 @@ $coursesEnrolled = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $coursesAvailable = [];
 if (count($coursesEnrolledIds) > 0) {
     $sqlAvailable = "
-        SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
-               ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
-        FROM corso c
-        JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
-        JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
-        WHERE c.DataInizio > CURDATE() -- Solo corsi futuri
-        AND c.IdCorso NOT IN (" . implode(',', array_fill(0, count($coursesEnrolledIds), '?')) . ") -- Esclude i corsi già iscritti
+    SELECT c.IdCorso AS corso_id, c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
+           ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+    FROM corso c
+    JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
+    JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
+    WHERE c.DataInizio > CURDATE()
+    AND c.IdCorso NOT IN (" . implode(',', array_fill(0, count($coursesEnrolledIds), '?')) . ")
     ";
+
     $stmtAvailable = $pdo->prepare($sqlAvailable);
     $stmtAvailable->execute($coursesEnrolledIds); // Passa gli ID dei corsi già iscritti come parametri
     $coursesAvailable = $stmtAvailable->fetchAll(PDO::FETCH_ASSOC);
@@ -208,7 +209,8 @@ if (count($coursesEnrolledIds) > 0) {
                                     <td><?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></td>
                                     <td><?php echo htmlspecialchars($course['NomeCategoria']); ?></td>
                                     <td>
-                                        <a href="../corsi/iscrizione_corso.php" class="btn btn-subscribe btn-sm">Iscriviti</a>
+                                    <a href="javascript:void(0);" class="btn btn-subscribe btn-sm" onclick="redirectToCourse(<?php echo htmlspecialchars($course['corso_id']); ?>)">Iscriviti</a>
+                                    <!--<a href="../corsi/iscrizione_corso.php" class="btn btn-subscribe btn-sm">Iscriviti</a>-->
                                         <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
                                     </td>
                                 </tr>
@@ -242,6 +244,21 @@ if (count($coursesEnrolledIds) > 0) {
                 courseDetails.style.display = "none"; // Nasconde la riga della tabella
             }
         }
+        function redirectToCourse(courseId) {
+            // Recupera l'ID dello studente dalla sessione
+            var studentId = '<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '' ?>';
+                
+            // Se lo studente non è loggato, reindirizza alla pagina di login
+            if (!studentId) {
+                alert("Devi effettuare il login prima di iscriverti!");
+                window.location.href = "../pages/login.php";
+            } else {
+                // Altrimenti, reindirizza alla pagina di iscrizione con l'ID del corso
+                window.location.href = "../corsi/iscrizione_corso.php?corso_id=" + courseId;
+
+            }
+        }
+
     </script>
 
     <?php include('../templates/template_footer.php'); ?>
