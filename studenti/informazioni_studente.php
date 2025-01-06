@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../pages/navbar.php');
 include('../templates/template_header.php');
 

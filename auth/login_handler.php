@@ -1,6 +1,6 @@
 <?php
 // Include la connessione al database
-include('../config/config.php');
+include('../config.php');
 session_start();
 
 // Verifica se il form è stato inviato
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Array di tabelle da verificare con priorità
         $user_types = [
             'amministratore' => ['id_col' => 'IdAmministratore', 'dashboard' => '../admin/amministratoreDashboard.php'],
-            'istruttore' => ['id_col' => 'IdIstruttore', 'dashboard' => '../corsi/istruttoreDashboard.php'],
+            'istruttore' => ['id_col' => 'IdIstruttore', 'dashboard' => '../admin/istruttoreDashboard.php'],
             'studente' => ['id_col' => 'IdStudente', 'dashboard' => '../studneti/studentDashboard.php']
         ];
 

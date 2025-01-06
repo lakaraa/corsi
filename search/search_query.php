@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 
 // Funzione per ottenere i nomi visibili delle colonne
 function getColumnDisplayName($columnName) {

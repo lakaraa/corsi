@@ -1,6 +1,6 @@
 <?php
 // Include la connessione al database
-include('../config/config.php');
+include('../config.php');
 
 // Avvia la sessione per poter usare i messaggi
 session_start();
@@ -30,19 +30,19 @@ if (isset($_POST['courseId'])) {
 
         // Messaggio di successo
         $_SESSION['message'] = 'Corso eliminato con successo!';
-        header('Location: ../admin/amministratoreDashboard.php');
+        header('Location: amministratoreDashboard.php');
         exit();
 
     } catch (PDOException $e) {
         // In caso di errore, rollback della transazione
         $pdo->rollBack();
         $_SESSION['message'] = 'Errore durante l\'eliminazione del corso: ' . $e->getMessage();
-        header('Location: ../admin/amministratoreDashboard.php');
+        header('Location: amministratoreDashboard.php');
         exit();
     }
 } else {
     $_SESSION['message'] = 'ID corso non fornito.';
-    header('Location: ../admin/amministratoreDashboard.php');
+    header('Location: amministratoreDashboard.php');
     exit();
 }
 ?>

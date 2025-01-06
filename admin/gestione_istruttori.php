@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
 
@@ -49,10 +49,10 @@ if (!$pdo) {
                                     <td><?php echo htmlspecialchars($instructor['Specializzazione'] ?? ''); ?></td>
                                     <td>
                                         <!-- Modifica Istruttore -->
-                                        <a href="../admin/edit_istruttore.php?id=<?php echo $instructor['IdIstruttore']; ?>" class="btn btn-warning btn-sm">Modifica</a>
+                                        <a href="edit_istruttore.php?id=<?php echo $instructor['IdIstruttore']; ?>" class="btn btn-warning btn-sm">Modifica</a>
 
                                         <!-- Elimina Istruttore -->
-                                        <form action="../admin/delete_instructor.php" method="POST" style="display:inline;">
+                                        <form action="delete_instructor.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="instructorId" value="<?php echo $instructor['IdIstruttore']; ?>">
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo istruttore?');">Elimina</button>
                                         </form>

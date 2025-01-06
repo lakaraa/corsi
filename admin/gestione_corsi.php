@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
 
@@ -58,10 +58,10 @@ if (!$pdo) {
                                     <td><?php echo htmlspecialchars($course['NomeIstruttore']); ?></td>
                                     <td>
                                         <!-- Modifica Corso -->
-                                        <a href="../admin/edit_corso.php?id=<?php echo $course['IdCorso']; ?>" class="btn btn-warning btn-sm">Modifica</a>
+                                        <a href="edit_corso.php?id=<?php echo $course['IdCorso']; ?>" class="btn btn-warning btn-sm">Modifica</a>
 
                                         <!-- Elimina Corso -->
-                                        <form action="../admin/delete_corso.php" method="POST" style="display:inline;">
+                                        <form action="delete_corso.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="courseId" value="<?php echo $course['IdCorso']; ?>">
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo corso?');">Elimina</button>
                                         </form>

@@ -1,6 +1,6 @@
 <?php
 // Include la connessione al database
-include('../config/config.php');
+include('../config.php');
 
 // Verifica che l'ID dell'istruttore sia stato inviato
 if (isset($_POST['instructorId'])) {
@@ -26,7 +26,7 @@ if (isset($_POST['instructorId'])) {
         $pdo->commit();
 
         // Reindirizza alla pagina di gestione istruttori
-        header('Location: ../admin/amministratoreDashboard.php');
+        header('Location: amministratoreDashboard.php');
         exit();
     } catch (Exception $e) {
         // Annulla la transazione in caso di errore

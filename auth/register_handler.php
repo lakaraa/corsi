@@ -1,6 +1,6 @@
 <?php
 // Include the PDO database connection
-include('../config/config.php');
+include('../config.php');
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

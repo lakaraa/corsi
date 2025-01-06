@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
 ?>
@@ -20,7 +20,7 @@ include('../pages/navbar.php');
             <!-- Form Aggiungi un Amministratore -->
             <div class="col-md-6">
                 <h3>Aggiungi un Amministratore</h3>
-                <form action="../admin/add_ammin_handler.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+                <form action="add_ammin_handler.php" method="post" class="p-4 border rounded shadow-sm bg-light">
                     <div class="form-group mb-3">
                         <label for="adminName">Nome</label>
                         <input type="text" class="form-control" id="adminName" name="adminName" required>
@@ -52,7 +52,7 @@ include('../pages/navbar.php');
             <!-- Form Aggiungi un Istruttore -->
             <div class="col-md-6">
                 <h3>Aggiungi un Istruttore</h3>
-                <form action="../admin/add_istru_handler.php" method="post" class="p-4 border rounded shadow-sm bg-light">
+                <form action="add_istru_handler.php" method="post" class="p-4 border rounded shadow-sm bg-light">
                     <div class="form-group mb-3">
                         <label for="instructorName">Nome</label>
                         <input type="text" class="form-control" id="instructorName" name="instructorName" required>

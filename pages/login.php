@@ -1,13 +1,13 @@
 <?php
 session_start(); 
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php'); 
 
 // Includi la navbar dinamica
 if (!isset($_SESSION['user_id'])) {
-    include('../pages/navbar_guest.php'); // Navbar per gli utenti non loggati
+    include('navbar_guest.php'); // Navbar per gli utenti non loggati
 } else {
-    include('../pages/navbar.php'); // Navbar per gli utenti loggati
+    include('navbar.php'); // Navbar per gli utenti loggati
 }
 $contactInfo = [
     "phone" => "+1 718-999-3939",
@@ -50,7 +50,7 @@ $socialLinks = [
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">Accedi</button>
                             </form>
                             <div class="text-center mt-3">
-                                <p>Non hai un account? <a href="../pages/register.php">Registrati qui</a></p>
+                                <p>Non hai un account? <a href="register.php">Registrati qui</a></p>
                             </div>
                         </div>
                     </div>

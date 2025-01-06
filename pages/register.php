@@ -4,13 +4,13 @@ session_start();
 
 // Dati dinamici del sito
 $title = "Registrati | Online Courses";
-$navbarLinks = [
+/**$navbarLinks = [
     "Home" => "index.php",
-    "Corsi" => "corsi.php",
+    "Corsi" => "../corsi/corsi.php",
     "About Us" => "aboutUs.php",
     "Contact" => "contact.php",
     "Login" => "login.php"
-];
+];*/
 $socialLinks = [
     "Facebook" => "#",
     "Twitter" => "#",
@@ -20,9 +20,9 @@ $socialLinks = [
 
 include('../templates/template_header.php');
 if (!isset($_SESSION['user_id'])) {
-    include('../pages/navbar_guest.php'); // Navbar per gli utenti non loggati
+    include('navbar_guest.php'); // Navbar per gli utenti non loggati
 } else {
-    include('../pages/navbar.php'); // Navbar per gli utenti loggati
+    include('navbar.php'); // Navbar per gli utenti loggati
 }?>
 
 <!-- Header Section -->
@@ -85,7 +85,7 @@ if (!isset($_SESSION['user_id'])) {
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Registrati</button>
                         </form>
                         <div class="text-center mt-3">
-                            <p>Hai già un account? <a href="../pages/login.php">Accedi qui</a></p>
+                            <p>Hai già un account? <a href="login.php">Accedi qui</a></p>
                         </div>
                     </div>
                 </div>

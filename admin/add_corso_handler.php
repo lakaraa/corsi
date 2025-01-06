@@ -1,6 +1,6 @@
 <?php
 // Connessione al database
-include('../config/config.php');
+include('../config.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recupero dei dati dal form
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Esecuzione della query
         if ($stmt->execute()) {
             echo "Corso aggiunto con successo.";
-            header("Location: ../admin/amministratoreDashboard.php");
+            header("Location: amministratoreDashboard.php");
             exit;
         } else {
             echo "Errore durante l'aggiunta del corso.";

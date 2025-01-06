@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../pages/navbar.php');
 
 // Inizia la sessione
@@ -84,7 +84,7 @@ if (count($coursesEnrolledIds) > 0) {
     <title>Dashboard Studente | Online Courses</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../config/style.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="icon" type="image/x-icon" href="../resources/image/logo.png">
     <style>
         /* Stile per la lista dei corsi iscritti */

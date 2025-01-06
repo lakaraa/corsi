@@ -1,8 +1,8 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
-include('../search/search_query.php'); // Funzionalità di ricerca centralizzata
+include('search_query.php'); // Funzionalità di ricerca centralizzata
 
 // Recupera i risultati della ricerca se presente una query
 $searchQuery = isset($_GET['search_query']) ? trim($_GET['search_query']) : '';

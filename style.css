@@ -64,7 +64,7 @@ box-shadow: none;
 
 /* Hero section */
 .header-bg {
-    background-image: url('../resources/images/header-bg.jpg');
+    background-image: url('resources/images/header-bg.jpg');
     background-size: cover;
     background-position: center;
     height: 60vh;
@@ -131,7 +131,7 @@ box-shadow: none;
 
 .header-bg {
 position: relative;
-background-image: url('../resources/image/sfondoHeader.png');
+background-image: url('resources/image/sfondoHeader.png');
 background-size: cover;
 background-position: center;
 height: 70vh;

@@ -1,6 +1,6 @@
 <?php
 // Connessione al database
-include('../config/config.php');
+include('../config.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Prendi i dati inviati dal form

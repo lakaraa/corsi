@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
 
@@ -67,7 +67,7 @@ if (!$pdo) {
                 <div class="card shadow-lg border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-3 text-dark">Lista Corsi</h5>
-                        <a href="../admin/gestione_corsi.php" class="btn btn-primary btn-lg w-100">
+                        <a href="gestione_corsi.php" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-list-alt"></i> Visualizza Corsi
                         </a>
                     </div>
@@ -79,7 +79,7 @@ if (!$pdo) {
                 <div class="card shadow-lg border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-3 text-dark">Gestione Studenti</h5>
-                        <a href="../admin/gestione_studenti.php" class="btn btn-primary btn-lg w-100">
+                        <a href="gestione_studenti.php" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-users"></i> Gestisci Studenti
                         </a>
                     </div>
@@ -91,7 +91,7 @@ if (!$pdo) {
                 <div class="card shadow-lg border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-3 text-dark">Gestione Istruttori</h5>
-                        <a href="../admin/gestione_istruttori.php" class="btn btn-primary btn-lg w-100">
+                        <a href="gestione_istruttori.php" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-chalkboard-teacher"></i> Gestisci Istruttori
                         </a>
                     </div>
@@ -103,7 +103,7 @@ if (!$pdo) {
                 <div class="card shadow-lg border-0">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-3 text-dark">Aggiungi Utente</h5>
-                        <a href="../admin/registrazione_utenti.php" class="btn btn-primary btn-lg w-100">
+                        <a href="registrazione_utenti.php" class="btn btn-primary btn-lg w-100">
                             <i class="fas fa-user-plus"></i> Aggiungi Utente
                         </a>
                     </div>

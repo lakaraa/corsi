@@ -1,7 +1,7 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
-include('../pages/navbar.php');
+include('navbar.php');
 
 // Recupera i messaggi dal database
 try {

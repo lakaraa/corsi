@@ -1,12 +1,12 @@
 <?php
 // Avvio della sessione e inclusione della configurazione
 session_start();
-include('../config/config.php');
+include('../config.php');
 
 if (isset($_SESSION['user_id'])) {
-    include('../pages/navbar.php');
+    include('navbar.php');
 } else {
-    include('../pages/navbar_guest.php');
+    include('navbar_guest.php');
 }
 
 // Inclusione dell'header
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         // Reindirizzamento alla pagina di conferma dopo il successo
-        header('Location: ../pages/thank_you.php');
+        header('Location: thank_you.php');
         exit();
     } catch (PDOException $e) {
         $message_status = "<div class='alert alert-danger' role='alert'>Errore: " . $e->getMessage() . "</div>";
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row">
             <div class="col-md-6">
                 <h4 class="mb-3">Inviaci un Messaggio</h4>
-                <form action="../pages/contact.php" method="post">
+                <form action="contact.php" method="post">
                     <div class="form-group">
                         <label for="name">Nome</label>
                         <input type="text" class="form-control" id="name" name="name" required>

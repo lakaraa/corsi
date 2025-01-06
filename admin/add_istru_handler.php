@@ -1,6 +1,6 @@
 <?php
 // Includi la configurazione del database
-include('../config/config.php');
+include('../config.php');
 
 // Verifica se il form è stato inviato
 if (isset($_POST['instructorName']) && isset($_POST['instructorSurname']) && isset($_POST['instructorEmail']) && isset($_POST['instructorPhone']) && isset($_POST['instructorSpecializzazione']) && isset($_POST['instructorPassword'])) {
@@ -41,7 +41,7 @@ if (isset($_POST['instructorName']) && isset($_POST['instructorSurname']) && iss
         // Esegui la query per l'inserimento
         if ($insertStmt->execute()) {
             // Se l'inserimento ha successo, redirigi l'utente alla pagina di gestione
-            header('Location: ../admin/amministratoreDashboard.php');
+            header('Location: amministratoreDashboard.php');
             exit();
         } else {
             // Se si verifica un errore nell'inserimento, mostra un messaggio di errore

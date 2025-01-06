@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 
 $nome = isset($_GET['nome']) ? trim($_GET['nome']) : '';
 $durata = isset($_GET['durata']) ? intval($_GET['durata']) : 0;
@@ -73,7 +73,7 @@ try {
 
         if (!studentId) {
             // Se non è loggato, reindirizza alla pagina di login
-            window.location.href = "../auth/login.php";
+            window.location.href = "../pages/login.php";
         } else {
             // Altrimenti, reindirizza alla pagina di iscrizione
             window.location.href = "../corsi/iscrizione_corso.php?corso_id=" + encodeURIComponent(courseId);

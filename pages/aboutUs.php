@@ -1,13 +1,13 @@
 <?php
 // Avvio della sessione e inclusione della configurazione
 session_start();
-include('../config/config.php');
+include('../config.php');
 
 // Controllo della sessione per decidere quale navbar includere
 if (isset($_SESSION['user_id'])) {
-    include('../pages/navbar.php');
+    include('navbar.php');
 } else {
-    include('../pages/navbar_guest.php');
+    include('navbar_guest.php');
 }
 
 // Inclusione dell'header
@@ -23,7 +23,6 @@ include('../templates/template_header.php');
 
 <section class="section py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-4">Chi Siamo</h2>
         <div class="row">
             <div class="col-md-6">
                 <h4 class="mb-3">La Nostra Missione</h4>

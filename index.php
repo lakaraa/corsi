@@ -1,16 +1,16 @@
 <?php
 session_start(); 
-include('../config/config.php');
+include('config.php');
 
 // Configurazioni dinamiche
 $pageTitle = "Homepage";
-include('../templates/template_header.php'); 
+include('templates/template_header.php'); 
 
 // Includi la navbar dinamica
 if (!isset($_SESSION['user_id'])) {
-    include('../pages/navbar_guest.php'); // Navbar per gli utenti non loggati
+    include('navbar_guest_index.php'); // Navbar per gli utenti non loggati
 } else {
-    include('../pages/navbar.php'); // Navbar per gli utenti loggati
+    include('navbar_index.php'); // Navbar per gli utenti loggati
 }
 ?>
 <!-- Bootstrap CSS -->
@@ -26,8 +26,8 @@ if (!isset($_SESSION['user_id'])) {
         <h1 class="hero-title">Trasforma le tue competenze con i nostri corsi online</h1>
         <p class="hero-subtext">Accedi a conoscenze di qualità ovunque ti trovi.</p>
         <div class="mt-4">
-            <a href="../corsi/corsi.php" class="btn btn-primary btn-lg mr-2">Scopri tutti i Corsi</a>
-            <a href="../pages/aboutUs.php" class="btn btn-outline-light btn-lg">Leggi di più</a>
+            <a href="corsi/corsi.php" class="btn btn-primary btn-lg mr-2">Scopri tutti i Corsi</a>
+            <a href="pages/aboutUs.php" class="btn btn-outline-light btn-lg">Leggi di più</a>
 <!------------------------------------------------------------------------------------------------>
         </div>
     </div>
@@ -46,8 +46,8 @@ if (!isset($_SESSION['user_id'])) {
                 if ($stmt->rowCount() > 0) {
                     while ($course = $stmt->fetch()) {
                         $courseName = htmlspecialchars($course['Nome']);
-                        $courseImage = file_exists("../resources/image/" . str_replace(' ', '', $courseName) . ".png") ? 
-                        "../resources/image/" . str_replace(' ', '', $courseName) . ".png" : "../resources/image/Default.png";
+                        $courseImage = file_exists("resources/image/" . str_replace(' ', '', $courseName) . ".png") ? 
+                        "resources/image/" . str_replace(' ', '', $courseName) . ".png" : "resources/image/Default.png";
                         $courseDescription = "Durata: {$course['Durata']} ore | Inizio: {$course['DataInizio']} | Fine: {$course['DataFine']}";
                         $courseId = $course['idCorso'];
             ?>
@@ -77,7 +77,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
 
         <div class="text-center mt-4">
-            <p>Ci sono altri corsi disponibili! Visita la nostra <a href="../corsi/corsi.php">pagina Corsi</a> per scoprirli tutti.</p>
+            <p>Ci sono altri corsi disponibili! Visita la nostra <a href="corsi/corsi.php">pagina Corsi</a> per scoprirli tutti.</p>
         </div>
     </div>
 </section>
@@ -218,11 +218,11 @@ if (!isset($_SESSION['user_id'])) {
         var studentId = '<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '' ?>';
 
         if (!studentId) {
-            window.location.href = "../pages/login.php";
+            window.location.href = "pages/login.php";
         } else {
-            window.location.href = "../corsi/iscrizione_corso.php?corso_id=" + courseId;
+            window.location.href = "corsi/iscrizione_corso.php?corso_id=" + courseId;
         }
     }
 </script>
 
-<?php include('../templates/template_footer.php'); ?>
+<?php include('templates/template_footer.php'); ?>

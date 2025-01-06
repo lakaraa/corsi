@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 
 // Funzione per ottenere le categorie dinamicamente

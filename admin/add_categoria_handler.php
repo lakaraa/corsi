@@ -1,5 +1,5 @@
 <?php
-include('config/config.php');
+include('../config.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recupera il nome della categoria dal form

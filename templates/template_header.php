@@ -11,9 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <!-- Font Awesome for the lens icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../config/style.css">
-    <link rel="icon" type="image/x-icon" href="../resources/image/logo.png">
-    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="icon" type="image/x-icon" href="resources/image/logo.png">
+    <!--<link rel="icon" type="image/x-icon" href="../resources/image/logo.png">-->
+
 </head>
 <body>
     

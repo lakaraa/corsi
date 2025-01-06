@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
 
@@ -47,10 +47,10 @@ if (!$pdo) {
                                     <td><?php echo htmlspecialchars('Studente'); ?></td>
                                     <td>
                                         <!-- Modifica Studente -->
-                                        <a href="../admin/edit_studente.php?id=<?php echo $student['IdStudente']; ?>" class="btn btn-warning btn-sm">Modifica</a>
+                                        <a href="edit_studente.php?id=<?php echo $student['IdStudente']; ?>" class="btn btn-warning btn-sm">Modifica</a>
 
                                         <!-- Elimina Studente -->
-                                        <form action="../admin/delete_student.php" method="post" style="display:inline;">
+                                        <form action="delete_student.php" method="post" style="display:inline;">
                                             <input type="hidden" name="studentId" value="<?php echo $student['IdStudente']; ?>">
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo studente?');">Elimina</button>
                                         </form>

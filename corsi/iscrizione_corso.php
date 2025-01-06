@@ -1,5 +1,5 @@
 <?php
-include('../config/config.php');
+include('../config.php');
 include('../templates/template_header.php');
 session_start();
 
@@ -33,7 +33,7 @@ if (isset($_GET['corso_id'])) {
         $course = $stmtCourse->fetch(PDO::FETCH_ASSOC);
 
         if (!$course) {
-            header("Location: ../auth/index.php");
+            header("Location: ../index.php");
             exit;
         }
 
@@ -42,7 +42,7 @@ if (isset($_GET['corso_id'])) {
         exit;
     }
 } else {
-    header("Location: ../auth/index.php");
+    header("Location: ../index.php");
     exit;
 }
 
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['course_id'])) {
                                     <input type="hidden" name="course_id" value="<?= htmlspecialchars($course['IdCorso']) ?>">
                                     <button type="submit" class="btn btn-success btn-lg">Iscriviti al Corso</button>
                                 </form>
-                                <a href="../auth/index.php" class="btn btn-primary btn-lg mt-3">Torna alla Home</a>
+                                <a href="../index.php" class="btn btn-primary btn-lg mt-3">Torna alla Home</a>
                             </div>
                         </div>
                     </div>
