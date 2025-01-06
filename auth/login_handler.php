@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user_types = [
             'amministratore' => ['id_col' => 'IdAmministratore', 'dashboard' => '../admin/amministratoreDashboard.php'],
             'istruttore' => ['id_col' => 'IdIstruttore', 'dashboard' => '../admin/istruttoreDashboard.php'],
-            'studente' => ['id_col' => 'IdStudente', 'dashboard' => '../studneti/studentDashboard.php']
+            'studente' => ['id_col' => 'IdStudente', 'dashboard' => '../studenti/studentDashboard.php']
         ];
 
         foreach ($user_types as $type => $info) {
