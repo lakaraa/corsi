@@ -1,11 +1,23 @@
 <?php
 
-$db_host = '127.0.0.1';
-$db_dbname = 'corsi';
-$db_username = 'corsi';
-$db_password = 'password.123';
+define('DB_SERVER', $_ENV['AZURE_MYSQL_HOST']);
+define('DB_USERNAME', $_ENV['AZURE_MYSQL_USERNAME']);
+define('DB_PASSWORD', $_ENV['AZURE_MYSQL_PASSWORD']);
+define('DB_NAME', $_ENV['AZURE_MYSQL_DBNAME']);
 
-
-$pdo = new PDO("mysql:host=$db_host;dbname=$db_dbname", $db_username, $db_password);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+try 
+{
+    $dsn = "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME;
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false, 
+    ];
+    $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
+    echo "Connected successfully to the database!";
+}
+catch (PDOException $e) 
+{
+    die("ERROR: Could not connect. " . $e->getMessage());
+}
+?>
