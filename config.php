@@ -5,7 +5,7 @@ define('DB_SERVER', $_ENV['AZURE_MYSQL_HOST']);
 define('DB_USERNAME', $_ENV['AZURE_MYSQL_USERNAME']);
 define('DB_PASSWORD', $_ENV['AZURE_MYSQL_PASSWORD']);
 define('DB_NAME', $_ENV['AZURE_MYSQL_DBNAME']);
-define('SSL_CA', 'BaltimoreCyberTrustRoot.crt.pem');
+define('SSL_CA', 'DigiCertGlobalRootG2.crt.pem');
 
 try {
     // Stringa DSN per la connessione PDO
