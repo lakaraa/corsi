@@ -59,26 +59,27 @@ try {
     // Creazione della connessione PDO
     $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
 
+    //$createTablesSQLPath = 'sql_create_tables.sql';
+
     $createTablesSQLPath = realpath(__DIR__ . '/sql_create_tables.sql');
-    echo "Percorso del file SQL: " . $createTablesSQLPath;
+    //echo "Percorso del file SQL: " . $createTablesSQLPath;
     if (file_exists($createTablesSQLPath)) {
         $createTablesSQL = file_get_contents($createTablesSQLPath);
         $pdo->exec($createTablesSQL);
     } else {
-        die("Errore: Il file sql_create_tables.sql non è stato trovato.");
+        //die("Errore: Il file sql_create_tables.sql non è stato trovato.");
     }
 
     
-    // Verifica se il secondo file SQL esiste
-
+    //$insertDataSQLPath = 'sql_insert.sql';
     $insertDataSQLPath = realpath(__DIR__ . '/sql_insert.sql');
     if (file_exists($insertDataSQLPath)) {
         $insertDataSQL = file_get_contents($insertDataSQLPath);
         $pdo->exec($insertDataSQL);
-        echo "Dati inseriti con successo.";
+        //echo "Dati inseriti con successo.";
 
     } else {
-        die("Errore: Il file sql_insert.sql non è stato trovato.");
+        //die("Errore: Il file sql_insert.sql non è stato trovato.");
     }
     
 
