@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS `corso` (
     `Idamministratore` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 -- Trigger per validare la data di inizio
+
+DROP TRIGGER IF EXISTS `ValidazioneDataInizio` 
 CREATE TRIGGER `ValidazioneDataInizio` 
 BEFORE INSERT ON `corso`
 FOR EACH ROW 
@@ -50,6 +52,8 @@ BEGIN
 END;
 
 -- Trigger per calcolare la data di fine durante l'inserimento
+DROP TRIGGER IF EXISTS `calcola_datafine` 
+
 CREATE TRIGGER `calcola_datafine` 
 BEFORE INSERT ON `corso`
 FOR EACH ROW 
@@ -73,6 +77,8 @@ BEGIN
 END;
 
 -- Trigger per calcolare la data di fine durante l'aggiornamento
+DROP TRIGGER IF EXISTS `calcola_datafine_update` 
+
 CREATE TRIGGER `calcola_datafine_update` 
 BEFORE UPDATE ON `corso`
 FOR EACH ROW 
