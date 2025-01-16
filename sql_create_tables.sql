@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS `corso` (
     `Idamministratore` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 -- Rimuovi i trigger esistenti
 DROP TRIGGER IF EXISTS `ValidazioneDataInizio`;
 DROP TRIGGER IF EXISTS `calcola_datafine`;
