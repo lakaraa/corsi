@@ -31,8 +31,6 @@ CREATE TABLE IF NOT EXISTS `corso` (
     `DataFine` date DEFAULT NULL,
     `Idamministratore` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-DELIMITER $$
-
 -- Trigger per validare la data di inizio
 CREATE TRIGGER `ValidazioneDataInizio` 
 BEFORE INSERT ON `corso`
@@ -49,7 +47,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'La data di inizio non può essere durante il weekend';
     END IF;
-END $$
+END;
 
 -- Trigger per calcolare la data di fine durante l'inserimento
 CREATE TRIGGER `calcola_datafine` 
@@ -72,7 +70,7 @@ BEGIN
     END WHILE;
 
     SET NEW.DataFine = giorno_corrente;
-END $$
+END;
 
 -- Trigger per calcolare la data di fine durante l'aggiornamento
 CREATE TRIGGER `calcola_datafine_update` 
@@ -97,9 +95,7 @@ BEGIN
 
         SET NEW.DataFine = giorno_corrente;
     END IF;
-END $$
-
-DELIMITER ;
+END;
 
 
 CREATE TABLE IF NOT EXISTS `iscrizione` (
