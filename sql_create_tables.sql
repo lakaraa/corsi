@@ -65,11 +65,6 @@ CREATE TABLE IF NOT EXISTS `studente` (
     `Password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Rimuovi i trigger esistenti
-DROP TRIGGER IF EXISTS `ValidazioneDataInizio`;
-DROP TRIGGER IF EXISTS `calcola_datafine`;
-DROP TRIGGER IF EXISTS `calcola_datafine_update`;
-
 -- Trigger per validare la data di inizio
 CREATE TRIGGER `ValidazioneDataInizio` 
 BEFORE INSERT ON `corso`
@@ -93,9 +88,11 @@ CREATE TRIGGER `calcola_datafine`
 BEFORE INSERT ON `corso`
 FOR EACH ROW 
 BEGIN
+    -- Dichiarazione delle variabili all'inizio del blocco
     DECLARE giorni_aggiunti INT DEFAULT 0;
     DECLARE giorno_corrente DATE;
 
+    -- Inizializzazione delle variabili
     SET giorno_corrente = NEW.DataInizio;
 
     -- Aggiungi giorni lavorativi (escludendo weekend)
@@ -106,6 +103,7 @@ BEGIN
         END IF;
     END WHILE;
 
+    -- Imposta la data di fine nel campo NEW
     SET NEW.DataFine = giorno_corrente;
 END;
 
@@ -114,10 +112,12 @@ CREATE TRIGGER `calcola_datafine_update`
 BEFORE UPDATE ON `corso`
 FOR EACH ROW 
 BEGIN
+    -- Dichiarazione delle variabili solo se la DataFine è NULL
     IF NEW.DataFine IS NULL THEN
         DECLARE giorni_aggiunti INT DEFAULT 0;
         DECLARE giorno_corrente DATE;
 
+        -- Inizializzazione delle variabili
         SET giorno_corrente = NEW.DataInizio;
 
         -- Aggiungi giorni lavorativi (escludendo weekend)
@@ -128,6 +128,7 @@ BEGIN
             END IF;
         END WHILE;
 
+        -- Imposta la data di fine nel campo NEW
         SET NEW.DataFine = giorno_corrente;
     END IF;
 END;
