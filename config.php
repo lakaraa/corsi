@@ -70,7 +70,8 @@ try {
 
     
     // Verifica se il secondo file SQL esiste
-    $insertDataSQLPath = 'sql_insert.sql';
+
+    $insertDataSQLPath = realpath(__DIR__ . '/sql_insert.sql');
     if (file_exists($insertDataSQLPath)) {
         $insertDataSQL = file_get_contents($insertDataSQLPath);
         $pdo->exec($insertDataSQL);
