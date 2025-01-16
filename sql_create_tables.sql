@@ -2,7 +2,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 -- Database: `corsi`
 
 CREATE TABLE IF NOT EXISTS `amministratore` (
@@ -14,12 +13,10 @@ CREATE TABLE IF NOT EXISTS `amministratore` (
     `Password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 CREATE TABLE IF NOT EXISTS `categoria` (
     `IdCategoria` int AUTO_INCREMENT PRIMARY KEY,
     `NomeCategoria` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 CREATE TABLE IF NOT EXISTS `corso` (
     `IdCorso` int AUTO_INCREMENT PRIMARY KEY,
@@ -32,7 +29,6 @@ CREATE TABLE IF NOT EXISTS `corso` (
     `Idamministratore` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 CREATE TABLE IF NOT EXISTS `iscrizione` (
     `IdIscrizione` int AUTO_INCREMENT PRIMARY KEY,
     `DataIscrizione` date DEFAULT NULL,
@@ -40,8 +36,6 @@ CREATE TABLE IF NOT EXISTS `iscrizione` (
     `IdCorso` int DEFAULT NULL,
     `IdStudente` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 
 CREATE TABLE IF NOT EXISTS `istruttore` (
     `IdIstruttore` int AUTO_INCREMENT PRIMARY KEY,
@@ -53,7 +47,6 @@ CREATE TABLE IF NOT EXISTS `istruttore` (
     `Specializzazione` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 CREATE TABLE IF NOT EXISTS `messaggi` (
     `id` int AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL,
@@ -62,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `messaggi` (
     `message` text NOT NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 CREATE TABLE IF NOT EXISTS `studente` (
     `IdStudente` int AUTO_INCREMENT PRIMARY KEY,
@@ -73,12 +65,13 @@ CREATE TABLE IF NOT EXISTS `studente` (
     `Password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
-
 -- Rimuovi i trigger esistenti
 DROP TRIGGER IF EXISTS `ValidazioneDataInizio`;
 DROP TRIGGER IF EXISTS `calcola_datafine`;
 DROP TRIGGER IF EXISTS `calcola_datafine_update`;
+
+-- Cambia il delimitatore per il trigger
+DELIMITER $$
 
 -- Trigger per validare la data di inizio
 CREATE TRIGGER `ValidazioneDataInizio` 
@@ -96,7 +89,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'La data di inizio non può essere durante il weekend';
     END IF;
-END;
+END$$
 
 -- Trigger per calcolare la data di fine durante l'inserimento
 CREATE TRIGGER `calcola_datafine` 
@@ -119,7 +112,7 @@ BEGIN
     END WHILE;
 
     SET NEW.DataFine = giorno_corrente;
-END;
+END$$
 
 -- Trigger per calcolare la data di fine durante l'aggiornamento
 CREATE TRIGGER `calcola_datafine_update` 
@@ -144,8 +137,10 @@ BEGIN
 
         SET NEW.DataFine = giorno_corrente;
     END IF;
-END;
+END$$
 
+-- Ripristina il delimitatore predefinito
+DELIMITER ;
 
 -- Indici e chiavi esterne
 ALTER TABLE `corso`
