@@ -70,9 +70,6 @@ DROP TRIGGER IF EXISTS `ValidazioneDataInizio`;
 DROP TRIGGER IF EXISTS `calcola_datafine`;
 DROP TRIGGER IF EXISTS `calcola_datafine_update`;
 
--- Cambia il delimitatore per il trigger
-DELIMITER $$
-
 -- Trigger per validare la data di inizio
 CREATE TRIGGER `ValidazioneDataInizio` 
 BEFORE INSERT ON `corso`
@@ -89,7 +86,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'La data di inizio non può essere durante il weekend';
     END IF;
-END$$
+END;
 
 -- Trigger per calcolare la data di fine durante l'inserimento
 CREATE TRIGGER `calcola_datafine` 
@@ -112,7 +109,7 @@ BEGIN
     END WHILE;
 
     SET NEW.DataFine = giorno_corrente;
-END$$
+END;
 
 -- Trigger per calcolare la data di fine durante l'aggiornamento
 CREATE TRIGGER `calcola_datafine_update` 
@@ -137,10 +134,7 @@ BEGIN
 
         SET NEW.DataFine = giorno_corrente;
     END IF;
-END$$
-
--- Ripristina il delimitatore predefinito
-DELIMITER ;
+END;
 
 -- Indici e chiavi esterne
 ALTER TABLE `corso`
