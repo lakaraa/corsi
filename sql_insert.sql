@@ -120,7 +120,7 @@ INSERT INTO `corso` (`Nome`, `Durata`, `DataInizio`, `IdIstruttore`, `IdCategori
 INSERT INTO `iscrizione` (`DataIscrizione`, `Livello`, `IdCorso`, `IdStudente`) VALUES
 ('2024-12-16', 'Intermedio', 1, 1),
 ('2024-12-18', 'Avanzato', 2, 1),
-('2024-12-16', 'Intermedio', 1, 2);
+('2024-12-16', 'Intermedio', 1, 2),
 ('2024-12-18', 'Avanzato', 2, 2),
 ('2024-12-23', 'Base', 2, 3),
 ('2024-12-16', 'Intermedio', 3, 3),
