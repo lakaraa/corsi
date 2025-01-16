@@ -1,70 +1,68 @@
-
 <?php
+ob_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start(); 
 include('../config.php');
-include('../templates/template_header.php'); 
 
+// Controlla se la connessione al database esiste
 if (!isset($pdo) || !$pdo) {
     die("Connessione al database fallita. Verifica le credenziali.");
 }
 
+// Includi il template header
+include('../templates/template_header.php');
+
 // Includi la navbar dinamica
 if (!isset($_SESSION['user_id'])) {
-    include('navbar_guest.php'); // Navbar per gli utenti non loggati
+    if (!file_exists('navbar_guest.php')) {
+        die("File navbar_guest.php non trovato.");
+    }
+    include('navbar_guest.php');
 } else {
-    include('navbar.php'); // Navbar per gli utenti loggati
+    if (!file_exists('navbar.php')) {
+        die("File navbar.php non trovato.");
+    }
+    include('navbar.php');
 }
-$contactInfo = [
-    "phone" => "+1 718-999-3939",
-    "email" => "info@onlinelearning.com",
-    "address" => "1234 Learning St. New York, NY 10001"
-];
-$socialLinks = [
-    "Facebook" => "#",
-    "Twitter" => "#",
-    "Instagram" => "#",
-    "LinkedIn" => "#"
-];
 ?>
-    <!-- Header Section -->
-    <header class="header-bg">
-        <div class="overlay"></div>
-        <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
-            <h1 class="hero-title">Scopri i nostri corsi</h1>
-            <p class="hero-subtext">Accedi a conoscenze di qualità ovunque ti trovi.</p>
-        </div>
-    </header>
+<!-- Inizia il contenuto HTML -->
+<header class="header-bg">
+    <div class="overlay"></div>
+    <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
+        <h1 class="hero-title">Scopri i nostri corsi</h1>
+        <p class="hero-subtext">Accedi a conoscenze di qualità ovunque ti trovi.</p>
+    </div>
+</header>
 
-    <!-- Login Section -->
-    <section class="section py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-4">Accedi al Tuo Account</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <form action="../auth/login_handler.php" method="post">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">Accedi</button>
-                            </form>
-                            <div class="text-center mt-3">
-                                <p>Non hai un account? <a href="register.php">Registrati qui</a></p>
+<section class="section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">Accedi al Tuo Account</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form action="../auth/login_handler.php" method="post">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Accedi</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <p>Non hai un account? <a href="register.php">Registrati qui</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 <?php include('../templates/template_footer.php'); ?>
