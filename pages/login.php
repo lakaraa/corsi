@@ -1,7 +1,16 @@
+
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start(); 
 include('../config.php');
 include('../templates/template_header.php'); 
+
+if (!isset($pdo) || !$pdo) {
+    die("Connessione al database fallita. Verifica le credenziali.");
+}
 
 // Includi la navbar dinamica
 if (!isset($_SESSION['user_id'])) {

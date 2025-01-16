@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </section>
 
-<script>
+<script defer>
     // Funzione per effettuare la chiamata AJAX dinamica
     function fetchCourses() {
         const name = document.getElementById('searchName').value;

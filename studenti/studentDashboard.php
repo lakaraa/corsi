@@ -235,7 +235,7 @@ if (count($coursesEnrolledIds) > 0) {
         </div>
     </section>
 
-    <script>
+    <script defer>
         function toggleDetails(courseId) {
             const courseDetails = document.getElementById(courseId);
             if (courseDetails.style.display === "none" || courseDetails.style.display === "") {

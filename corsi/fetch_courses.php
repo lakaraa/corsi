@@ -66,7 +66,7 @@ try {
 }
 ?>
 
-<script>
+<script defer>
     // Funzione per gestire il reindirizzamento
     function redirectToCourse(courseId) {
         const studentId = '<?= isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : '' ?>';

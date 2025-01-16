@@ -364,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id'], $_POST[
             </div>
         </div>
     </section>
-    <script>
+    <script defer>
         function toggleCourseDetails(courseId) {
             const courseDetails = document.getElementById('course' + courseId);
             courseDetails.style.display = (courseDetails.style.display === 'none') ? 'block' : 'none';

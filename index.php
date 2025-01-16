@@ -213,7 +213,7 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </section>
 
-<script>
+<script defer>
     function redirectToCourse(courseId) {
         var studentId = '<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '' ?>';
 
