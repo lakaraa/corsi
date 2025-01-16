@@ -137,22 +137,6 @@ BEGIN
     END IF;
 END;
 
--- Indici e chiavi esterne
-ALTER TABLE `corso`
-    ADD KEY `key_Corso_Istruttore` (`IdIstruttore`),
-    ADD KEY `key_Corso_Categoria` (`IdCategoria`),
-    ADD KEY `key_Corso_Amministratore` (`Idamministratore`);
-
-ALTER TABLE `iscrizione`
-    ADD KEY `key_Iscrizione_Corso` (`IdCorso`),
-    ADD KEY `key_Iscrizione_Studente` (`IdStudente`);
-
-ALTER TABLE `istruttore`
-    ADD UNIQUE KEY `unique_Email_Istruttore` (`Email`);
-
-ALTER TABLE `studente`
-    ADD UNIQUE KEY `unique_Email_Studente` (`Email`);
-
 -- Foreign Key Constraints
 ALTER TABLE `corso`
     ADD CONSTRAINT `fk_Corso_Amministratore` FOREIGN KEY (`Idamministratore`) REFERENCES `amministratore` (`IdAmministratore`),
