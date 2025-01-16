@@ -31,7 +31,7 @@ INSERT INTO `categoria` (`NomeCategoria`) VALUES
 INSERT INTO `istruttore` (`Nome`, `Cognome`, `Telefono`, `Email`, `Password`, `Specializzazione`) VALUES
 ('Luca', 'Rossi', '3391234567', 'luca.rossi@gmail.com', 'Password123!', 'Programmazione C++'),
 ('Marta', 'Bianchi', '3382345678', 'marta.bianchi@yahoo.com', 'Password456!', 'Design Grafico'),
-('Simone', 'Verdi', '3373456789', 'simone.verdi@hotmail.com', 'Password789!', 'Database');
+('Simone', 'Verdi', '3373456789', 'simone.verdi@hotmail.com', 'Password789!', 'Database'),
 ('Giulia', 'Gialli', '3387654321', 'giulia.gialli@hotmail.it', '$2y$10$wOxSq53uR6r7ITFazMRPg./AsSz13qLJ3MROPTKWr.jv6vjuAEeuC', 'Chimica Organica'),
 ('Antonio', 'Bruni', '3376543210', 'antonio.bruni@gmail.com', '$2y$10$P6z/ZJfvmlp7JtjsSBhSmO6Bxdhd8v0FEyZnfp1lz32w2zp0GFvPyq', 'Psicologia');
 
