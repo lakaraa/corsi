@@ -139,19 +139,19 @@ END;
 
 -- Indici e chiavi esterne
 ALTER TABLE `corso`
-    ADD KEY `fk_Corso_Istruttore` (`IdIstruttore`),
-    ADD KEY `fk_Corso_Categoria` (`IdCategoria`),
-    ADD KEY `fk_Corso_Amministratore` (`Idamministratore`);
+    ADD KEY `key_Corso_Istruttore` (`IdIstruttore`),
+    ADD KEY `key_Corso_Categoria` (`IdCategoria`),
+    ADD KEY `key_Corso_Amministratore` (`Idamministratore`);
 
 ALTER TABLE `iscrizione`
-    ADD KEY `fk_Iscrizione_Corso` (`IdCorso`),
-    ADD KEY `fk_Iscrizione_Studente` (`IdStudente`);
+    ADD KEY `key_Iscrizione_Corso` (`IdCorso`),
+    ADD KEY `key_Iscrizione_Studente` (`IdStudente`);
 
 ALTER TABLE `istruttore`
-    ADD UNIQUE KEY `Email` (`Email`);
+    ADD UNIQUE KEY `unique_Email_Istruttore` (`Email`);
 
 ALTER TABLE `studente`
-    ADD UNIQUE KEY `Email` (`Email`);
+    ADD UNIQUE KEY `unique_Email_Studente` (`Email`);
 
 -- Foreign Key Constraints
 ALTER TABLE `corso`
