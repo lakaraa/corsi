@@ -93,11 +93,12 @@ CREATE TRIGGER `calcola_datafine`
 BEFORE INSERT ON `corso`
 FOR EACH ROW 
 BEGIN
-    -- Aggiungi giorni lavorativi (escludendo weekend)
-    DECLARE giorno_corrente DATE;
-    SET giorno_corrente = NEW.DataInizio;
     DECLARE giorni_aggiunti INT DEFAULT 0;
+    DECLARE giorno_corrente DATE;
 
+    SET giorno_corrente = NEW.DataInizio;
+
+    -- Aggiungi giorni lavorativi (escludendo weekend)
     WHILE giorni_aggiunti < NEW.Durata DO
         SET giorno_corrente = DATE_ADD(giorno_corrente, INTERVAL 1 DAY);
         IF DAYOFWEEK(giorno_corrente) NOT IN (1, 7) THEN
@@ -114,11 +115,12 @@ BEFORE UPDATE ON `corso`
 FOR EACH ROW 
 BEGIN
     IF NEW.DataFine IS NULL THEN
-        -- Aggiungi giorni lavorativi (escludendo weekend)
-        DECLARE giorno_corrente DATE;
-        SET giorno_corrente = NEW.DataInizio;
         DECLARE giorni_aggiunti INT DEFAULT 0;
+        DECLARE giorno_corrente DATE;
 
+        SET giorno_corrente = NEW.DataInizio;
+
+        -- Aggiungi giorni lavorativi (escludendo weekend)
         WHILE giorni_aggiunti < NEW.Durata DO
             SET giorno_corrente = DATE_ADD(giorno_corrente, INTERVAL 1 DAY);
             IF DAYOFWEEK(giorno_corrente) NOT IN (1, 7) THEN
