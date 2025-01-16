@@ -43,7 +43,7 @@ include('../templates/template_header.php');
         <div class="row">
             <div class="col-md-4 mb-4">
                 <div class="card text-center">
-                    <img src="../resources/image/team1.png" class="card-img-top" alt="Team Member 1">
+                    <img src="../resources/image/team1.png" class="card-img-top" alt="Team Member 1" loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">Mario Rossi</h5>
                         <p class="card-text">CEO & Founder</p>
@@ -52,7 +52,7 @@ include('../templates/template_header.php');
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card text-center">
-                    <img src="../resources/image/team2.png" class="card-img-top" alt="Team Member 2">
+                    <img src="../resources/image/team2.png" class="card-img-top" alt="Team Member 2" loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">Giulia Bianchi</h5>
                         <p class="card-text">CFO</p>
@@ -61,7 +61,7 @@ include('../templates/template_header.php');
             </div>
             <div class="col-md-4 mb-4">
                 <div class="card text-center">
-                    <img src="../resources/image/team3.png" class="card-img-top" alt="Team Member 3">
+                    <img src="../resources/image/team3.png" class="card-img-top" alt="Team Member 3" loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">Marco Verdi</h5>
                         <p class="card-text">Head of Education</p>
