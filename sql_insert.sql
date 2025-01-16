@@ -28,29 +28,29 @@ INSERT INTO `categoria` (`NomeCategoria`) VALUES
 
 
 INSERT INTO `corso` (`Nome`, `Durata`, `DataInizio`, `IdIstruttore`, `IdCategoria`, `DataFine`, `IdAmministratore`) VALUES
-('Programmazione C++', 20, '2024-12-23', 13, 1, '2025-01-12', 8),
-('Database Avanzato', 30, '2024-12-18', 15, 1, '2025-01-17', 1),
-('Networking Base', 18, '2024-12-20', 16, 1, '2025-01-07', 1);
-('Filosofia Antica', 15, '2024-12-17', 13, 3, '2025-01-01', 1),
-('Lingua Inglese', 40, '2024-12-18', 14, 3, '2025-01-27', 2),
-('Matematica Avanzata', 35, '2024-12-16', 15, 2, '2025-01-20', 1),
-('Chimica Generale', 30, '2024-12-18', 16, 4, '2025-01-17', 1),
-('Web Development', 40, '2024-12-16', 13, 1, '2025-01-25', 1),
-('Data Science', 30, '2024-12-16', 14, 1, '2025-01-15', 1),
-('Graphic Design', 20, '2024-12-30', 15, 1, '2025-01-19', 1),
-('Digital Marketing', 60, '2025-01-29', 16, 1, '2025-03-30', 1),
-('Cybersecurity', 32, '2025-02-03', 13, 1, '2025-03-07', 2),
-('Business Management', 1, '2024-12-17', 14, 1, '2024-12-18', 1),
-('Fisica Moderna', 30, '2024-12-18', 15, 2, '2025-01-17', 1),
-("Storia dell\'Arte", 40, '2024-12-18', 16, 8, '2025-01-27', 2),
-('Chimica Organica', 35, '2024-12-23', 13, 3, '2025-01-27', 2),
-('Biologia Molecolare', 50, '2024-12-23', 14, 4, '2025-02-11', 7),
-('Geografia Fisica', 25, '2024-12-30', 15, 5, '2025-01-24', 2),
-('Psicologia Cognitiva', 45, '2025-01-06', 16, 6, '2025-02-20', 6),
-('Filosofia Contemporanea', 40, '2025-01-08', 13, 7, '2025-02-17', 2),
-('Marketing Digitale', 30, '2025-01-13', 14, 10, '2025-02-12', 6),
-('Sistemi Operativi', 50, '2025-01-15', 15, 1, '2025-03-06', 2),
-('Reti di Calcolatori', 40, '2025-01-20', 16, 1, '2025-03-01', 1);
+('Programmazione C++', 20, '2025-02-23', 13, 1, '2025-01-17', 8),
+('Database Avanzato', 30, '2025-03-18', 15, 1, '2025-01-17', 1),
+('Networking Base', 18, '2025-02-20', 16, 1, '2025-01-17', 1),
+('Filosofia Antica', 15, '2025-02-17', 13, 3, '2025-01-21', 1),
+('Lingua Inglese', 40, '2025-03-18', 14, 3, '2025-01-27', 2),
+('Matematica Avanzata', 35, '2025-03-16', 15, 2, '2025-01-20', 1),
+('Chimica Generale', 30, '2025-02-28', 16, 4, '2025-01-17', 1),
+('Web Development', 40, '2025-03-16', 13, 1, '2025-01-25', 1),
+('Data Science', 30, '2025-02-28', 14, 1, '2025-01-18', 1),
+('Graphic Design', 20, '2025-03-10', 15, 1, '2025-01-19', 1),
+('Digital Marketing', 60, '2025-03-29', 16, 1, '2025-01-29', 1),
+('Cybersecurity', 32, '2025-03-03', 13, 1, '2025-01-17', 2),
+('Business Management', 10, '2025-02-17', 14, 1, '2025-01-21', 1),
+('Fisica Moderna', 30, '2025-03-18', 15, 2, '2025-01-17', 1),
+("Storia dell\'Arte", 40, '2025-03-18', 16, 8, '2025-01-27', 2),
+('Chimica Organica', 35, '2025-03-23', 13, 3, '2025-01-27', 2),
+('Biologia Molecolare', 50, '2025-03-23', 14, 4, '2025-01-20', 7),
+('Geografia Fisica', 25, '2025-03-10', 15, 5, '2025-01-24', 2),
+('Psicologia Cognitiva', 45, '2025-03-20', 16, 6, '2025-01-16', 6),
+('Filosofia Contemporanea', 40, '2025-03-18', 13, 7, '2025-01-18', 2),
+('Marketing Digitale', 30, '2025-03-17', 14, 10, '2025-01-17', 6),
+('Sistemi Operativi', 50, '2025-03-16', 15, 1, '2025-01-17', 2),
+('Reti di Calcolatori', 40, '2025-03-14', 16, 1, '2025-01-17', 1);
 
 
 INSERT INTO `iscrizione` (`DataIscrizione`, `Livello`, `IdCorso`, `IdStudente`) VALUES
