@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS `iscrizione`;
+DROP TABLE IF EXISTS `corso`;
+DROP TABLE IF EXISTS `istruttore`;
+DROP TABLE IF EXISTS `studente`;
+DROP TABLE IF EXISTS `categoria`;
+DROP TABLE IF EXISTS `amministratore`;
+DROP TABLE IF EXISTS `messaggi`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
