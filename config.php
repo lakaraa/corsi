@@ -24,7 +24,7 @@ try {
     $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, $options);
 
     // Se la connessione ha successo
-    echo "Connected successfully to the database!";
+    //echo "Connected successfully to the database!";
 } catch (PDOException $e) {
     // In caso di errore, mostra il messaggio di errore
     die("ERROR: Could not connect. " . $e->getMessage());
