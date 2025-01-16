@@ -31,22 +31,31 @@ CREATE TABLE IF NOT EXISTS `corso` (
     `DataFine` date DEFAULT NULL,
     `Idamministratore` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Trigger per `corso`
 DELIMITER $$
-CREATE TRIGGER IF NOT EXISTS `ValidazioneDataInizio` BEFORE INSERT ON `corso` FOR EACH ROW BEGIN
+
+-- Trigger per validare la data di inizio
+CREATE TRIGGER `ValidazioneDataInizio` 
+BEFORE INSERT ON `corso`
+FOR EACH ROW 
+BEGIN
+    -- Controllo che la data di inizio non sia nel passato
     IF NEW.DataInizio < CURDATE() THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La data di inizio non può essere nel passato';
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'La data di inizio non può essere nel passato';
     END IF;
+
+    -- Controllo che la data di inizio non sia durante il weekend
     IF DAYOFWEEK(NEW.DataInizio) IN (1, 7) THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La data di inizio non può essere durante il weekend';
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'La data di inizio non può essere durante il weekend';
     END IF;
-END
-$$
-DELIMITER ;
+END $$
 
-DELIMITER $$
-CREATE TRIGGER IF NOT EXISTS `calcola_datafine` BEFORE INSERT ON `corso` FOR EACH ROW BEGIN
+-- Trigger per calcolare la data di fine durante l'inserimento
+CREATE TRIGGER `calcola_datafine` 
+BEFORE INSERT ON `corso`
+FOR EACH ROW 
+BEGIN
     DECLARE giorni INT;
     DECLARE giorni_aggiunti INT DEFAULT 0;
     DECLARE giorno_corrente DATE;
@@ -54,40 +63,44 @@ CREATE TRIGGER IF NOT EXISTS `calcola_datafine` BEFORE INSERT ON `corso` FOR EAC
     SET giorni = NEW.Durata;
     SET giorno_corrente = NEW.DataInizio;
 
-    WHILE giorni_aggiunti < giorni DO
-    SET giorno_corrente = DATE_ADD(giorno_corrente, INTERVAL 1 DAY);
-    IF DAYOFWEEK(giorno_corrente) NOT IN (1, 7) THEN
-        SET giorni_aggiunti = giorni_aggiunti + 1;
-    END IF;
-    END WHILE;
-
-    SET NEW.DataFine = giorno_corrente;
-END
-$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER IF NOT EXISTS `calcola_datafine_update` BEFORE UPDATE ON `corso` FOR EACH ROW BEGIN
-    IF NEW.DataFine IS NULL THEN
-    DECLARE giorni INT;
-    DECLARE giorni_aggiunti INT DEFAULT 0;
-    DECLARE giorno_corrente DATE;
-
-    SET giorni = NEW.Durata;
-    SET giorno_corrente = NEW.DataInizio;
-
+    -- Aggiungi giorni lavorativi (escludendo weekend)
     WHILE giorni_aggiunti < giorni DO
         SET giorno_corrente = DATE_ADD(giorno_corrente, INTERVAL 1 DAY);
         IF DAYOFWEEK(giorno_corrente) NOT IN (1, 7) THEN
-        SET giorni_aggiunti = giorni_aggiunti + 1;
+            SET giorni_aggiunti = giorni_aggiunti + 1;
         END IF;
     END WHILE;
 
     SET NEW.DataFine = giorno_corrente;
+END $$
+
+-- Trigger per calcolare la data di fine durante l'aggiornamento
+CREATE TRIGGER `calcola_datafine_update` 
+BEFORE UPDATE ON `corso`
+FOR EACH ROW 
+BEGIN
+    IF NEW.DataFine IS NULL THEN
+        DECLARE giorni INT;
+        DECLARE giorni_aggiunti INT DEFAULT 0;
+        DECLARE giorno_corrente DATE;
+
+        SET giorni = NEW.Durata;
+        SET giorno_corrente = NEW.DataInizio;
+
+        -- Aggiungi giorni lavorativi (escludendo weekend)
+        WHILE giorni_aggiunti < giorni DO
+            SET giorno_corrente = DATE_ADD(giorno_corrente, INTERVAL 1 DAY);
+            IF DAYOFWEEK(giorno_corrente) NOT IN (1, 7) THEN
+                SET giorni_aggiunti = giorni_aggiunti + 1;
+            END IF;
+        END WHILE;
+
+        SET NEW.DataFine = giorno_corrente;
     END IF;
-END
-$$
+END $$
+
 DELIMITER ;
+
 
 CREATE TABLE IF NOT EXISTS `iscrizione` (
     `IdIscrizione` int AUTO_INCREMENT PRIMARY KEY,
