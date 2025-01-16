@@ -20,7 +20,7 @@ if (isset($_GET['corso_id'])) {
         // Recupera il corso specifico selezionato
         $sqlCourse = "
             SELECT c.IdCorso, c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, 
-                   ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
+                ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
             FROM corso c
             JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
             JOIN categoria cat ON c.IdCategoria = cat.IdCategoria
