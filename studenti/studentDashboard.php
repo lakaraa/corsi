@@ -1,20 +1,24 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Avvia la sessione prima di tutto
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Inclusioni
 include('../config.php');
 include('../pages/navbar.php');
 include('../templates/template_header.php');
 
-// Inizia la sessione
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL); 
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+// Verifica la sessione
 if (!isset($_SESSION['user_id'])) {
     echo "Sessione non valida.";
     exit;
 }
+
 
 //
 //// Verifica se l'utente è loggato
