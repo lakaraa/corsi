@@ -7,6 +7,7 @@ error_reporting(E_ALL);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+var_dump($_SESSION);
 
 // Inclusioni
 require_once('../config.php');
@@ -19,7 +20,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-var_dump($_SESSION);
 
 //
 //// Verifica se l'utente è loggato
