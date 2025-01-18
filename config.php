@@ -1,12 +1,22 @@
 <?php
 
-// Definizione delle credenziali del database
-define('DB_SERVER', $_ENV['AZURE_MYSQL_HOST']);
-define('DB_USERNAME', $_ENV['AZURE_MYSQL_USERNAME']);
-define('DB_PASSWORD', $_ENV['AZURE_MYSQL_PASSWORD']);
-define('DB_NAME', $_ENV['AZURE_MYSQL_DBNAME']);
-define('SSL_CA', 'DigiCertGlobalRootG2.crt.pem');
 
+// Definizione delle credenziali del database solo se non sono già definite
+if (!defined('DB_SERVER')) {
+    define('DB_SERVER', $_ENV['AZURE_MYSQL_HOST']);
+}
+if (!defined('DB_USERNAME')) {
+    define('DB_USERNAME', $_ENV['AZURE_MYSQL_USERNAME']);
+}
+if (!defined('DB_PASSWORD')) {
+    define('DB_PASSWORD', $_ENV['AZURE_MYSQL_PASSWORD']);
+}
+if (!defined('DB_NAME')) {
+    define('DB_NAME', $_ENV['AZURE_MYSQL_DBNAME']);
+}
+if (!defined('SSL_CA')) {
+    define('SSL_CA', 'DigiCertGlobalRootG2.crt.pem');
+}
 try {
     // Stringa DSN per la connessione PDO
     $dsn = "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME;

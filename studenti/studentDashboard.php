@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Inclusioni
-include('../config.php');
+require_once('../config.php');
 include('../pages/navbar.php');
 include('../templates/template_header.php');
 
