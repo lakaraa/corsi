@@ -2,6 +2,8 @@
 include('../config.php');
 include('../pages/navbar.php');
 
+include('../templates/template_header.php');
+
 // Inizia la sessione
 
 
