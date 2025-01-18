@@ -12,6 +12,9 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../pages/login.php");
     exit;
 }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Supponiamo che l'ID dello studente sia memorizzato in una sessione
 $userId = $_SESSION['user_id']; // Assicurati di avere un sistema di autenticazione
