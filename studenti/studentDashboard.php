@@ -11,8 +11,8 @@ var_dump($_SESSION);
 
 // Inclusioni
 require_once('../config.php');
-include('../pages/navbar.php');
-include('../templates/template_header.php');
+require_once('../pages/navbar.php');
+require_once('../templates/template_header.php');
 
 // Verifica la sessione
 if (!isset($_SESSION['user_id'])) {
