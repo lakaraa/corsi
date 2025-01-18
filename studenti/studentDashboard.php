@@ -92,55 +92,6 @@ if (count($coursesEnrolledIds) > 0) {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" type="image/x-icon" href="../resources/image/logo.png">
-    <style>
-        /* Stile per la lista dei corsi iscritti */
-        .list-group-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-        }
-
-        .list-group-item .badge {
-            margin-right: 10px; /* Spazio tra la badge "Iscritto" e il bottone */
-        }
-
-        /* Aggiungi un po' di spazio al bottone Dettagli */
-        .list-group-item .btn-info {
-            margin-left: 10px; /* Spazio tra il bottone e il badge */
-        }
-
-        .course-details {
-            display: none;
-        }
-
-        .table th, .table td {
-            vertical-align: middle;
-            text-align: left; /* Allinea i testi a sinistra */
-        }
-
-        .btn-subscribe {
-            background-color: #28a745;
-            color: white;
-            font-weight: bold;
-        }
-
-        .btn-subscribe:hover {
-            background-color: #218838;
-        }
-
-        .btn-info {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-info:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
 
