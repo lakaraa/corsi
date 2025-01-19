@@ -55,13 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Scrive la query nel file 'sql_insert.sql'
     file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
 
-    // Messaggio di successo
-    echo "<script>
-            alert('Studente aggiornato con successo!');
-            setTimeout(function() {
-                window.location.href = 'profilo.php?id=$idStudente';
-            }, 3000);
-          </script>";
+    header('Location: dashboard.php');
     exit;
 }
 ?>
