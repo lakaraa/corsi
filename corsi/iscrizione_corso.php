@@ -1,7 +1,20 @@
 <?php
-include('../config.php');
-include('../templates/template_header.php');
-session_start();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Avvia la sessione prima di tutto
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+var_dump($_SESSION);
+
+// Inclusioni
+require_once('../config.php');
+require_once('../templates/template_header.php');
+
+//session_start();
 
 // Verifica se l'utente è loggato
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 'studente') {

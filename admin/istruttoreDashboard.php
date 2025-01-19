@@ -1,17 +1,23 @@
 <?php
-// Inclusione dei file di configurazione e template
-include('../config.php');
-include('../templates/template_header.php'); // Header HTML con inclusione stili
-include('../pages/navbar.php');          // Navbar
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Assicurati che la connessione al database funzioni
-if (!$pdo) {
-    die("Connessione al database fallita.");
-}
-
-// Avvia la sessione, se non già avviata
+// Avvia la sessione prima di tutto
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
+var_dump($_SESSION);
+
+// Inclusioni
+require_once('../config.php');
+require_once('../pages/navbar.php');
+require_once('../templates/template_header.php');
+
+// Verifica la sessione
+if (!isset($_SESSION['user_id'])) {
+    echo "Sessione non valida.";
+    exit;
 }
 
 $userId = $_SESSION['user_id'] ?? null;
