@@ -3,6 +3,7 @@ ob_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 // Include la connessione al database
 include('../config.php');
 session_start();
@@ -44,12 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['user_name'] = $user['Nome'];
                     $_SESSION['user_role'] = $type; // Memorizza il ruolo dell'utente
                     
+                    // Salva la query nel file sql_insert.sql
                     $sqlQuery = sprintf(
                         "SELECT * FROM %s WHERE Email = '%s' LIMIT 1;\n",
                         $type,
                         $email
                     );
-                    
                     file_put_contents('../sql_insert.sql', $sqlQuery, FILE_APPEND);
     
                     // Redirigi al dashboard appropriato
@@ -63,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Nessun utente trovato con quell'email
-        echo "<script>alertac('Nessun utente trovato con questa email!'); window.location.href='../pages/login.php';</script>";
+        echo "<script>alert('Nessun utente trovato con questa email!'); window.location.href='../pages/login.php';</script>";
         exit;
 
     } catch (PDOException $e) {
