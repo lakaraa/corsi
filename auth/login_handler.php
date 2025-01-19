@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
                         
             if ($user) {
-                // Controlla se la password è corretta
+                // Controlla se la password è hashata o in chiaro
                 if (password_verify($password, $user['Password']) || $password === $user['Password']) {
                     // Imposta la sessione
                     $_SESSION['user_id'] = $user[$info['id_col']];
