@@ -63,7 +63,7 @@ function searchDatabase($searchQuery) {
         $conditions = [];
         foreach ($columns as $column) {
             if ($column != $primaryKey && $column != 'Password') { // Escludiamo la colonna PK e la colonna Password
-                $conditions[] = "`$column` LIKE :search_query"; // Usa backtick per i nomi delle colonne
+                $conditions[] = "`$column` LIKE ?"; // Usa il simbolo "?" invece di :search_query
             }
         }
 
@@ -74,7 +74,10 @@ function searchDatabase($searchQuery) {
 
             // Prepara e esegui la query
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['search_query' => '%' . $searchQuery . '%']);
+            $searchTerm = '%' . $searchQuery . '%';
+            
+            // Passa i parametri correttamente
+            $stmt->execute(array_fill(0, count($conditions), $searchTerm));
 
             // Aggiungi i risultati per questa tabella all'array dei risultati
             $tableResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
