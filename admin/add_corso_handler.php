@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             INSERT INTO corso (Nome, Durata, DataInizio, DataFine, IdIstruttore, IdCategoria, IdAmministratore)
             VALUES (:nome_corso, :durata, :data_inizio, :data_fine, :id_istruttore, :id_categoria, :id_amministratore)
         ");
-
         // Bind dei parametri
         $stmt->bindParam(':nome_corso', $nome_corso, PDO::PARAM_STR);
         $stmt->bindParam(':durata', $durata, PDO::PARAM_INT);
@@ -40,6 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
         $stmt->bindParam(':id_amministratore', $id_amministratore, PDO::PARAM_INT);
 
+        // Creazione della query SQL da inserire nel file .sql
+        $sqlOperation = sprintf(
+            // La query SQL viene formattata con i seguenti valori
+            "INSERT INTO corso (Nome, Durata, DataInizio, DataFine, IdIstruttore, IdCategoria, IdAmministratore)
+            VALUES ('%s', %d, '%s', '%s', %d, %d, %d);\n",
+        
+            // La funzione addslashes viene utilizzata per proteggere i valori stringa, evitando che caratteri speciali come ' e " possano interrompere la query SQL
+            // La variabile $nome_corso viene trattata come stringa (per essere inserita tra apici nella query)
+            addslashes($nome_corso),
+            $durata,
+            $data_inizio,
+            $data_fine,
+            $id_istruttore,
+            $id_categoria,
+            $id_amministratore
+        );
+        
+        // La funzione file_put_contents scrive la query nel file 'sql_insert.sql'
+        // FILE_APPEND significa che i dati vengono aggiunti alla fine del file esistente, senza sovrascriverlo
+        file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
+        
+        
         // Esecuzione della query
         if ($stmt->execute()) {
             echo "Corso aggiunto con successo.";
