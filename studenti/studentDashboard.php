@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-var_dump($_SESSION);
+//var_dump($_SESSION);
 
 // Inclusioni
 require_once('../config.php');
