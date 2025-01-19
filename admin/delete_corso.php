@@ -25,6 +25,17 @@ if (isset($_POST['courseId'])) {
         $deleteCourseStmt->bindParam(':courseId', $courseId, PDO::PARAM_INT);
         $deleteCourseStmt->execute();
 
+         // Creazione della query SQL da inserire nel file .sql
+        $sqlOperation = sprintf(
+            "DELETE FROM iscrizione WHERE IdCorso = %d;\nDELETE FROM corso WHERE IdCorso = %d;\n",
+            $courseId,
+            $courseId
+        );
+
+        // Scrive la query nel file 'sql_insert.sql'
+        file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
+
+
         // Commit della transazione se entrambe le operazioni sono andate a buon fine
         $pdo->commit();
 

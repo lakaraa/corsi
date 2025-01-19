@@ -41,6 +41,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'id' => $idStudente,
     ]);
 
+    // Creazione della query SQL da inserire nel file .sql
+    $sqlOperation = sprintf(
+        "UPDATE studente SET Nome = '%s', Cognome = '%s', Email = '%s', Telefono = '%s', Password = '%s' WHERE IdStudente = %d;\n",
+        $nome,
+        $cognome,
+        $email,
+        $telefono,
+        password_hash($password, PASSWORD_DEFAULT), // Anche se non si può vedere l'hash in chiaro, si aggiunge comunque
+        $idStudente
+    );
+
+    // Scrive la query nel file 'sql_insert.sql'
+    file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
+
     header('Location: dashboard.php');
     exit;
 }

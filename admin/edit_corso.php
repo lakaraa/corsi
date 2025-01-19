@@ -51,6 +51,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'id' => $idCorso,
     ]);
 
+     // Creazione della query SQL da inserire nel file .sql
+    $sqlOperation = sprintf(
+        "UPDATE corso SET Nome = '%s', Durata = '%s', DataInizio = '%s', DataFine = '%s', IdIstruttore = %d, IdCategoria = %d, IdAmministratore = %d WHERE IdCorso = %d;\n",
+        $nome,
+        $durata,
+        $dataInizio,
+        $dataFine,
+        $idIstruttore,
+        $idCategoria,
+        $idAmministratore,
+        $idCorso
+    );
+
+    // Scrive la query nel file 'sql_insert.sql'
+    file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
+
+
     header('Location: dashboard.php');
     exit;
 }

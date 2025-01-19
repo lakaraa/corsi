@@ -66,6 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Execute the statement
         $stmt->execute();
 
+        // Save the SQL query to the file
+        $sqlQuery = sprintf(
+            "INSERT INTO studente (Nome, Cognome, Telefono, Email, Password) VALUES ('%s', '%s', '%s', '%s', '%s');\n",
+            $nome, $cognome, $telefono, $email, $hashedPassword
+        );
+        file_put_contents('../sql_insert.sql', $sqlQuery, FILE_APPEND);
+
+
         // Redirect to the login page with success message
         echo "<script>alert('Registrazione avvenuta con successo!'); window.location.href='../pages/login.php';</script>";
 

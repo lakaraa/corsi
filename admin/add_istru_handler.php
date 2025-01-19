@@ -40,6 +40,21 @@ if (isset($_POST['instructorName']) && isset($_POST['instructorSurname']) && iss
 
         // Esegui la query per l'inserimento
         if ($insertStmt->execute()) {
+            // Creazione della query SQL da inserire nel file .sql
+            $sqlOperation = sprintf(
+                "INSERT INTO istruttore (Nome, Cognome, Email, Telefono, Specializzazione, Password) 
+                VALUES ('%s', '%s', '%s', '%s', '%s', '%s');\n",
+                $instructorName,
+                $instructorSurname,
+                $instructorEmail,
+                $instructorPhone,
+                $instructorSpecializzazione,
+                $instructorPassword // La password criptata
+            );
+            
+            // Scrive la query nel file 'sql_insert.sql'
+            file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
+
             // Se l'inserimento ha successo, redirigi l'utente alla pagina di gestione
             header('Location: amministratoreDashboard.php');
             exit();

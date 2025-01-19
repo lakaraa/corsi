@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':email', $email);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+                        
             if ($user) {
                 // Controlla se la password è corretta
                 if (password_verify($password, $user['Password']) || $password === $user['Password']) {
@@ -44,6 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['user_name'] = $user['Nome'];
                     $_SESSION['user_role'] = $type; // Memorizza il ruolo dell'utente
                     
+                    $sqlQuery = sprintf(
+                        "SELECT * FROM %s WHERE Email = '%s' LIMIT 1;\n",
+                        $type,
+                        $email
+                    );
+                    
+                    file_put_contents('../sql_insert.sql', $sqlQuery, FILE_APPEND);
+    
                     // Redirigi al dashboard appropriato
                     header("Location: {$info['dashboard']}");
                     exit;
@@ -55,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Nessun utente trovato con quell'email
-        echo "<script>alert('Nessun utente trovato con questa email!'); window.location.href='../pages/login.php';</script>";
+        echo "<script>alertac('Nessun utente trovato con questa email!'); window.location.href='../pages/login.php';</script>";
         exit;
 
     } catch (PDOException $e) {

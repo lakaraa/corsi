@@ -36,6 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':message' => $message,
         ]);
 
+
+        // Salvataggio della query nel file SQL
+        $sqlQuery = sprintf(
+            "INSERT INTO messaggi (name, email, oggetto, message) VALUES ('%s', '%s', '%s', '%s');\n",
+            $name, $email, $oggetto, $message
+        );
+        file_put_contents('../sql_message_query.sql', $sqlQuery, FILE_APPEND);
+
+        
         // Reindirizzamento alla pagina di conferma dopo il successo
         header('Location: thank_you.php');
         exit();

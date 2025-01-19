@@ -139,6 +139,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['student_id'], $_POST[
         // Esegui la query
         if ($stmt->execute()) {
             // Se l'aggiornamento è riuscito, reindirizza con successo
+             // Se l'aggiornamento è riuscito, crea la query per il file .sql
+            $sqlOperation = sprintf(
+                "UPDATE iscrizione SET Livello = '%s' WHERE IdStudente = %d AND IdCorso = %d;\n",
+                $newLevel,
+                $studentId,
+                $courseId
+            );
+
+        // Scrive la query nel file 'sql_insert.sql'
+        file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
+
             header('Location: istruttoreDashboard.php?status=success&message=Livello aggiornato con successo.');
             exit;
         } else {
