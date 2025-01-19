@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<script>
             alert('Studente aggiornato con successo!');
             setTimeout(function() {
-                window.location.href = amministratoreDashboard.php;
+                window.location.href = '../admin/amministratoreDashboard.php';
             }, 3000);
           </script>";
     exit;
