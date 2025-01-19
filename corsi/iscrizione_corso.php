@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['course_id'])) {
         $message = "Iscrizione al corso avvenuta con successo!";
          // Salva anche l'operazione in un file SQL
         $sqlOperation = "INSERT INTO iscrizione (IdStudente, IdCorso, Livello) VALUES ($userId, $courseId, 'In corso');\n";
-        file_put_contents('../sql/sql_insert.sql', $sqlOperation, FILE_APPEND);
+        file_put_contents('../sql_insert.sql', $sqlOperation, FILE_APPEND);
     } else {
         $message = "Sei già iscritto a questo corso!";
     }
