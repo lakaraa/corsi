@@ -80,7 +80,7 @@ if (count($coursesEnrolledIds) > 0) {
 } else {
     // Se l'utente non è iscritto a nessun corso, mostra tutti i corsi futuri
     $sqlAvailable = "
-        SELECT c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
+        SELECT c.IdCorso AS corso_id,c.Nome AS corso_nome, c.Durata, c.DataInizio, c.DataFine, c.IdIstruttore, 
                ist.Nome AS istruttore_nome, ist.Cognome AS istruttore_cognome, cat.NomeCategoria
         FROM corso c
         JOIN istruttore ist ON c.IdIstruttore = ist.IdIstruttore
