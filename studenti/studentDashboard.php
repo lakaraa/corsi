@@ -123,79 +123,83 @@ if (count($coursesEnrolledIds) > 0) {
             <h2 class="text-center mb-4">Benvenuto caro</h2>
             <p class="text-center mb-5">Qui puoi visualizzare i corsi a cui sei iscritto, i corsi che hai completato e quelli disponibili per te.</p>
 
-            <!-- Corsi Iscritti -->
-            <div class="row mb-5">
-                <div class="col-md-12">
-                    <h3>I tuoi Corsi Iscritti</h3>
-                    <div class="list-group">
-                        <?php foreach ($coursesEnrolled as $course): ?>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div class="d-flex justify-content-between w-100">
-                                    <span><?php echo htmlspecialchars($course['corso_nome']); ?></span>
-                                </div>
-                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
+    <!-- Corsi Iscritti -->
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3>I tuoi Corsi Iscritti</h3>
+            <div class="list-group">
+                <?php if (empty($coursesEnrolled)): ?>
+                    <p class="text-muted">Non sei iscritto a nessun corso al momento.</p>
+                <?php else: ?>
+                    <?php foreach ($coursesEnrolled as $course): ?>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between w-100">
+                                <span><?php echo htmlspecialchars($course['corso_nome']); ?></span>
                             </div>
-                            <div id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
+                            <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
+                        </div>
+                        <div id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>Dettagli Corso</h5>
+                                    <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
+                                    <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
+                                    <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
+                                    <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <!-- Corsi Disponibili -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Corsi Disponibili</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome Corso</th>
+                        <th>Durata</th>
+                        <th>Data Inizio</th>
+                        <th>Data Fine</th>
+                        <th>Istruttore</th>
+                        <th>Categoria</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($coursesAvailable as $course): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($course['corso_nome']); ?></td>
+                            <td><?php echo htmlspecialchars($course['Durata']); ?> ore</td>
+                            <td><?php echo htmlspecialchars($course['DataInizio']); ?></td>
+                            <td><?php echo htmlspecialchars($course['DataFine']); ?></td>
+                            <td><?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></td>
+                            <td><?php echo htmlspecialchars($course['NomeCategoria']); ?></td>
+                            <td>
+                            <a href="javascript:void(0);" class="btn btn-subscribe btn-sm" onclick="redirectToCourse(<?php echo htmlspecialchars($course['corso_id']); ?>)">Iscriviti</a>
+                            <!--<a href="../corsi/iscrizione_corso.php" class="btn btn-subscribe btn-sm">Iscriviti</a>-->
+                                <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
+                            </td>
+                        </tr>
+                        <tr id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
+                            <td colspan="7">
                                 <div class="card mt-3">
                                     <div class="card-body">
                                         <h5>Dettagli Corso</h5>
+                                        <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
                                         <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
                                         <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
-                                        <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
                                         <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
                                     </div>
                                 </div>
-                            </div>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-            <!-- Corsi Disponibili -->
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Corsi Disponibili</h3>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nome Corso</th>
-                                <th>Durata</th>
-                                <th>Data Inizio</th>
-                                <th>Data Fine</th>
-                                <th>Istruttore</th>
-                                <th>Categoria</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($coursesAvailable as $course): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($course['corso_nome']); ?></td>
-                                    <td><?php echo htmlspecialchars($course['Durata']); ?> ore</td>
-                                    <td><?php echo htmlspecialchars($course['DataInizio']); ?></td>
-                                    <td><?php echo htmlspecialchars($course['DataFine']); ?></td>
-                                    <td><?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></td>
-                                    <td><?php echo htmlspecialchars($course['NomeCategoria']); ?></td>
-                                    <td>
-                                    <a href="javascript:void(0);" class="btn btn-subscribe btn-sm" onclick="redirectToCourse(<?php echo htmlspecialchars($course['corso_id']); ?>)">Iscriviti</a>
-                                    <!--<a href="../corsi/iscrizione_corso.php" class="btn btn-subscribe btn-sm">Iscriviti</a>-->
-                                        <button class="btn btn-info btn-sm" onclick="toggleDetails('<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details')">Dettagli</button>
-                                    </td>
-                                </tr>
-                                <tr id="<?php echo str_replace(' ', '', $course['corso_nome']); ?>Details" class="course-details" style="display:none;">
-                                    <td colspan="7">
-                                        <div class="card mt-3">
-                                            <div class="card-body">
-                                                <h5>Dettagli Corso</h5>
-                                                <p><strong>Durata:</strong> <?php echo htmlspecialchars($course['Durata']); ?> ore</p>
-                                                <p><strong>Data Inizio:</strong> <?php echo htmlspecialchars($course['DataInizio']); ?></p>
-                                                <p><strong>Data Fine:</strong> <?php echo htmlspecialchars($course['DataFine']); ?></p>
-                                                <p><strong>Istruttore:</strong> <?php echo htmlspecialchars($course['istruttore_nome']) . ' ' . htmlspecialchars($course['istruttore_cognome']); ?></p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
+                    </tbody>
                     </table>
                 </div>
             </div>
