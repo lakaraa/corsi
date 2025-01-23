@@ -39,7 +39,6 @@ INSERT INTO `istruttore` (`Nome`, `Cognome`, `Telefono`, `Email`, `Password`, `S
 
 
 INSERT INTO `studente` (`Nome`, `Cognome`, `Telefono`, `Email`, `Password`) VALUES
-('Mario', 'Rossi', '3331234567', 'mario.rossi@email.com', 'password123'),
 ('Luca', 'Bianchi', '3332345678', 'luca.bianchi@email.com', 'password234'),
 ('Anna', 'Verdi', '3333456789', 'anna.verdi@email.com', 'password345'),
 ('Giulia', 'Esposito', '3334567890', 'giulia.esposito@email.com', 'password456'),
