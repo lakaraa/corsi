@@ -47,7 +47,17 @@ try {
                             <td><?php echo htmlspecialchars($messaggio['name']); ?></td>
                             <td><?php echo htmlspecialchars($messaggio['email']); ?></td>
                             <td><?php echo htmlspecialchars($messaggio['oggetto']); ?></td>
-                            <td><?php echo htmlspecialchars(substr($messaggio['message'], 0, 50)) . (strlen($messaggio['message']) > 50 ? '...' : ''); ?></td>
+                            <td>
+                                <?php 
+                                $messagePreview = htmlspecialchars(substr($messaggio['message'], 0, 50));
+                                $fullMessage = htmlspecialchars($messaggio['message']);
+                                if (strlen($messaggio['message']) > 50) {
+                                    echo $messagePreview . '... <a href="#" onclick="alert(\'' . $fullMessage . '\')">Mostra tutto</a>';
+                                } else {
+                                    echo $fullMessage;
+                                }
+                                ?>
+                            </td>
                             <td><?php echo htmlspecialchars($messaggio['created_at']); ?></td>
                         </tr>
                     <?php endforeach; ?>

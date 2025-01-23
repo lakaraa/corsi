@@ -226,3 +226,15 @@ INSERT INTO `iscrizione` (`DataIscrizione`, `Livello`, `IdCorso`, `IdStudente`) 
 (NULL, 'In corso', 6, 10);
 
 
+INSERT INTO `messaggi` (`name`, `email`, `oggetto`, `message`, `created_at`) 
+VALUES 
+('Giulia Rossi', 'giulia.rossi@email.com', 'Richiesta informazioni', 'Ciao, vorrei sapere di più sui vostri corsi.', '2025-01-22 14:30:00'),
+('Marco Bianchi', 'marco.bianchi@email.com', 'Apprezzamenti', 'Grazie per il servizio che offrite, molto utile!', '2025-01-21 15:00:00'),
+('Sara Verdi', 'sara.verdi@email.com', 'Domanda sul pagamento', 'Volevo chiedere come posso effettuare il pagamento online.', '2025-01-20 09:45:00'),
+('Luca Neri', 'luca.neri@email.com', 'Segnalazione errore', 'Ho riscontrato un errore nel sistema, potreste risolverlo?', '2025-01-19 18:00:00'),
+('Giovanna Gialli', 'giovanna.gialli@email.com', 'Feedback positivo', 'Ottimo lavoro! Il sito è molto intuitivo.', '2025-01-18 16:30:00'),
+('Paolo Blu', 'paolo.blu@email.com', 'Problema di accesso', 'Non riesco ad accedere al mio account, potete aiutarmi?', '2025-01-17 10:20:00'),
+('Alessandra Rossi', 'alessandra.rossi@email.com', 'Richiesta collaborazioni', 'Sono interessata a collaborare con voi, come posso fare?', '2025-01-16 11:00:00'),
+('Francesco Verde', 'francesco.verde@email.com', 'Domanda sui servizi', 'Vorrei sapere di più su come posso usufruire dei vostri servizi.', '2025-01-15 08:10:00'),
+('Martina Fabbri', 'martina.fabbri@email.com', 'Richiesta assistenza', 'Ho bisogno di supporto tecnico per il mio account.', '2025-01-14 12:45:00'),
+('Riccardo Mancini', 'riccardo.mancini@email.com', 'Informazioni sui prezzi', 'Mi servirebbero informazioni sui prezzi dei vostri piani.', '2025-01-13 14:50:00');
