@@ -1,6 +1,8 @@
 <?php
 
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 
 ?>
 <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
