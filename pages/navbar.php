@@ -1,5 +1,5 @@
 <?php 
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();  // Avvia la sessione solo se non è già attiva
 }
 include('../config.php');
