@@ -1,16 +1,18 @@
 <?php 
+// Avvia la sessione solo se non è già attiva
 if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();  // Avvia la sessione solo se non è già attiva
+    session_start();
 }
+
 include('../config.php');
 
-$user_type = 'guest'; // Valore predefinito
+// Valore predefinito per il ruolo
+$user_role = 'guest'; 
 
 // Verifica se l'utente è loggato
 if (isset($_SESSION['user_email']) && isset($_SESSION['user_role'])) {
     $user_email = $_SESSION['user_email'];
-    $user_role = $_SESSION['user_role']; // Recupera il ruolo dall sessione
-
+    $user_role = $_SESSION['user_role']; // Recupera il ruolo dalla sessione
     try {
         // Puoi fare altre verifiche se necessario, ma il ruolo è già impostato
     } catch (PDOException $e) {

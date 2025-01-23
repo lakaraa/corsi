@@ -7,6 +7,14 @@ include('../pages/navbar.php');
 if (!$pdo) {
     die("Connessione al database fallita.");
 }
+if (!isset($_SESSION['user_id'])) {
+    echo "Sessione non valida.";
+    exit;
+}
+$userId = $_SESSION['user_id'] ?? null;
+if (!$userId) {
+    die("Utente non autenticato.");
+}
 ?>
 
 <!-- Header Section -->
@@ -25,28 +33,27 @@ if (!$pdo) {
         <p class="text-center mb-5">Gestisci corsi, studenti, istruttori e altri utenti in modo semplice e veloce.</p>
 
         <!-- Barra di Ricerca --> 
-       
-            <div class="container text-center">
-                <!-- Form di ricerca principale -->
-                <form action="../search/search_results_ammin.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
-                    <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
-                        <input 
-                            type="text" 
-                            name="search_query" 
-                            class="form-control search-input" 
-                            placeholder="Cerca corsi, categorie, istruttori o studenti..."
-                            value="<?php echo isset($_GET['search_query']) ? htmlspecialchars($_GET['search_query']) : ''; ?>" 
-                            style="flex: 1; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ced4da;">
-                        <button type="submit" class="btn btn-primary search-button">Cerca</button>
-                    </div>
-                </form>
-
-                <!-- Pulsanti aggiuntivi sotto la barra di ricerca -->
-                <div class="d-flex justify-content-center gap-2 mt-3">
-                    <a href="../corsi/corsi_20_iscritti.php" class="btn btn-info btn-lg">Corsi con più di 20 iscritti</a>
-                    <a href="../studenti/studenti_nessun_corso.php" class="btn btn-primary btn-lg">Studenti senza corso</a>
+        <div class="container text-center">
+            <!-- Form di ricerca principale -->
+            <form action="../search/search_results_ammin.php" method="GET" class="search-bar p-3 border rounded shadow-sm bg-light">
+                <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
+                    <input 
+                        type="text" 
+                        name="search_query" 
+                        class="form-control search-input" 
+                        placeholder="Cerca corsi, categorie, istruttori o studenti..."
+                        value="<?php echo isset($_GET['search_query']) ? htmlspecialchars($_GET['search_query']) : ''; ?>" 
+                        style="flex: 1; padding: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ced4da;">
+                    <button type="submit" class="btn btn-primary search-button">Cerca</button>
                 </div>
+            </form>
+
+            <!-- Pulsanti aggiuntivi sotto la barra di ricerca -->
+            <div class="d-flex justify-content-center gap-2 mt-3">
+                <a href="../corsi/corsi_20_iscritti.php" class="btn btn-info btn-lg">Corsi con più di 20 iscritti</a>
+                <a href="../studenti/studenti_nessun_corso.php" class="btn btn-primary btn-lg">Studenti senza corso</a>
             </div>
+        </div>
         <br>
 
         <div class="row">
