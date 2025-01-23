@@ -87,7 +87,9 @@ INSERT INTO `studente` (`Nome`, `Cognome`, `Telefono`, `Email`, `Password`) VALU
 ('Francesco', 'Pavan', '3336890123', 'francesco.pavan@email.com', 'password139'),
 ('Matteo', 'Costa', '3337901234', 'matteo.costa@email.com', 'password140'),
 ('Alessandro', 'Grandi', '3338012345', 'alessandro.grandi@email.com', 'password141'),
-('Lucia', 'Giorgio', '3339123456', 'lucia.giorgio@email.com', 'password142');
+('Lucia', 'Giorgio', '3339123456', 'lucia.giorgio@email.com', 'password142'),
+('Mario', 'Rossi', '3331234567', 'mario.rossi@email.com', 'password123');
+
 
 
 INSERT INTO `corso` (`Nome`, `Durata`, `DataInizio`, `IdIstruttore`, `IdCategoria`, `DataFine`, `IdAmministratore`) VALUES
