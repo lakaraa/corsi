@@ -36,14 +36,12 @@ $courses = $stmtCourses->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- Header Section -->
 <header class="header-bg">
-    <div class="overlay">
-        <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
-            <h1 class="hero-title">Dashboard Studente</h1>
-            <p class="hero-subtext">Gestisci i tuoi corsi e il tuo apprendimento.</p>
-        </div> 
+    <div class="overlay"></div>
+    <div class="container text-center text-white d-flex align-items-center justify-content-center flex-column">
+        <h1 class="hero-title">Dashboard Amministratore</h1>
+        <p class="hero-subtext">Gestisci con facilità i tuoi corsi e i tuoi dipendenti.</p>
     </div>
 </header>
-
 <div class="container my-5">
     <h1 class="text-center mb-4">Dettagli Studente</h1>
     
