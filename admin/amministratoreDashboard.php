@@ -2,7 +2,7 @@
 include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
-
+include('../session.php');
 // Assicurati che la connessione al database funzioni
 if (!$pdo) {
     die("Connessione al database fallita.");
@@ -11,10 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 print_r($_SESSION);
-if (!isset($_SESSION['user_id'])) {
-    echo "Sessione non valida.";
-    exit;
-}
+
 $userId = $_SESSION['user_id'] ?? null;
 if (!$userId) {
     die("Utente non autenticato.");
