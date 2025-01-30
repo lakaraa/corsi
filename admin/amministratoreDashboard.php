@@ -8,7 +8,10 @@ if (!$pdo) {
     die("Connessione al database fallita.");
 }
 print_r($_SESSION);
-
+ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $userId = $_SESSION['user_id'] ?? null;
 if (!$userId) {
     die("Utente non autenticato.");
