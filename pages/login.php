@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include('../config.php');
-include('./session.php');
+include('../session.php');
 print_r($_SESSION);
 // Controlla se la connessione al database esiste
 if (!isset($pdo) || !$pdo) {
