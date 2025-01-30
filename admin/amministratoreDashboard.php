@@ -1,8 +1,8 @@
 <?php
+include('../session.php');
 include('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
-include('../session.php');
 // Assicurati che la connessione al database funzioni
 if (!$pdo) {
     die("Connessione al database fallita.");
