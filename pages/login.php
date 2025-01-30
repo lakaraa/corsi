@@ -4,11 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 include('../config.php');
-
+include('./session.php');
+print_r($_SESSION);
 // Controlla se la connessione al database esiste
 if (!isset($pdo) || !$pdo) {
     die("Connessione al database fallita. Verifica le credenziali.");

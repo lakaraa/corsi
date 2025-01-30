@@ -7,9 +7,6 @@ include('../session.php');
 if (!$pdo) {
     die("Connessione al database fallita.");
 }
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 print_r($_SESSION);
 
 $userId = $_SESSION['user_id'] ?? null;

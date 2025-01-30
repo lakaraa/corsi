@@ -6,9 +6,8 @@ error_reporting(E_ALL);
 
 // Include la connessione al database
 include('../config.php');
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+include('./session.php');
+print_r($_SESSION);
 
 // Verifica se il form è stato inviato
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
