@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 include('../config.php');
 include('../session.php');
-print_r($_SESSION);
+//print_r($_SESSION);
 // Controlla se la connessione al database esiste
 if (!isset($pdo) || !$pdo) {
     die("Connessione al database fallita. Verifica le credenziali.");
