@@ -93,7 +93,7 @@ INSERT INTO `studente` (`Nome`, `Cognome`, `Telefono`, `Email`, `Password`) VALU
 
 
 INSERT INTO `corso` (`Nome`, `Durata`, `DataInizio`, `IdIstruttore`, `IdCategoria`, `DataFine`, `IdAmministratore`) VALUES
-('Programmazione C++', 2, '2025-01-17', 1, 1, '2025-01-19', 5),
+('Programmazione C++', 20, '2025-01-17', 1, 1, '2025-02-07', 5),
 ('Database Avanzato', 30, '2025-03-18', 1, 1, '2025-04-17', 1),
 ('Networking Base', 18, '2025-02-20', 2, 1, '2025-03-10', 1),
 ('Filosofia Antica', 15, '2025-02-17', 2, 3, '2025-03-04', 1),
@@ -218,13 +218,7 @@ INSERT INTO `iscrizione` (`DataIscrizione`, `Livello`, `IdCorso`, `IdStudente`) 
 ('2024-12-18', 'Avanzato', 7, 49),
 ('2024-12-23', 'Base', 9, 50),
 ('2024-12-20', 'Intermedio', 7, 50),
-('2024-12-26', 'In corso', 9, 1),
-(NULL, 'In corso', 5, 10),
-(NULL, 'In corso', 6, 10),
-(NULL, 'In corso', 7, 10),
-(NULL, 'In corso', 2, 10),
-(NULL, 'In corso', 8, 10),
-(NULL, 'In corso', 6, 10);
+('2024-12-26', 'In corso', 9, 1);
 
 
 INSERT INTO `messaggi` (`name`, `email`, `oggetto`, `message`, `created_at`) 
