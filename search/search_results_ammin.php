@@ -1,8 +1,8 @@
 <?php
-include('../config.php');
+include_once('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
-include('search_query.php'); // Funzionalità di ricerca centralizzata
+include_once('search_query.php'); // Funzionalità di ricerca centralizzata
 
 // Recupera i risultati della ricerca se presente una query
 $searchQuery = isset($_GET['search_query']) ? trim($_GET['search_query']) : '';
@@ -11,7 +11,7 @@ $results = [];
 if ($searchQuery) {
     try {
         // Chiama la funzione centralizzata per eseguire la ricerca
-        $results = searchDatabase( $searchQuery);
+        $results = searchDatabase($searchQuery);
     } catch (PDOException $e) {
         echo '<div class="alert alert-danger">Errore durante la ricerca: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
