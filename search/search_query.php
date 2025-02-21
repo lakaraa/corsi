@@ -20,7 +20,7 @@ function searchDatabase($searchQuery) {
     global $pdo; // Usa la variabile $pdo definita nel file principale
 
     // Esegui il file sql_insert.sql (per esempio, per inserire dati nel database)
-    $sqlInsertQuery = file_get_contents('sql_insert.sql');
+    $sqlInsertQuery = file_get_contents('./sql_insert.sql');
     if ($sqlInsertQuery) {
         $pdo->exec($sqlInsertQuery); // Esegui la query di inserimento
     }
