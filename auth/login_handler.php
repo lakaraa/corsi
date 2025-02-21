@@ -6,9 +6,8 @@ error_reporting(E_ALL);
 
 // Include la connessione al database
 include('../config.php');
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+include('../session.php');
+//print_r($_SESSION);
 
 // Verifica se il form è stato inviato
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -21,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<script>alert('Entrambi i campi sono obbligatori!'); window.location.href='../pages/login.php';</script>";
         exit;
     }
-
     try {
         // Array di tabelle da verificare con priorità
         $user_types = [
@@ -42,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Controlla se la password è hashata o in chiaro
                 if (password_verify($password, $user['Password']) || $password === $user['Password']) {
                     // Imposta la sessione
-                    $_SESSION['user_id'] = $user[$info['id_col']];
+                    $_SESSION['user_id'] = $user[$info['id_col']];        var_dump($_SESSION['user_id']); 
                     $_SESSION['user_email'] = $user['Email'];
                     $_SESSION['user_name'] = $user['Nome'];
                     $_SESSION['user_role'] = $type; // Memorizza il ruolo dell'utente
@@ -64,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
-
         // Nessun utente trovato con quell'email
         echo "<script>alert('Nessun utente trovato con questa email!'); window.location.href='../pages/login.php';</script>";
         exit;

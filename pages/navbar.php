@@ -1,9 +1,10 @@
 <?php 
 // Avvia la sessione solo se non è già attiva
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
+include('../session.php');
+ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include('../config.php');
 
 // Valore predefinito per il ruolo
@@ -23,7 +24,7 @@ if (isset($_SESSION['user_email']) && isset($_SESSION['user_role'])) {
 
 <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="../index.php">
             <img src="../resources/image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle">
             <span>Online Learning Hub</span>
         </a>

@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="index.php">
                 <img src="resources/image/logo.png" alt="Logo" width="40" height="40" class="d-inline-block align-middle"> 
                 <span>Online Learning Hub</span>
             </a>
