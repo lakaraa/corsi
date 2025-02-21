@@ -1,6 +1,6 @@
 <?php
 include('../session.php');
-include('../config.php');
+include_once('../config.php');
 include('../templates/template_header.php');
 include('../pages/navbar.php');
 
